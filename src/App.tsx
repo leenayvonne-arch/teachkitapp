@@ -35,7 +35,7 @@ const App = () => (
             }
           >
             <Route index element={<DashboardHome />} />
-            <Route path="lessons" element={<GeneratorPage title="Lesson Plan Generator" description="Create a complete, standards-aligned lesson plan." />} />
+            <Route path="lessons" element={<LessonPlanGenerator />} />
             <Route path="worksheets" element={<GeneratorPage title="Worksheet Generator" description="Build engaging worksheets for your students." />} />
             <Route path="quizzes" element={<GeneratorPage title="Quiz Generator" description="Generate quizzes with multiple question types." />} />
             <Route path="exit-tickets" element={<GeneratorPage title="Exit Ticket Generator" description="Create quick checks for understanding." />} />
