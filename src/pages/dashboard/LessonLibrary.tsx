@@ -100,7 +100,7 @@ const LessonLibrary = () => {
   };
 
   const handleDelete = async (id: string) => {
-    const { error } = await supabase.from("saved_resources").delete().eq("id", id);
+    const { error } = await supabase.from("saved_resources" as any).delete().eq("id", id);
     if (error) {
       toast({ title: "Delete failed", description: error.message, variant: "destructive" });
     } else {
