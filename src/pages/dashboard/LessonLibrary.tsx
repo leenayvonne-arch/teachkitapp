@@ -81,7 +81,7 @@ const LessonLibrary = () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
-    const { error } = await supabase.from("saved_resources").insert({
+    const { error } = await supabase.from("saved_resources" as any).insert({
       user_id: user.id,
       title: `${resource.title} (Copy)`,
       resource_type: resource.resource_type,
