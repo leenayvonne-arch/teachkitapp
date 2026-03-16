@@ -14,6 +14,7 @@ import LessonPlanGenerator from "./pages/dashboard/LessonPlanGenerator";
 import WorksheetGenerator from "./pages/dashboard/WorksheetGenerator";
 import QuizGenerator from "./pages/dashboard/QuizGenerator";
 import ExitTicketGenerator from "./pages/dashboard/ExitTicketGenerator";
+import LessonLibrary from "./pages/dashboard/LessonLibrary";
 import PlaceholderPage from "./pages/dashboard/PlaceholderPage";
 
 const queryClient = new QueryClient();
