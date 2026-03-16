@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { Loader2, Download, Save, FileText, HelpCircle, BookOpen, Clock, Target, Lightbulb, Users, CheckCircle, List, Sparkles } from "lucide-react";
+import { saveResource, downloadElementAsPDF } from "@/lib/resourceUtils";
 
 interface LessonPlan {
   lessonTitle: string;
