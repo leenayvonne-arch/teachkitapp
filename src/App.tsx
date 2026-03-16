@@ -13,6 +13,7 @@ import DashboardHome from "./pages/dashboard/DashboardHome";
 import LessonPlanGenerator from "./pages/dashboard/LessonPlanGenerator";
 import WorksheetGenerator from "./pages/dashboard/WorksheetGenerator";
 import QuizGenerator from "./pages/dashboard/QuizGenerator";
+import ExitTicketGenerator from "./pages/dashboard/ExitTicketGenerator";
 import PlaceholderPage from "./pages/dashboard/PlaceholderPage";
 
 const queryClient = new QueryClient();
