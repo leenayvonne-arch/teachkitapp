@@ -24,7 +24,7 @@ export async function saveResource({
     return null;
   }
 
-  const { data, error } = await supabase.from("saved_resources").insert({
+  const { data, error } = await supabase.from("saved_resources" as any).insert({
     user_id: user.id,
     title,
     resource_type: resourceType,
@@ -32,7 +32,7 @@ export async function saveResource({
     subject,
     topic,
     content,
-  }).select().single();
+  } as any).select().single();
 
   if (error) {
     console.error("Save error:", error);

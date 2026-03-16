@@ -112,7 +112,7 @@ const LessonLibrary = () => {
   const handleEditSave = async () => {
     if (!editingResource || !editTitle.trim()) return;
     const { error } = await supabase
-      .from("saved_resources")
+      .from("saved_resources" as any)
       .update({ title: editTitle.trim(), updated_at: new Date().toISOString() })
       .eq("id", editingResource.id);
 
