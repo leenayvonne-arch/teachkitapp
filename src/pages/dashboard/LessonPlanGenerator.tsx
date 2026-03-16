@@ -84,21 +84,19 @@ const LessonPlanGenerator = () => {
     }
   };
 
-  const handleDownloadPDF = async () => {
-    const el = document.getElementById("lesson-plan-output");
-    if (!el) return;
-    const html2pdf = (await import("html2pdf.js")).default;
-    html2pdf()
-      .set({
-        margin: [10, 10, 10, 10],
-        filename: `${lessonPlan?.lessonTitle || "lesson-plan"}.pdf`,
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-      })
-      .from(el)
-      .save();
+  const handleSave = async () => {
+    if (!lessonPlan) return;
+    await saveResource({
+      title: lessonPlan.lessonTitle,
+      resourceType: "lesson",
+      gradeLevel: lessonPlan.gradeLevel,
+      subject: lessonPlan.subject,
+      topic: lessonPlan.topic,
+      content: lessonPlan as unknown as Record<string, unknown>,
+    });
   };
+
+  const handleDownloadPDF = () => downloadElementAsPDF("lesson-plan-output", lessonPlan?.lessonTitle || "lesson-plan");
 
   return (
     <div className="mx-auto max-w-4xl">
