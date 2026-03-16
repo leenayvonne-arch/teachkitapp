@@ -62,21 +62,19 @@ const WorksheetGenerator = () => {
     }
   };
 
-  const handleDownloadPDF = async () => {
-    const el = document.getElementById("worksheet-output");
-    if (!el) return;
-    const html2pdf = (await import("html2pdf.js")).default;
-    html2pdf()
-      .set({
-        margin: [10, 10, 10, 10],
-        filename: `${worksheet?.title || "worksheet"}.pdf`,
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-      })
-      .from(el)
-      .save();
+  const handleSave = async () => {
+    if (!worksheet) return;
+    await saveResource({
+      title: worksheet.title,
+      resourceType: "worksheet",
+      gradeLevel,
+      subject,
+      topic,
+      content: worksheet as unknown as Record<string, unknown>,
+    });
   };
+
+  const handleDownloadPDF = () => downloadElementAsPDF("worksheet-output", worksheet?.title || "worksheet");
 
   return (
     <div className="mx-auto max-w-4xl">
