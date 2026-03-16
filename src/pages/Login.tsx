@@ -53,6 +53,11 @@ const Login = () => {
             <Button type="submit" className="w-full rounded-xl" size="lg" disabled={loading}>
               {loading ? "Logging in…" : "Log In"}
             </Button>
+            <div className="text-right">
+              <Link to="/forgot-password" className="text-sm font-medium text-primary hover:underline">
+                Forgot password?
+              </Link>
+            </div>
           </form>
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center"><span className="w-full border-t" /></div>
