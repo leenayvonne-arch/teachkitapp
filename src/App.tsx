@@ -38,8 +38,8 @@ const App = () => (
             <Route index element={<DashboardHome />} />
             <Route path="lessons" element={<LessonPlanGenerator />} />
             <Route path="worksheets" element={<WorksheetGenerator />} />
-            <Route path="quizzes" element={<GeneratorPage title="Quiz Generator" description="Generate quizzes with multiple question types." />} />
-            <Route path="exit-tickets" element={<GeneratorPage title="Exit Ticket Generator" description="Create quick checks for understanding." />} />
+            <Route path="quizzes" element={<QuizGenerator />} />
+            <Route path="exit-tickets" element={<PlaceholderPage title="Exit Ticket Generator" description="Create quick checks for understanding." />} />
             <Route path="library" element={<PlaceholderPage title="Lesson Library" description="Your saved materials and resources." />} />
             <Route path="pricing" element={<PlaceholderPage title="Pricing" description="Manage your TeachKit subscription." />} />
             <Route path="account" element={<PlaceholderPage title="Account" description="Manage your account settings." />} />
