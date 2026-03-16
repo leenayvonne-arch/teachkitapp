@@ -142,7 +142,7 @@ const QuizGenerator = () => {
       {quiz && (
         <>
           <div className="mb-4 flex flex-wrap gap-2">
-            <Button variant="outline" className="rounded-xl" onClick={() => toast({ title: "Coming soon", description: "Save to library is coming soon." })}>
+            <Button variant="outline" className="rounded-xl" onClick={handleSave}>
               <Save className="mr-2 h-4 w-4" /> Save Quiz
             </Button>
             <Button variant="outline" className="rounded-xl" onClick={handleDownloadPDF}>
