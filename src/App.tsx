@@ -3,8 +3,15 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import Index from "./pages/Index.tsx";
-import NotFound from "./pages/NotFound.tsx";
+import Index from "./pages/Index";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import NotFound from "./pages/NotFound";
+import ProtectedRoute from "./components/ProtectedRoute";
+import DashboardLayout from "./components/dashboard/DashboardLayout";
+import DashboardHome from "./pages/dashboard/DashboardHome";
+import GeneratorPage from "./pages/dashboard/GeneratorPage";
+import PlaceholderPage from "./pages/dashboard/PlaceholderPage";
 
 const queryClient = new QueryClient();
 
@@ -16,7 +23,25 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<DashboardHome />} />
+            <Route path="lessons" element={<GeneratorPage title="Lesson Plan Generator" description="Create a complete, standards-aligned lesson plan." />} />
+            <Route path="worksheets" element={<GeneratorPage title="Worksheet Generator" description="Build engaging worksheets for your students." />} />
+            <Route path="quizzes" element={<GeneratorPage title="Quiz Generator" description="Generate quizzes with multiple question types." />} />
+            <Route path="exit-tickets" element={<GeneratorPage title="Exit Ticket Generator" description="Create quick checks for understanding." />} />
+            <Route path="library" element={<PlaceholderPage title="Lesson Library" description="Your saved materials and resources." />} />
+            <Route path="pricing" element={<PlaceholderPage title="Pricing" description="Manage your TeachKit subscription." />} />
+            <Route path="account" element={<PlaceholderPage title="Account" description="Manage your account settings." />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
