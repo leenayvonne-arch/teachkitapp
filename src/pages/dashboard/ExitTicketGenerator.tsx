@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { Loader2, Download, Save, LogOut, Sparkles, Brain, Lightbulb, Target } from "lucide-react";
+import { saveResource, downloadElementAsPDF } from "@/lib/resourceUtils";
 
 interface ExitTicketQuestion {
   number: number;
