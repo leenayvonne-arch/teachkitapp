@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { Loader2, Download, Save, LogOut, Sparkles, Brain, Lightbulb, Target } from "lucide-react";
+import { saveResource, downloadElementAsPDF } from "@/lib/resourceUtils";
 
 interface ExitTicketQuestion {
   number: number;
@@ -67,21 +68,19 @@ const ExitTicketGenerator = () => {
     }
   };
 
-  const handleDownloadPDF = async () => {
-    const el = document.getElementById("exit-ticket-output");
-    if (!el) return;
-    const html2pdf = (await import("html2pdf.js")).default;
-    html2pdf()
-      .set({
-        margin: [10, 10, 10, 10],
-        filename: `${exitTicket?.title || "exit-ticket"}.pdf`,
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-      })
-      .from(el)
-      .save();
+  const handleSave = async () => {
+    if (!exitTicket) return;
+    await saveResource({
+      title: exitTicket.title,
+      resourceType: "exit_ticket",
+      gradeLevel,
+      subject,
+      topic,
+      content: exitTicket as unknown as Record<string, unknown>,
+    });
   };
+
+  const handleDownloadPDF = () => downloadElementAsPDF("exit-ticket-output", exitTicket?.title || "exit-ticket");
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -131,7 +130,7 @@ const ExitTicketGenerator = () => {
       {exitTicket && (
         <>
           <div className="mb-4 flex flex-wrap gap-2">
-            <Button variant="outline" className="rounded-xl" onClick={() => toast({ title: "Coming soon", description: "Save to library is coming soon." })}>
+            <Button variant="outline" className="rounded-xl" onClick={handleSave}>
               <Save className="mr-2 h-4 w-4" /> Save Exit Ticket
             </Button>
             <Button variant="outline" className="rounded-xl" onClick={handleDownloadPDF}>
