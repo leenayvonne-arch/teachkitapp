@@ -45,9 +45,9 @@ const LessonLibrary = () => {
   const fetchResources = useCallback(async () => {
     setLoading(true);
     let query = supabase
-      .from("saved_resources")
+      .from("saved_resources" as any)
       .select("*")
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false }) as any;
 
     if (filterType !== "all") {
       query = query.eq("resource_type", filterType);
