@@ -1,1 +1,4 @@
 project_id = "qhtknboxfljlozuisniv"
+
+[functions.generate-worksheet]
+verify_jwt = false

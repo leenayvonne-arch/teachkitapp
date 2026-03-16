@@ -12,6 +12,7 @@ import DashboardLayout from "./components/dashboard/DashboardLayout";
 import DashboardHome from "./pages/dashboard/DashboardHome";
 import GeneratorPage from "./pages/dashboard/GeneratorPage";
 import LessonPlanGenerator from "./pages/dashboard/LessonPlanGenerator";
+import WorksheetGenerator from "./pages/dashboard/WorksheetGenerator";
 import PlaceholderPage from "./pages/dashboard/PlaceholderPage";
 
 const queryClient = new QueryClient();
@@ -36,7 +37,7 @@ const App = () => (
           >
             <Route index element={<DashboardHome />} />
             <Route path="lessons" element={<LessonPlanGenerator />} />
-            <Route path="worksheets" element={<GeneratorPage title="Worksheet Generator" description="Build engaging worksheets for your students." />} />
+            <Route path="worksheets" element={<WorksheetGenerator />} />
             <Route path="quizzes" element={<GeneratorPage title="Quiz Generator" description="Generate quizzes with multiple question types." />} />
             <Route path="exit-tickets" element={<GeneratorPage title="Exit Ticket Generator" description="Create quick checks for understanding." />} />
             <Route path="library" element={<PlaceholderPage title="Lesson Library" description="Your saved materials and resources." />} />
