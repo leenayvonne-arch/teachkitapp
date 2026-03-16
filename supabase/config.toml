@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.generate-quiz]
 verify_jwt = false
+
+[functions.generate-exit-ticket]
+verify_jwt = false
