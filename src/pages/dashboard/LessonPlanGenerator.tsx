@@ -1,0 +1,348 @@
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
+import { Loader2, Download, Save, FileText, HelpCircle, BookOpen, Clock, Target, Lightbulb, Users, CheckCircle, List, Sparkles } from "lucide-react";
+
+interface LessonPlan {
+  lessonTitle: string;
+  gradeLevel: string;
+  subject: string;
+  topic: string;
+  duration: string;
+  standards: string[];
+  objectives: string[];
+  keyVocabulary: { term: string; definition: string }[];
+  materials: string[];
+  instructionalStrategies: string[];
+  procedures: {
+    hook: { duration: string; description: string; activities: string[] };
+    instruction: { duration: string; description: string; activities: string[] };
+    guidedPractice: { duration: string; description: string; activities: string[] };
+    independentPractice: { duration: string; description: string; activities: string[] };
+    closure: { duration: string; description: string; activities: string[] };
+  };
+  differentiation: {
+    belowLevel: string[];
+    onLevel: string[];
+    aboveLevel: string[];
+  };
+  exitTicket: {
+    prompt: string;
+    questions: string[];
+  };
+}
+
+const GRADES = ["K", "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th"];
+const DURATIONS = ["30 minutes", "45 minutes", "60 minutes", "90 minutes", "120 minutes"];
+const DIFF_LEVELS = ["Basic", "Intermediate", "Advanced", "Mixed"];
+const STYLES = ["Direct Instruction", "Inquiry-Based", "Project-Based", "Flipped Classroom", "Cooperative Learning", "Socratic Method"];
+
+const LessonPlanGenerator = () => {
+  const [gradeLevel, setGradeLevel] = useState("");
+  const [subject, setSubject] = useState("");
+  const [topic, setTopic] = useState("");
+  const [lessonTitle, setLessonTitle] = useState("");
+  const [classDuration, setClassDuration] = useState("");
+  const [standards, setStandards] = useState("");
+  const [objectives, setObjectives] = useState("");
+  const [differentiationLevel, setDifferentiationLevel] = useState("");
+  const [studentNeeds, setStudentNeeds] = useState("");
+  const [instructionalStyle, setInstructionalStyle] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [lessonPlan, setLessonPlan] = useState<LessonPlan | null>(null);
+
+  const handleGenerate = async () => {
+    if (!gradeLevel || !subject || !topic) {
+      toast({ title: "Missing fields", description: "Please fill in Grade Level, Subject, and Topic.", variant: "destructive" });
+      return;
+    }
+
+    setIsGenerating(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("generate-lesson", {
+        body: { gradeLevel, subject, topic, lessonTitle, classDuration, standards, objectives, differentiationLevel, studentNeeds, instructionalStyle },
+      });
+
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+
+      setLessonPlan(data.lessonPlan);
+      toast({ title: "Lesson plan generated!", description: "Scroll down to view your lesson plan." });
+    } catch (e: any) {
+      console.error(e);
+      toast({ title: "Generation failed", description: e.message || "Something went wrong.", variant: "destructive" });
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleDownloadPDF = async () => {
+    const el = document.getElementById("lesson-plan-output");
+    if (!el) return;
+    const html2pdf = (await import("html2pdf.js")).default;
+    html2pdf()
+      .set({
+        margin: [10, 10, 10, 10],
+        filename: `${lessonPlan?.lessonTitle || "lesson-plan"}.pdf`,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+      })
+      .from(el)
+      .save();
+  };
+
+  return (
+    <div className="mx-auto max-w-4xl">
+      <h1 className="mb-1 font-display text-2xl font-bold text-foreground">Lesson Plan Generator</h1>
+      <p className="mb-8 text-muted-foreground">Create a complete, standards-aligned lesson plan powered by AI.</p>
+
+      {/* ── INPUT FORM ── */}
+      <Card className="mb-8 rounded-2xl">
+        <CardHeader className="pb-4">
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <BookOpen className="h-5 w-5 text-primary" />
+            Lesson Information
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <Label>Grade Level *</Label>
+              <Select value={gradeLevel} onValueChange={setGradeLevel}>
+                <SelectTrigger className="mt-1 rounded-xl"><SelectValue placeholder="Select grade" /></SelectTrigger>
+                <SelectContent>
+                  {GRADES.map((g) => <SelectItem key={g} value={g}>{g} Grade</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Subject *</Label>
+              <Input value={subject} onChange={(e) => setSubject(e.target.value)} placeholder="e.g. Math, Science, ELA" className="mt-1 rounded-xl" />
+            </div>
+            <div>
+              <Label>Topic *</Label>
+              <Input value={topic} onChange={(e) => setTopic(e.target.value)} placeholder="e.g. Fractions, Photosynthesis" className="mt-1 rounded-xl" />
+            </div>
+            <div>
+              <Label>Lesson Title <span className="text-muted-foreground text-xs">(optional)</span></Label>
+              <Input value={lessonTitle} onChange={(e) => setLessonTitle(e.target.value)} placeholder="Auto-generated if blank" className="mt-1 rounded-xl" />
+            </div>
+            <div>
+              <Label>Class Duration</Label>
+              <Select value={classDuration} onValueChange={setClassDuration}>
+                <SelectTrigger className="mt-1 rounded-xl"><SelectValue placeholder="45 minutes" /></SelectTrigger>
+                <SelectContent>
+                  {DURATIONS.map((d) => <SelectItem key={d} value={d}>{d}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <Separator />
+
+          <div>
+            <h3 className="mb-3 flex items-center gap-2 font-semibold text-foreground">
+              <Target className="h-4 w-4 text-primary" /> Standards &amp; Objectives
+            </h3>
+            <div className="space-y-4">
+              <div>
+                <Label>Standards Alignment <span className="text-muted-foreground text-xs">(optional — auto-generated if blank)</span></Label>
+                <Textarea value={standards} onChange={(e) => setStandards(e.target.value)} placeholder="e.g. CCSS.MATH.CONTENT.4.NF.A.1" className="mt-1 rounded-xl" rows={2} />
+              </div>
+              <div>
+                <Label>Learning Objectives <span className="text-muted-foreground text-xs">(optional — auto-generated if blank)</span></Label>
+                <Textarea value={objectives} onChange={(e) => setObjectives(e.target.value)} placeholder="e.g. Students will be able to identify equivalent fractions…" className="mt-1 rounded-xl" rows={2} />
+              </div>
+            </div>
+          </div>
+
+          <Separator />
+
+          <div>
+            <h3 className="mb-3 flex items-center gap-2 font-semibold text-foreground">
+              <Users className="h-4 w-4 text-primary" /> Additional Settings
+            </h3>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <Label>Differentiation Level</Label>
+                <Select value={differentiationLevel} onValueChange={setDifferentiationLevel}>
+                  <SelectTrigger className="mt-1 rounded-xl"><SelectValue placeholder="Select level" /></SelectTrigger>
+                  <SelectContent>
+                    {DIFF_LEVELS.map((d) => <SelectItem key={d} value={d}>{d}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label>Instructional Style</Label>
+                <Select value={instructionalStyle} onValueChange={setInstructionalStyle}>
+                  <SelectTrigger className="mt-1 rounded-xl"><SelectValue placeholder="Select style" /></SelectTrigger>
+                  <SelectContent>
+                    {STYLES.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="sm:col-span-2">
+                <Label>Student Needs <span className="text-muted-foreground text-xs">(IEP, ELL, advanced learners)</span></Label>
+                <Textarea value={studentNeeds} onChange={(e) => setStudentNeeds(e.target.value)} placeholder="Describe any specific student accommodations…" className="mt-1 rounded-xl" rows={2} />
+              </div>
+            </div>
+          </div>
+
+          <Button onClick={handleGenerate} disabled={isGenerating} className="w-full rounded-xl" size="lg">
+            {isGenerating ? (
+              <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating Lesson Plan…</>
+            ) : (
+              <><Sparkles className="mr-2 h-4 w-4" /> Generate Lesson Plan</>
+            )}
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* ── OUTPUT ── */}
+      {lessonPlan && (
+        <>
+          {/* Action buttons */}
+          <div className="mb-4 flex flex-wrap gap-2">
+            <Button variant="outline" className="rounded-xl" onClick={() => toast({ title: "Coming soon", description: "Save to Lesson Library is coming soon." })}>
+              <Save className="mr-2 h-4 w-4" /> Save Lesson
+            </Button>
+            <Button variant="outline" className="rounded-xl" onClick={handleDownloadPDF}>
+              <Download className="mr-2 h-4 w-4" /> Download PDF
+            </Button>
+            <Button variant="outline" className="rounded-xl" onClick={() => toast({ title: "Coming soon", description: "Worksheet generation from lesson is coming soon." })}>
+              <FileText className="mr-2 h-4 w-4" /> Generate Worksheet
+            </Button>
+            <Button variant="outline" className="rounded-xl" onClick={() => toast({ title: "Coming soon", description: "Quiz generation from lesson is coming soon." })}>
+              <HelpCircle className="mr-2 h-4 w-4" /> Generate Quiz
+            </Button>
+          </div>
+
+          <div id="lesson-plan-output" className="rounded-2xl border bg-card p-8 space-y-8">
+            {/* Header */}
+            <div className="border-b border-border pb-6 text-center">
+              <h2 className="font-display text-2xl font-bold text-foreground">{lessonPlan.lessonTitle}</h2>
+              <div className="mt-2 flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
+                <span>Grade: {lessonPlan.gradeLevel}</span>
+                <span>•</span>
+                <span>Subject: {lessonPlan.subject}</span>
+                <span>•</span>
+                <span>Topic: {lessonPlan.topic}</span>
+                <span>•</span>
+                <span className="flex items-center gap-1"><Clock className="h-3 w-3" />{lessonPlan.duration}</span>
+              </div>
+            </div>
+
+            {/* Standards */}
+            <Section icon={<Target className="h-5 w-5 text-primary" />} title="Standards Alignment">
+              <ul className="list-disc space-y-1 pl-5 text-sm text-foreground">
+                {lessonPlan.standards.map((s, i) => <li key={i}>{s}</li>)}
+              </ul>
+            </Section>
+
+            {/* Objectives */}
+            <Section icon={<CheckCircle className="h-5 w-5 text-secondary" />} title="Learning Objectives">
+              <ul className="list-disc space-y-1 pl-5 text-sm text-foreground">
+                {lessonPlan.objectives.map((o, i) => <li key={i}>{o}</li>)}
+              </ul>
+            </Section>
+
+            {/* Vocabulary */}
+            <Section icon={<BookOpen className="h-5 w-5 text-accent" />} title="Key Vocabulary">
+              <div className="grid gap-2 sm:grid-cols-2">
+                {lessonPlan.keyVocabulary.map((v, i) => (
+                  <div key={i} className="rounded-xl border bg-muted/50 p-3">
+                    <span className="font-semibold text-foreground">{v.term}</span>
+                    <span className="text-sm text-muted-foreground"> — {v.definition}</span>
+                  </div>
+                ))}
+              </div>
+            </Section>
+
+            {/* Materials */}
+            <Section icon={<List className="h-5 w-5 text-primary" />} title="Materials / Resources">
+              <ul className="list-disc space-y-1 pl-5 text-sm text-foreground">
+                {lessonPlan.materials.map((m, i) => <li key={i}>{m}</li>)}
+              </ul>
+            </Section>
+
+            {/* Instructional Strategies */}
+            <Section icon={<Lightbulb className="h-5 w-5 text-accent" />} title="Instructional Strategies">
+              <ul className="list-disc space-y-1 pl-5 text-sm text-foreground">
+                {lessonPlan.instructionalStrategies.map((s, i) => <li key={i}>{s}</li>)}
+              </ul>
+            </Section>
+
+            {/* Procedures */}
+            <Section icon={<BookOpen className="h-5 w-5 text-primary" />} title="Lesson Procedures">
+              <div className="space-y-4">
+                {(["hook", "instruction", "guidedPractice", "independentPractice", "closure"] as const).map((phase) => {
+                  const data = lessonPlan.procedures[phase];
+                  const labels: Record<string, string> = { hook: "🪝 Hook", instruction: "📖 Direct Instruction", guidedPractice: "🤝 Guided Practice", independentPractice: "✍️ Independent Practice", closure: "🔚 Closure" };
+                  return (
+                    <div key={phase} className="rounded-xl border bg-muted/30 p-4">
+                      <div className="mb-1 flex items-center justify-between">
+                        <h4 className="font-semibold text-foreground">{labels[phase]}</h4>
+                        <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">{data.duration}</span>
+                      </div>
+                      <p className="mb-2 text-sm text-muted-foreground">{data.description}</p>
+                      <ul className="list-disc space-y-1 pl-5 text-sm text-foreground">
+                        {data.activities.map((a, i) => <li key={i}>{a}</li>)}
+                      </ul>
+                    </div>
+                  );
+                })}
+              </div>
+            </Section>
+
+            {/* Differentiation */}
+            <Section icon={<Users className="h-5 w-5 text-secondary" />} title="Differentiation Strategies">
+              <div className="grid gap-4 sm:grid-cols-3">
+                <DiffCard label="Below Level" items={lessonPlan.differentiation.belowLevel} color="destructive" />
+                <DiffCard label="On Level" items={lessonPlan.differentiation.onLevel} color="primary" />
+                <DiffCard label="Above Level" items={lessonPlan.differentiation.aboveLevel} color="secondary" />
+              </div>
+            </Section>
+
+            {/* Exit Ticket */}
+            <Section icon={<CheckCircle className="h-5 w-5 text-accent" />} title="Exit Ticket">
+              <p className="mb-3 text-sm font-medium text-foreground">{lessonPlan.exitTicket.prompt}</p>
+              <ol className="list-decimal space-y-1 pl-5 text-sm text-foreground">
+                {lessonPlan.exitTicket.questions.map((q, i) => <li key={i}>{q}</li>)}
+              </ol>
+            </Section>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+
+/* ── Helper components ── */
+
+const Section = ({ icon, title, children }: { icon: React.ReactNode; title: string; children: React.ReactNode }) => (
+  <div>
+    <h3 className="mb-3 flex items-center gap-2 font-display text-lg font-semibold text-foreground">
+      {icon} {title}
+    </h3>
+    {children}
+  </div>
+);
+
+const DiffCard = ({ label, items, color }: { label: string; items: string[]; color: string }) => (
+  <div className="rounded-xl border p-4">
+    <h4 className={`mb-2 text-sm font-semibold text-${color}`}>{label}</h4>
+    <ul className="list-disc space-y-1 pl-4 text-xs text-foreground">
+      {items.map((item, i) => <li key={i}>{item}</li>)}
+    </ul>
+  </div>
+);
+
+export default LessonPlanGenerator;
