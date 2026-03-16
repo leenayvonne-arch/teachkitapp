@@ -11,6 +11,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardLayout from "./components/dashboard/DashboardLayout";
 import DashboardHome from "./pages/dashboard/DashboardHome";
 import GeneratorPage from "./pages/dashboard/GeneratorPage";
+import LessonPlanGenerator from "./pages/dashboard/LessonPlanGenerator";
 import PlaceholderPage from "./pages/dashboard/PlaceholderPage";
 
 const queryClient = new QueryClient();
