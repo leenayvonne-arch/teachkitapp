@@ -89,7 +89,7 @@ const LessonLibrary = () => {
       subject: resource.subject,
       topic: resource.topic,
       content: resource.content,
-    });
+    } as any);
 
     if (error) {
       toast({ title: "Duplicate failed", description: error.message, variant: "destructive" });
