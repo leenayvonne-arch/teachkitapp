@@ -20,6 +20,7 @@ import LessonLibrary from "./pages/dashboard/LessonLibrary";
 import PlaceholderPage from "./pages/dashboard/PlaceholderPage";
 import ProfilePage from "./pages/dashboard/ProfilePage";
 import ResourceShop from "./pages/dashboard/ResourceShop";
+import ProductDetail from "./pages/dashboard/ProductDetail";
 
 const queryClient = new QueryClient();
 
