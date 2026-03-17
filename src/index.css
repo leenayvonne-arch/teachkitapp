@@ -84,12 +84,18 @@
   #worksheet-output,
   #worksheet-output *,
   #lesson-worksheet-output,
-  #lesson-worksheet-output * {
+  #lesson-worksheet-output *,
+  #quiz-output,
+  #quiz-output *,
+  #lesson-quiz-output,
+  #lesson-quiz-output * {
     visibility: visible;
   }
 
   #worksheet-output,
-  #lesson-worksheet-output {
+  #lesson-worksheet-output,
+  #quiz-output,
+  #lesson-quiz-output {
     position: absolute;
     left: 0;
     top: 0;
@@ -106,7 +112,11 @@
   #worksheet-output,
   #worksheet-output *,
   #lesson-worksheet-output,
-  #lesson-worksheet-output * {
+  #lesson-worksheet-output *,
+  #quiz-output,
+  #quiz-output *,
+  #lesson-quiz-output,
+  #lesson-quiz-output * {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
     background: white !important;
@@ -115,32 +125,48 @@
 
   /* Keep subtle borders for question boxes */
   #worksheet-output .rounded-md,
-  #lesson-worksheet-output .rounded-md {
+  #lesson-worksheet-output .rounded-md,
+  #quiz-output .rounded-md,
+  #lesson-quiz-output .rounded-md {
     border-color: hsl(0 0% 85%) !important;
   }
 
   /* Keep header shading very light */
   #worksheet-output .bg-muted\/30,
-  #lesson-worksheet-output .bg-muted\/30 {
+  #lesson-worksheet-output .bg-muted\/30,
+  #quiz-output .bg-muted\/30,
+  #lesson-quiz-output .bg-muted\/30 {
     background: hsl(0 0% 96%) !important;
+  }
+
+  /* Section header shading */
+  #quiz-output .bg-muted\/20,
+  #lesson-quiz-output .bg-muted\/20 {
+    background: hsl(0 0% 97%) !important;
   }
 
   /* Subject badge */
   #worksheet-output .bg-primary\/10,
-  #lesson-worksheet-output .bg-primary\/10 {
+  #lesson-worksheet-output .bg-primary\/10,
+  #quiz-output .bg-primary\/10,
+  #lesson-quiz-output .bg-primary\/10 {
     background: hsl(0 0% 92%) !important;
     color: black !important;
   }
 
   /* Answer lines stay visible */
   #worksheet-output .border-b,
-  #lesson-worksheet-output .border-b {
+  #lesson-worksheet-output .border-b,
+  #quiz-output .border-b,
+  #lesson-quiz-output .border-b {
     border-color: hsl(0 0% 75%) !important;
   }
 
   /* Clean page breaks */
   #worksheet-output .border-t-2.border-dashed,
-  #lesson-worksheet-output .border-t-2.border-dashed {
+  #lesson-worksheet-output .border-t-2.border-dashed,
+  #quiz-output .border-t-2.border-dashed,
+  #lesson-quiz-output .border-t-2.border-dashed {
     page-break-before: always;
     border: none !important;
     padding-top: 2rem !important;
