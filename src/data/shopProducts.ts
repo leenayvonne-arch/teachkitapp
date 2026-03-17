@@ -13,15 +13,15 @@ export const shopProducts: ShopProduct[] = [
   {
     slug: "exit-tickets-3-5",
     title: "100 Exit Tickets for Grades 3–5",
-    description: "Ready-to-use daily exit tickets for Math, ELA, Science, and Social Studies.",
+    description: "Ready-to-use daily exit tickets for Math, ELA, Science, Social Studies, and History.",
     fullDescription:
-      "This comprehensive pack includes 100 carefully crafted exit tickets designed for upper elementary classrooms. Each ticket targets key concepts across four core subject areas and includes a mix of comprehension checks, short response prompts, and critical thinking questions. Perfect for daily formative assessment routines.",
+      "This comprehensive pack includes 100 carefully crafted exit tickets designed for upper elementary classrooms. Each ticket targets key concepts across five core subject areas — Math, ELA, Science, Social Studies, and History — and includes a mix of comprehension checks, short response prompts, and critical thinking questions. Perfect for daily formative assessment routines.",
     gradeLevel: "Grades 3–5",
     price: "$19",
     category: "Exit Tickets",
     includes: [
       "100 ready-to-print exit tickets",
-      "4 subject areas: Math, ELA, Science, Social Studies",
+      "5 subject areas: Math, ELA, Science, Social Studies, and History",
       "Mix of comprehension, short response & critical thinking",
       "Printable PDF format",
       "Student response lines included",
@@ -31,15 +31,15 @@ export const shopProducts: ShopProduct[] = [
   {
     slug: "exit-tickets-6-8",
     title: "100 Exit Tickets for Grades 6–8",
-    description: "Engaging and higher-level exit tickets designed for middle school classrooms.",
+    description: "Engaging and higher-level exit tickets for Math, ELA, Science, Social Studies, and History.",
     fullDescription:
-      "Elevate your formative assessment with 100 middle-school-level exit tickets that go beyond simple recall. These tickets feature analytical prompts, deeper critical thinking questions, and short written responses across Math, ELA, Science, and Social Studies. Ideal for building a daily exit ticket routine in grades 6–8.",
+      "Elevate your formative assessment with 100 middle-school-level exit tickets that go beyond simple recall. These tickets feature analytical prompts, deeper critical thinking questions, and short written responses across Math, ELA, Science, Social Studies, and History. Ideal for building a daily exit ticket routine in grades 6–8.",
     gradeLevel: "Grades 6–8",
     price: "$19",
     category: "Exit Tickets",
     includes: [
       "100 ready-to-print exit tickets",
-      "4 subject areas: Math, ELA, Science, Social Studies",
+      "5 subject areas: Math, ELA, Science, Social Studies, and History",
       "Analytical & critical thinking prompts",
       "Printable PDF format",
       "Student response lines included",
@@ -129,14 +129,14 @@ export const shopProducts: ShopProduct[] = [
   {
     slug: "classroom-quiz-builder-kit",
     title: "Classroom Quiz Builder Kit",
-    description: "100 quiz questions with answer keys across core subjects, ready to customize.",
+    description: "100 quiz questions with answer keys across core subjects including Social Studies and History.",
     fullDescription:
-      "Quickly build quizzes with this collection of 100 pre-written questions spanning Math, ELA, Science, and Social Studies. Each question comes with an answer key and can be mixed and matched to create custom assessments for your classroom.",
+      "Quickly build quizzes with this collection of 100 pre-written questions spanning Math, ELA, Science, Social Studies, and History. Each question comes with an answer key and can be mixed and matched to create custom assessments for your classroom.",
     gradeLevel: "Grades 3–8",
     price: "$4.99",
     category: "Quizzes",
     includes: [
-      "100 quiz questions across 4 subjects",
+      "100 quiz questions across 5 subjects",
       "Answer keys included",
       "Mix-and-match format",
       "Printable PDF format",

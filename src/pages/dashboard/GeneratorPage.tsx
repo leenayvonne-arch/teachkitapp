@@ -32,7 +32,14 @@ const GeneratorPage = ({ title, description }: GeneratorPageProps) => {
           </div>
           <div>
             <Label>Subject</Label>
-            <Input placeholder="e.g. Math, Science, ELA" className="mt-1 rounded-xl" />
+            <Select>
+              <SelectTrigger className="mt-1 rounded-xl"><SelectValue placeholder="Select subject" /></SelectTrigger>
+              <SelectContent>
+                {["Math", "ELA", "Science", "Social Studies", "History"].map((s) => (
+                  <SelectItem key={s} value={s}>{s}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
         <div className="mt-4">

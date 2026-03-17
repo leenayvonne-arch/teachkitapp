@@ -285,7 +285,12 @@ const LessonPlanGenerator = () => {
             </div>
             <div>
               <Label>Subject *</Label>
-              <Input value={subject} onChange={(e) => setSubject(e.target.value)} placeholder="e.g. Math, Science, ELA" className="mt-1 rounded-xl" />
+              <Select value={subject} onValueChange={setSubject}>
+                <SelectTrigger className="mt-1 rounded-xl"><SelectValue placeholder="Select subject" /></SelectTrigger>
+                <SelectContent>
+                  {["Math", "ELA", "Science", "Social Studies", "History"].map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}
+                </SelectContent>
+              </Select>
             </div>
             <div>
               <Label>Topic *</Label>
