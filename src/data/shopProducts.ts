@@ -117,6 +117,10 @@ export const shopProducts: ShopProduct[] = [
       "Vocabulary support",
       "Printable PDF format",
     ],
+    previewPages: [
+      { label: "Fiction Passage", description: "'The Lighthouse Keeper' — a short story with 5 text-dependent comprehension questions." },
+      { label: "Nonfiction Passage", description: "'Coral Reefs in Danger' — informational text with vocabulary and analysis questions." },
+    ],
   },
   {
     slug: "science-lab-report-templates",
