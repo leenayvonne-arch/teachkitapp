@@ -39,7 +39,7 @@ export const shopProducts: ShopProduct[] = [
     category: "Exit Tickets",
     includes: [
       "100 ready-to-print exit tickets",
-      "4 subject areas: Math, ELA, Science, Social Studies",
+      "5 subject areas: Math, ELA, Science, Social Studies, and History",
       "Analytical & critical thinking prompts",
       "Printable PDF format",
       "Student response lines included",
