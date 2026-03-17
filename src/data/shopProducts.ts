@@ -129,7 +129,7 @@ export const shopProducts: ShopProduct[] = [
   {
     slug: "classroom-quiz-builder-kit",
     title: "Classroom Quiz Builder Kit",
-    description: "100 quiz questions with answer keys across core subjects, ready to customize.",
+    description: "100 quiz questions with answer keys across core subjects including Social Studies and History.",
     fullDescription:
       "Quickly build quizzes with this collection of 100 pre-written questions spanning Math, ELA, Science, and Social Studies. Each question comes with an answer key and can be mixed and matched to create custom assessments for your classroom.",
     gradeLevel: "Grades 3–8",
