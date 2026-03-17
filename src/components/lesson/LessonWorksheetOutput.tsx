@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Save, Download, CheckCircle, Printer } from "lucide-react";
+import { Save, Download, CheckCircle, Printer, GraduationCap } from "lucide-react";
 import { saveResource, downloadElementAsPDF } from "@/lib/resourceUtils";
 import type { LessonPlan, LessonWorksheet } from "@/pages/dashboard/LessonPlanGenerator";
 
