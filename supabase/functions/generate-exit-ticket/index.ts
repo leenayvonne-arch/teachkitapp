@@ -44,7 +44,7 @@ Requirements:
 - Questions should be concise and answerable in 2–5 minutes total.
 - Make questions grade-appropriate, clear, and focused on the topic.
 - Vary the cognitive demand across questions.
-${regenerateAction === "simplify" ? "- IMPORTANT: Make questions simpler and more accessible." : ""}${regenerateAction === "challenge" ? "- IMPORTANT: Increase rigor — add analysis and synthesis questions." : ""}${regenerateAction === "shorten" ? "- IMPORTANT: Generate only 3 questions." : ""}${regenerateAction === "expand" ? "- IMPORTANT: Generate 5 questions with more depth." : ""}`;
+${subject === "Social Studies" ? "- SUBJECT CONTEXT: Social Studies — Focus on general topics such as communities, geography, civics, and basic history concepts appropriate for elementary-level understanding.\n" : ""}${subject === "History" ? "- SUBJECT CONTEXT: History — Focus on specific historical topics such as events, timelines, historical figures, cause/effect relationships, and primary source analysis appropriate for middle and high school level.\n" : ""}${regenerateAction === "simplify" ? "- IMPORTANT: Make questions simpler and more accessible." : ""}${regenerateAction === "challenge" ? "- IMPORTANT: Increase rigor — add analysis and synthesis questions." : ""}${regenerateAction === "shorten" ? "- IMPORTANT: Generate only 3 questions." : ""}${regenerateAction === "expand" ? "- IMPORTANT: Generate 5 questions with more depth." : ""}`;
 
     const response = await fetch(
       "https://ai.gateway.lovable.dev/v1/chat/completions",
