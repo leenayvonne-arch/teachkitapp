@@ -125,7 +125,7 @@ const ResourceShop = () => {
                 <CardFooter className="flex items-center justify-between border-t pt-4">
                   <div>
                     {isBundle && (
-                      <span className="mr-2 text-sm text-muted-foreground line-through">$25.97</span>
+                      <span className="mr-2 text-sm text-muted-foreground line-through"><span className="mr-2 text-sm text-muted-foreground line-through">$26.00</span></span>
                     )}
                     <span className={`font-bold text-foreground ${isBundle ? "text-xl" : "text-lg"}`}>{product.price}</span>
                     {isBundle && (

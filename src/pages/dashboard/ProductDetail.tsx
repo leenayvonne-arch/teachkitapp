@@ -107,7 +107,7 @@ const ProductDetail = () => {
             <CardContent className="space-y-4 pt-6">
               <div className="text-center">
                 {slug === "math-classroom-bundle-3-5" && (
-                  <p className="mb-1 text-sm text-muted-foreground line-through">Total Value: $25.97</p>
+                  <p className="mb-1 text-sm text-muted-foreground line-through"><p className="mb-1 text-sm text-muted-foreground line-through">Total Value: $26.00</p></p>
                 )}
                 <span className="text-3xl font-bold text-foreground">{product.price}</span>
                 <p className="mt-1 text-xs text-muted-foreground">
