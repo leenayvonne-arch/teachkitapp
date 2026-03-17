@@ -175,47 +175,50 @@ const WorksheetGenerator = () => {
             />
           </div>
 
-          <div id="worksheet-output" className="rounded-2xl border bg-white dark:bg-card shadow-sm" style={{ maxWidth: 816, margin: "0 auto", fontFamily: "'Georgia', 'Times New Roman', serif" }}>
-            <div className="px-12 py-10">
-              {/* Header */}
-              <div className="flex items-start justify-between gap-4 rounded-lg bg-muted/30 px-5 py-4 border-b-2 border-foreground/20">
-                <div>
-                  <span className="inline-block rounded bg-primary/10 px-2.5 py-0.5 font-sans text-xs font-semibold text-primary">
-                    {subject}
-                  </span>
-                  <h2 className="mt-2 font-display text-xl font-bold text-foreground">{worksheet.title}</h2>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    Grade {gradeLevel} &nbsp;•&nbsp; {topic}
-                  </p>
-                </div>
-                <div className="text-right text-sm text-muted-foreground whitespace-nowrap">
-                  <div>Name: ________________________________</div>
-                  <div className="mt-1.5">Date: ___________________</div>
+          <div id="worksheet-output" className="rounded-2xl border bg-white shadow-lg print:shadow-none print:border-0" style={{ maxWidth: 816, margin: "0 auto", fontFamily: "'Georgia', 'Times New Roman', serif" }}>
+            {/* Page 1 */}
+            <div className="px-[0.75in] py-[0.6in]">
+              {/* Premium Header Bar */}
+              <div className="rounded-lg border border-border/60" style={{ background: "linear-gradient(135deg, hsl(var(--muted)) 0%, hsl(var(--muted)/0.4) 100%)" }}>
+                <div className="flex items-start justify-between gap-4 px-6 py-5">
+                  <div className="space-y-2">
+                    <span className="inline-block rounded-full px-3 py-1 font-sans text-[11px] font-bold tracking-wide uppercase" style={{ background: "hsl(var(--primary)/0.12)", color: "hsl(var(--primary))" }}>
+                      {subject}
+                    </span>
+                    <h2 className="text-[22px] font-bold leading-tight text-foreground tracking-tight">{worksheet.title}</h2>
+                    <p className="text-xs text-muted-foreground tracking-wide">
+                      Grade {gradeLevel} &nbsp;•&nbsp; {topic}
+                    </p>
+                  </div>
+                  <div className="flex flex-col items-end gap-2 pt-1 text-[13px] text-foreground/70 whitespace-nowrap">
+                    <div>Name: <span className="inline-block border-b border-foreground/40" style={{ width: 200 }}>&nbsp;</span></div>
+                    <div>Date: <span className="inline-block border-b border-foreground/40" style={{ width: 140 }}>&nbsp;</span></div>
+                  </div>
                 </div>
               </div>
 
               {/* Directions */}
-              <div className="mt-6 rounded-lg border border-border bg-muted/20 px-5 py-3">
-                <p className="text-sm text-muted-foreground">
+              <div className="mt-7 rounded-md border border-border/50 px-5 py-3.5" style={{ background: "hsl(var(--muted)/0.25)" }}>
+                <p className="text-[13px] leading-relaxed text-foreground/80">
                   <span className="font-bold text-foreground">Directions:</span>{" "}
                   <span className="italic">{worksheet.instructions}</span>
                 </p>
               </div>
 
               {/* Questions */}
-              <div className="mt-8 space-y-4">
-                {worksheet.questions.map((q, idx) => (
-                  <div key={q.number} className="rounded-md border border-border/40 px-5 py-4">
-                    <p className="text-sm text-foreground">
-                      <span className="mr-2 font-bold text-foreground">{q.number})</span>
+              <div className="mt-8 space-y-5">
+                {worksheet.questions.map((q) => (
+                  <div key={q.number} className="rounded-lg border border-border/40 px-5 py-4" style={{ background: "hsl(var(--muted)/0.08)" }}>
+                    <p className="text-[14px] leading-relaxed text-foreground">
+                      <span className="mr-2.5 inline-flex h-6 w-6 items-center justify-center rounded-full text-[12px] font-bold" style={{ background: "hsl(var(--primary)/0.1)", color: "hsl(var(--primary))" }}>{q.number}</span>
                       {q.question}
                     </p>
 
                     {q.responseType === "multiple_choice" && q.options.length > 0 && (
-                      <div className="ml-7 mt-2 space-y-1">
+                      <div className="ml-9 mt-3 space-y-1.5">
                         {q.options.map((opt, i) => (
-                          <p key={i} className="text-sm text-foreground">
-                            <span className="mr-2 font-medium text-muted-foreground">{String.fromCharCode(65 + i)}.</span>
+                          <p key={i} className="text-[13px] text-foreground">
+                            <span className="mr-2 inline-block w-5 font-semibold text-muted-foreground">{String.fromCharCode(65 + i)}.</span>
                             {opt}
                           </p>
                         ))}
@@ -223,15 +226,15 @@ const WorksheetGenerator = () => {
                     )}
 
                     {q.responseType === "fill_in_blank" && (
-                      <div className="ml-7 mt-3 space-y-3">
-                        <div className="border-b border-muted-foreground/30 h-5" />
+                      <div className="ml-9 mt-4 space-y-4">
+                        <div className="border-b border-foreground/20" style={{ height: 20 }} />
                       </div>
                     )}
 
                     {(q.responseType === "short_answer" || q.responseType === "open_ended") && (
-                      <div className="ml-7 mt-3 space-y-3">
+                      <div className="ml-9 mt-4 space-y-4">
                         {Array.from({ length: q.linesForResponse || 3 }).map((_, i) => (
-                          <div key={i} className="border-b border-muted-foreground/25 h-5" />
+                          <div key={i} className="border-b border-foreground/15" style={{ height: 20 }} />
                         ))}
                       </div>
                     )}
@@ -240,28 +243,29 @@ const WorksheetGenerator = () => {
               </div>
 
               {/* Footer */}
-              <div className="mt-10 flex items-center justify-between border-t border-foreground/10 pt-3">
-                <span className="text-[10px] text-muted-foreground/50">© TeachKit</span>
-                <span className="text-[10px] text-muted-foreground/50">Page 1</span>
+              <div className="mt-10 flex items-center justify-between border-t-2 border-border/30 pt-3">
+                <span className="font-sans text-[10px] font-medium text-muted-foreground/60 tracking-wide">© TeachKit Resource Shop</span>
+                <span className="font-sans text-[10px] font-medium text-muted-foreground/60">Page 1 of 2</span>
               </div>
             </div>
 
-            {/* Answer Key */}
-            <div className="border-t-2 border-dashed border-border px-12 py-10">
-              <h3 className="mb-5 flex items-center gap-2 text-lg font-bold text-foreground">
-                <CheckCircle className="h-5 w-5 text-secondary" /> Answer Key
-              </h3>
-              <div className="space-y-2">
+            {/* Answer Key — Page 2 */}
+            <div className="border-t-2 border-dashed border-border/50 px-[0.75in] py-[0.6in]">
+              <div className="mb-6 flex items-center gap-2.5 rounded-lg px-5 py-3" style={{ background: "hsl(var(--secondary)/0.08)", border: "1px solid hsl(var(--secondary)/0.2)" }}>
+                <CheckCircle className="h-5 w-5" style={{ color: "hsl(var(--secondary))" }} />
+                <h3 className="text-lg font-bold text-foreground tracking-tight">Answer Key</h3>
+              </div>
+              <div className="space-y-2.5 pl-2">
                 {worksheet.answerKey.map((a) => (
-                  <div key={a.number} className="flex gap-2 text-sm">
-                    <span className="font-bold text-primary min-w-[2rem]">{a.number}.</span>
+                  <div key={a.number} className="flex gap-3 text-[13px]">
+                    <span className="font-bold min-w-[2rem]" style={{ color: "hsl(var(--primary))" }}>{a.number}.</span>
                     <span className="text-foreground">{a.answer}</span>
                   </div>
                 ))}
               </div>
-              <div className="mt-8 flex items-center justify-between border-t border-foreground/10 pt-3">
-                <span className="text-[10px] text-muted-foreground/50">© TeachKit</span>
-                <span className="text-[10px] text-muted-foreground/50">Answer Key</span>
+              <div className="mt-10 flex items-center justify-between border-t-2 border-border/30 pt-3">
+                <span className="font-sans text-[10px] font-medium text-muted-foreground/60 tracking-wide">© TeachKit Resource Shop</span>
+                <span className="font-sans text-[10px] font-medium text-muted-foreground/60">Page 2 of 2</span>
               </div>
             </div>
           </div>

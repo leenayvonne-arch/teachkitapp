@@ -14,54 +14,48 @@ const WorksheetPreviewCard = ({ page, compact = false, onClick }: WorksheetPrevi
     <button
       type="button"
       onClick={onClick}
-      className={`group block w-full cursor-pointer rounded-sm border border-border bg-white text-left shadow-sm transition-all hover:shadow-md hover:border-primary/30 dark:bg-card ${
-        compact ? "" : ""
-      }`}
+      className="group block w-full cursor-pointer rounded-lg border border-border/60 bg-white text-left shadow-sm transition-all hover:shadow-lg hover:border-primary/30 dark:bg-card"
     >
-      {/* Page */}
-      <div className={compact ? "px-5 py-4" : "px-8 py-6"} style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}>
-        {/* Header */}
-        <div className="flex items-start justify-between gap-2 rounded-lg bg-muted/40 px-3 py-2.5">
-          <div>
-            <span className={`inline-block rounded bg-primary/10 px-2 py-0.5 font-sans font-semibold text-primary ${compact ? "text-[9px]" : "text-[10px]"}`}>
-              {page.subject}
-            </span>
-            <h4 className={`mt-1.5 font-bold text-foreground ${compact ? "text-xs" : "text-sm"}`}>
-              {page.title}
-            </h4>
-          </div>
-          <div className={`text-right text-muted-foreground ${compact ? "text-[9px]" : "text-[10px]"}`}>
-            <div>Name: _____________________</div>
-            <div className="mt-0.5">Date: _______________</div>
+      <div className={compact ? "px-5 py-4" : "px-7 py-5"} style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}>
+        {/* Premium Header */}
+        <div className="rounded-lg border border-border/50 px-4 py-3" style={{ background: "linear-gradient(135deg, hsl(var(--muted)) 0%, hsl(var(--muted)/0.4) 100%)" }}>
+          <div className="flex items-start justify-between gap-2">
+            <div className="space-y-1.5">
+              <span className={`inline-block rounded-full px-2.5 py-0.5 font-sans font-bold tracking-wide uppercase ${compact ? "text-[8px]" : "text-[9px]"}`} style={{ background: "hsl(var(--primary)/0.12)", color: "hsl(var(--primary))" }}>
+                {page.subject}
+              </span>
+              <h4 className={`font-bold text-foreground leading-snug ${compact ? "text-[11px]" : "text-[13px]"}`}>
+                {page.title}
+              </h4>
+            </div>
+            <div className={`flex flex-col items-end gap-1 text-foreground/50 ${compact ? "text-[8px]" : "text-[9px]"}`}>
+              <div>Name: ___________________</div>
+              <div>Date: ______________</div>
+            </div>
           </div>
         </div>
 
-        {/* Divider */}
-        <div className="my-3 border-t border-foreground/20" />
-
         {/* Directions */}
-        <p className={`italic text-muted-foreground ${compact ? "text-[9px]" : "text-[10px]"}`}>
-          <span className="font-bold not-italic text-foreground">Directions:</span>{" "}
-          {page.directions}
-        </p>
+        <div className="mt-3 rounded-md border border-border/40 px-3 py-2" style={{ background: "hsl(var(--muted)/0.2)" }}>
+          <p className={`text-foreground/70 ${compact ? "text-[8px]" : "text-[9px]"}`}>
+            <span className="font-bold not-italic text-foreground">Directions:</span>{" "}
+            <span className="italic">{page.directions}</span>
+          </p>
+        </div>
 
-        {/* Divider */}
-        <div className="my-3 border-t border-dashed border-border" />
-
-        {/* Questions with answer lines */}
-        <div className={compact ? "space-y-3" : "space-y-4"}>
+        {/* Questions */}
+        <div className={compact ? "mt-3 space-y-2.5" : "mt-4 space-y-3"}>
           {questionBlocks.map((block, idx) => (
-            <div key={idx} className="rounded-md border border-border/50 px-3 py-2.5">
-              <p className={`whitespace-pre-line text-foreground ${compact ? "text-[9px] leading-relaxed" : "text-[10px] leading-relaxed"}`}>
+            <div key={idx} className="rounded-md border border-border/40 px-3 py-2.5" style={{ background: "hsl(var(--muted)/0.06)" }}>
+              <p className={`text-foreground leading-relaxed ${compact ? "text-[8px]" : "text-[9px]"}`}>
                 <span className="font-bold">{block.trim()}</span>
               </p>
-              {/* Answer lines under each question block */}
-              <div className={compact ? "mt-1.5 space-y-2" : "mt-2 space-y-2.5"}>
+              <div className={compact ? "mt-1.5 space-y-2" : "mt-2.5 space-y-3"}>
                 {Array.from({ length: Math.min(page.responseLines, compact ? 2 : 3) }).map((_, i) => (
                   <div
                     key={i}
-                    className="border-b border-muted-foreground/30"
-                    style={{ minHeight: compact ? 10 : 14 }}
+                    className="border-b border-foreground/15"
+                    style={{ minHeight: compact ? 10 : 16 }}
                   />
                 ))}
               </div>
@@ -70,10 +64,10 @@ const WorksheetPreviewCard = ({ page, compact = false, onClick }: WorksheetPrevi
         </div>
 
         {/* Footer */}
-        <div className={`flex items-center justify-between ${compact ? "mt-4" : "mt-6"}`}>
-          <span className="text-[8px] text-muted-foreground/40">© TeachKit Resource Shop</span>
+        <div className={`flex items-center justify-between border-t-2 border-border/20 ${compact ? "mt-3 pt-2" : "mt-5 pt-2.5"}`}>
+          <span className="font-sans text-[7px] font-medium text-muted-foreground/50 tracking-wide">© TeachKit Resource Shop</span>
           {!compact && (
-            <span className="font-sans text-[9px] font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
+            <span className="font-sans text-[8px] font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
               Click to enlarge
             </span>
           )}
