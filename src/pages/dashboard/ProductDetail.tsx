@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { ArrowLeft, CheckCircle2, ShoppingCart } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ShoppingCart, Eye } from "lucide-react";
 import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
@@ -107,6 +107,27 @@ const ProductDetail = () => {
                 <ShoppingCart className="mr-2 h-4 w-4" />
                 {buying ? "Processing…" : "Buy Now"}
               </Button>
+              {slug === "math-worksheet-mega-pack" && (
+                <Button asChild variant="outline" className="w-full" size="lg">
+                  <Link to="/dashboard/math-worksheet-mega-pack">
+                    <Eye className="mr-2 h-4 w-4" /> View Full Pack
+                  </Link>
+                </Button>
+              )}
+              {slug === "exit-tickets-3-5" && (
+                <Button asChild variant="outline" className="w-full" size="lg">
+                  <Link to="/dashboard/exit-ticket-mega-pack">
+                    <Eye className="mr-2 h-4 w-4" /> View Full Pack
+                  </Link>
+                </Button>
+              )}
+              {slug === "exit-tickets-6-8" && (
+                <Button asChild variant="outline" className="w-full" size="lg">
+                  <Link to="/dashboard/exit-ticket-mega-pack-68">
+                    <Eye className="mr-2 h-4 w-4" /> View Full Pack
+                  </Link>
+                </Button>
+              )}
               <p className="text-center text-[11px] text-muted-foreground">
                 Instant digital download · PDF format
               </p>
