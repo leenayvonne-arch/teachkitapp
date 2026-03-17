@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { Loader2, Download, Save, LogOut, Sparkles, Brain, Lightbulb, Target } from "lucide-react";
 import { saveResource, downloadElementAsPDF } from "@/lib/resourceUtils";
+import RegenerateOptions, { type RegenerateAction } from "@/components/lesson/RegenerateOptions";
 
 interface ExitTicketQuestion {
   number: number;
@@ -42,29 +43,36 @@ const ExitTicketGenerator = () => {
   const [topic, setTopic] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [exitTicket, setExitTicket] = useState<ExitTicket | null>(null);
+  const [isRegenerating, setIsRegenerating] = useState(false);
+  const [regenAction, setRegenAction] = useState<RegenerateAction | null>(null);
 
-  const handleGenerate = async () => {
+  const handleGenerate = async (regenerateAction?: RegenerateAction) => {
     if (!gradeLevel || !subject || !topic) {
       toast({ title: "Missing fields", description: "Please fill in Grade Level, Subject, and Topic.", variant: "destructive" });
       return;
     }
 
-    setIsGenerating(true);
+    const isRegen = !!regenerateAction;
+    if (isRegen) { setIsRegenerating(true); setRegenAction(regenerateAction!); }
+    else { setIsGenerating(true); }
+
     try {
       const { data, error } = await supabase.functions.invoke("generate-exit-ticket", {
-        body: { gradeLevel, subject, topic },
+        body: { gradeLevel, subject, topic, regenerateAction },
       });
 
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
 
       setExitTicket(data.exitTicket);
-      toast({ title: "Exit ticket generated!", description: "Scroll down to view your exit ticket." });
+      toast({ title: isRegen ? "Exit ticket regenerated!" : "Exit ticket generated!" });
     } catch (e: any) {
       console.error(e);
       toast({ title: "Generation failed", description: e.message || "Something went wrong.", variant: "destructive" });
     } finally {
       setIsGenerating(false);
+      setIsRegenerating(false);
+      setRegenAction(null);
     }
   };
 
@@ -87,7 +95,6 @@ const ExitTicketGenerator = () => {
       <h1 className="mb-1 font-display text-2xl font-bold text-foreground">Exit Ticket Generator</h1>
       <p className="mb-8 text-muted-foreground">Create quick end-of-lesson checks for understanding.</p>
 
-      {/* ── INPUT FORM ── */}
       <Card className="mb-8 rounded-2xl">
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-2 text-lg">
@@ -116,7 +123,7 @@ const ExitTicketGenerator = () => {
             </div>
           </div>
 
-          <Button onClick={handleGenerate} disabled={isGenerating} className="w-full rounded-xl" size="lg">
+          <Button onClick={() => handleGenerate()} disabled={isGenerating} className="w-full rounded-xl" size="lg">
             {isGenerating ? (
               <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating Exit Ticket…</>
             ) : (
@@ -126,7 +133,6 @@ const ExitTicketGenerator = () => {
         </CardContent>
       </Card>
 
-      {/* ── OUTPUT ── */}
       {exitTicket && (
         <>
           <div className="mb-4 flex flex-wrap gap-2">
@@ -138,8 +144,15 @@ const ExitTicketGenerator = () => {
             </Button>
           </div>
 
+          <div className="mb-4">
+            <RegenerateOptions
+              onAction={(action) => handleGenerate(action)}
+              isLoading={isRegenerating}
+              loadingAction={regenAction}
+            />
+          </div>
+
           <div id="exit-ticket-output" className="rounded-2xl border bg-card p-8 space-y-6">
-            {/* Header */}
             <div className="border-b border-border pb-5 text-center">
               <div className="mx-auto mb-3 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary">
                 <LogOut className="h-3.5 w-3.5" /> Exit Ticket
@@ -154,14 +167,11 @@ const ExitTicketGenerator = () => {
               </div>
             </div>
 
-            {/* Questions */}
             <div className="space-y-6">
               {exitTicket.questions.map((q) => (
                 <div key={q.number} className="rounded-xl border border-border p-5 space-y-3">
                   <div className="flex items-center gap-3">
-                    <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-                      {q.number}
-                    </span>
+                    <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">{q.number}</span>
                     <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${typeBg[q.type] || "bg-muted text-muted-foreground"}`}>
                       {typeIcon[q.type]}
                       {q.typeLabel}
@@ -177,7 +187,6 @@ const ExitTicketGenerator = () => {
               ))}
             </div>
 
-            {/* Footer */}
             <div className="border-t border-border pt-4 text-center">
               <p className="text-xs text-muted-foreground italic">
                 ✅ Hand this in before you leave. Thank you!
