@@ -136,7 +136,7 @@ export const shopProducts: ShopProduct[] = [
     price: "$4.99",
     category: "Quizzes",
     includes: [
-      "100 quiz questions across 4 subjects",
+      "100 quiz questions across 5 subjects",
       "Answer keys included",
       "Mix-and-match format",
       "Printable PDF format",
