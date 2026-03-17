@@ -134,6 +134,35 @@ const QuizGenerator = () => {
             </div>
           </div>
 
+          <div className="space-y-3 rounded-xl border border-border p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <SlidersHorizontal className="h-4 w-4 text-muted-foreground" />
+                <Label className="text-sm font-medium">Custom Question Type Distribution</Label>
+              </div>
+              <Switch checked={useCustomSplit} onCheckedChange={setUseCustomSplit} />
+            </div>
+            {useCustomSplit && (
+              <div className="space-y-3 pt-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">Multiple Choice: <span className="font-semibold text-foreground">{mcPercent}%</span></span>
+                  <span className="text-muted-foreground">Short Answer: <span className="font-semibold text-foreground">{100 - mcPercent}%</span></span>
+                </div>
+                <Slider
+                  value={[mcPercent]}
+                  onValueChange={([v]) => setMcPercent(v)}
+                  min={20}
+                  max={100}
+                  step={5}
+                  className="w-full"
+                />
+                <p className="text-xs text-muted-foreground">
+                  ≈ {Math.round(Number(numberOfQuestions) * mcPercent / 100)} multiple choice, {Number(numberOfQuestions) - Math.round(Number(numberOfQuestions) * mcPercent / 100)} short answer
+                </p>
+              </div>
+            )}
+          </div>
+
           {Number(numberOfQuestions) >= 30 && (
             <p className="text-sm text-muted-foreground rounded-lg bg-muted/50 px-3 py-2">
               ℹ️ Larger quizzes may take a few extra seconds to generate.
