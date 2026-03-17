@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Save, Download, CheckCircle, Printer } from "lucide-react";
+import { Save, Download, CheckCircle, Printer, GraduationCap } from "lucide-react";
 import { saveResource, downloadElementAsPDF } from "@/lib/resourceUtils";
 import type { LessonPlan, LessonWorksheet } from "@/pages/dashboard/LessonPlanGenerator";
 
@@ -45,7 +45,7 @@ const LessonWorksheetOutput = ({ worksheet, lessonPlan }: Props) => {
           {/* Premium Header Bar */}
           <div className="rounded-lg border border-border/60" style={{ background: "linear-gradient(135deg, hsl(var(--muted)) 0%, hsl(var(--muted)/0.4) 100%)" }}>
             <div className="flex items-center justify-between px-6 pt-2 pb-0">
-              <span className="font-sans text-[9px] font-semibold tracking-[0.15em] uppercase text-muted-foreground/50">TeachKit</span>
+              <span className="flex items-center gap-1 font-sans text-[9px] font-semibold tracking-[0.15em] uppercase text-muted-foreground/50"><GraduationCap className="h-3 w-3" />TeachKit</span>
             </div>
             <div className="flex items-start justify-between gap-4 px-6 pb-5 pt-1">
               <div className="space-y-2">
