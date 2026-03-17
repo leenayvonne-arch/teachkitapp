@@ -16,8 +16,20 @@ serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
-    const mcCount = Math.ceil(Number(numberOfQuestions || 10) * 0.6);
-    const saCount = Number(numberOfQuestions || 10) - mcCount;
+    const total = Number(numberOfQuestions || 10);
+    let mcCount: number;
+    let saCount: number;
+
+    if (total <= 10) {
+      mcCount = Math.ceil(total * 0.6);
+      saCount = total - mcCount;
+    } else if (total <= 25) {
+      mcCount = Math.ceil(total * 0.75);
+      saCount = total - mcCount;
+    } else {
+      saCount = 5;
+      mcCount = total - saCount;
+    }
 
     const systemPrompt = `You are TeachKit, an expert curriculum designer. You create professional, printable quizzes for K-12 teachers.
 

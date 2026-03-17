@@ -129,6 +129,12 @@ const QuizGenerator = () => {
             </div>
           </div>
 
+          {Number(numberOfQuestions) >= 30 && (
+            <p className="text-sm text-muted-foreground rounded-lg bg-muted/50 px-3 py-2">
+              ℹ️ Larger quizzes may take a few extra seconds to generate.
+            </p>
+          )}
+
           <Button onClick={() => handleGenerate()} disabled={isGenerating} className="w-full rounded-xl" size="lg">
             {isGenerating ? (
               <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating Quiz…</>
