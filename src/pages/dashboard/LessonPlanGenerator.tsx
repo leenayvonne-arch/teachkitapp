@@ -13,6 +13,7 @@ import { saveResource, downloadElementAsPDF } from "@/lib/resourceUtils";
 import LessonPlanOutput from "@/components/lesson/LessonPlanOutput";
 import LessonWorksheetOutput from "@/components/lesson/LessonWorksheetOutput";
 import LessonQuizOutput from "@/components/lesson/LessonQuizOutput";
+import RegenerateOptions, { type RegenerateAction } from "@/components/lesson/RegenerateOptions";
 
 export interface LessonPlan {
   lessonTitle: string;
@@ -101,36 +102,50 @@ const LessonPlanGenerator = () => {
   const [worksheet, setWorksheet] = useState<LessonWorksheet | null>(null);
   const [quiz, setQuiz] = useState<LessonQuiz | null>(null);
 
-  const handleGenerate = async () => {
+  // Regenerate state
+  const [isRegenerating, setIsRegenerating] = useState(false);
+  const [regenAction, setRegenAction] = useState<RegenerateAction | null>(null);
+  const [isRegeneratingWorksheet, setIsRegeneratingWorksheet] = useState(false);
+  const [regenWorksheetAction, setRegenWorksheetAction] = useState<RegenerateAction | null>(null);
+  const [isRegeneratingQuiz, setIsRegeneratingQuiz] = useState(false);
+  const [regenQuizAction, setRegenQuizAction] = useState<RegenerateAction | null>(null);
+
+  const handleGenerate = async (regenerateAction?: RegenerateAction) => {
     if (!gradeLevel || !subject || !topic) {
       toast({ title: "Missing fields", description: "Please fill in Grade Level, Subject, and Topic.", variant: "destructive" });
       return;
     }
 
-    setIsGenerating(true);
-    setWorksheet(null);
-    setQuiz(null);
+    const isRegen = !!regenerateAction;
+    if (isRegen) { setIsRegenerating(true); setRegenAction(regenerateAction!); }
+    else { setIsGenerating(true); }
+    if (!isRegen) { setWorksheet(null); setQuiz(null); }
+
     try {
       const { data, error } = await supabase.functions.invoke("generate-lesson", {
-        body: { gradeLevel, subject, topic, lessonTitle, classDuration, standards, objectives, differentiationLevel, studentNeeds, instructionalStyle },
+        body: { gradeLevel, subject, topic, lessonTitle, classDuration, standards, objectives, differentiationLevel, studentNeeds, instructionalStyle, regenerateAction },
       });
 
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
 
       setLessonPlan(data.lessonPlan);
-      toast({ title: "Lesson plan generated!", description: "Scroll down to view your lesson plan." });
+      toast({ title: isRegen ? "Lesson plan regenerated!" : "Lesson plan generated!", description: "Scroll down to view your lesson plan." });
     } catch (e: any) {
       console.error(e);
       toast({ title: "Generation failed", description: e.message || "Something went wrong.", variant: "destructive" });
     } finally {
       setIsGenerating(false);
+      setIsRegenerating(false);
+      setRegenAction(null);
     }
   };
 
-  const handleGenerateWorksheet = async () => {
+  const handleGenerateWorksheet = async (regenerateAction?: RegenerateAction) => {
     if (!lessonPlan) return;
-    setIsGeneratingWorksheet(true);
+    const isRegen = !!regenerateAction;
+    if (isRegen) { setIsRegeneratingWorksheet(true); setRegenWorksheetAction(regenerateAction!); }
+    else { setIsGeneratingWorksheet(true); }
     try {
       const { data, error } = await supabase.functions.invoke("generate-worksheet", {
         body: {
@@ -139,41 +154,49 @@ const LessonPlanGenerator = () => {
           topic: `${lessonPlan.topic} — Key concepts: ${lessonPlan.objectives.join("; ")}`,
           numberOfQuestions: "10",
           difficultyLevel: "Mixed",
+          regenerateAction,
         },
       });
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
       setWorksheet(data.worksheet);
-      toast({ title: "Worksheet generated!", description: "Scroll down to view the worksheet." });
+      toast({ title: isRegen ? "Worksheet regenerated!" : "Worksheet generated!" });
     } catch (e: any) {
       console.error(e);
       toast({ title: "Worksheet generation failed", description: e.message || "Something went wrong.", variant: "destructive" });
     } finally {
       setIsGeneratingWorksheet(false);
+      setIsRegeneratingWorksheet(false);
+      setRegenWorksheetAction(null);
     }
   };
 
-  const handleGenerateQuiz = async () => {
+  const handleGenerateQuiz = async (regenerateAction?: RegenerateAction) => {
     if (!lessonPlan) return;
-    setIsGeneratingQuiz(true);
+    const isRegen = !!regenerateAction;
+    if (isRegen) { setIsRegeneratingQuiz(true); setRegenQuizAction(regenerateAction!); }
+    else { setIsGeneratingQuiz(true); }
     try {
       const { data, error } = await supabase.functions.invoke("generate-quiz", {
         body: {
           gradeLevel: lessonPlan.gradeLevel,
           subject: lessonPlan.subject,
           topic: `${lessonPlan.topic} — Key concepts: ${lessonPlan.objectives.join("; ")}`,
-          numberOfQuestions: "8",
+          numberOfQuestions: "10",
+          regenerateAction,
         },
       });
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
       setQuiz(data.quiz);
-      toast({ title: "Quiz generated!", description: "Scroll down to view the quiz." });
+      toast({ title: isRegen ? "Quiz regenerated!" : "Quiz generated!" });
     } catch (e: any) {
       console.error(e);
       toast({ title: "Quiz generation failed", description: e.message || "Something went wrong.", variant: "destructive" });
     } finally {
       setIsGeneratingQuiz(false);
+      setIsRegeneratingQuiz(false);
+      setRegenQuizAction(null);
     }
   };
 
@@ -288,7 +311,7 @@ const LessonPlanGenerator = () => {
             </div>
           </div>
 
-          <Button onClick={handleGenerate} disabled={isGenerating} className="w-full rounded-xl" size="lg">
+          <Button onClick={() => handleGenerate()} disabled={isGenerating} className="w-full rounded-xl" size="lg">
             {isGenerating ? (
               <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating Lesson Plan…</>
             ) : (
@@ -312,7 +335,7 @@ const LessonPlanGenerator = () => {
             <Button
               variant="outline"
               className="rounded-xl"
-              onClick={handleGenerateWorksheet}
+              onClick={() => handleGenerateWorksheet()}
               disabled={isGeneratingWorksheet}
             >
               {isGeneratingWorksheet ? (
@@ -324,7 +347,7 @@ const LessonPlanGenerator = () => {
             <Button
               variant="outline"
               className="rounded-xl"
-              onClick={handleGenerateQuiz}
+              onClick={() => handleGenerateQuiz()}
               disabled={isGeneratingQuiz}
             >
               {isGeneratingQuiz ? (
@@ -335,19 +358,40 @@ const LessonPlanGenerator = () => {
             </Button>
           </div>
 
+          {/* Lesson Regenerate Options */}
+          <div className="mb-4">
+            <RegenerateOptions
+              onAction={(action) => handleGenerate(action)}
+              isLoading={isRegenerating}
+              loadingAction={regenAction}
+            />
+          </div>
+
           <LessonPlanOutput lessonPlan={lessonPlan} />
 
           {/* Derived Worksheet */}
           {worksheet && (
-            <div className="mt-8">
+            <div className="mt-8 space-y-4">
               <LessonWorksheetOutput worksheet={worksheet} lessonPlan={lessonPlan} />
+              <RegenerateOptions
+                onAction={(action) => handleGenerateWorksheet(action)}
+                isLoading={isRegeneratingWorksheet}
+                loadingAction={regenWorksheetAction}
+                showAddQuestions
+              />
             </div>
           )}
 
           {/* Derived Quiz */}
           {quiz && (
-            <div className="mt-8">
+            <div className="mt-8 space-y-4">
               <LessonQuizOutput quiz={quiz} lessonPlan={lessonPlan} />
+              <RegenerateOptions
+                onAction={(action) => handleGenerateQuiz(action)}
+                isLoading={isRegeneratingQuiz}
+                loadingAction={regenQuizAction}
+                showAddQuestions
+              />
             </div>
           )}
         </>

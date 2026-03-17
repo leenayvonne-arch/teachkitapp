@@ -11,7 +11,7 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
 
   try {
-    const { gradeLevel, subject, topic, numberOfQuestions, difficultyLevel } =
+    const { gradeLevel, subject, topic, numberOfQuestions, difficultyLevel, regenerateAction } =
       await req.json();
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
@@ -53,7 +53,8 @@ Requirements:
 - Questions should progress from easier to harder.
 - Provide clear, student-friendly instructions.
 - Include a complete answer key with correct or high-quality sample answers.
-- Make questions rigorous, engaging, and grade-appropriate.`;
+- Make questions rigorous, engaging, and grade-appropriate.
+${regenerateAction === "simplify" ? "- IMPORTANT: Make questions easier — use simpler language and more scaffolding." : ""}${regenerateAction === "challenge" ? "- IMPORTANT: Make questions harder — include critical thinking and complex problem-solving." : ""}${regenerateAction === "shorten" ? "- IMPORTANT: Reduce total questions to about 5." : ""}${regenerateAction === "expand" ? "- IMPORTANT: Add 5 more questions beyond the requested count." : ""}${regenerateAction === "add_questions" ? "- IMPORTANT: Add 5 additional questions beyond the requested count." : ""}`;
 
     const response = await fetch(
       "https://ai.gateway.lovable.dev/v1/chat/completions",

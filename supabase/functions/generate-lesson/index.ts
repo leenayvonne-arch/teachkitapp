@@ -22,6 +22,7 @@ serve(async (req) => {
       differentiationLevel,
       studentNeeds,
       instructionalStyle,
+      regenerateAction,
     } = await req.json();
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
@@ -38,7 +39,7 @@ Always respond with a valid JSON object matching this exact structure (no markdo
   "duration": "string",
   "standards": ["string array of 2-3 academic standards, e.g. CCSS or NGSS codes with descriptions"],
   "objectives": ["string array of 2-3 measurable learning objectives using Bloom's taxonomy verbs"],
-  "keyVocabulary": [{"term": "string", "definition": "string"}],
+  "keyVocabulary": [{"term": "string", "definition": "string"}],  // IMPORTANT: Generate at least 5-8 vocabulary terms
   "materials": ["string array of materials and resources needed"],
   "instructionalStrategies": ["string array of 2-3 teaching strategies"],
   "procedures": {
@@ -72,7 +73,9 @@ ${differentiationLevel ? `Differentiation Level: ${differentiationLevel}` : ""}
 ${studentNeeds ? `Student Needs to Address: ${studentNeeds}` : ""}
 ${instructionalStyle ? `Preferred Instructional Style: ${instructionalStyle}` : ""}
 
-Ensure all time allocations fit within the class duration. Make the lesson engaging, rigorous, and practical for classroom use.`;
+Ensure all time allocations fit within the class duration. Make the lesson engaging, rigorous, and practical for classroom use.
+IMPORTANT: Include at least 5-8 key vocabulary terms with brief, student-friendly definitions that directly relate to the lesson topic.
+${regenerateAction === "simplify" ? "\nIMPORTANT: Simplify the lesson — use easier vocabulary, shorter activities, and more scaffolding." : ""}${regenerateAction === "challenge" ? "\nIMPORTANT: Make this lesson more rigorous — add higher-order thinking, complex tasks, and extension activities." : ""}${regenerateAction === "shorten" ? "\nIMPORTANT: Create a shorter, more concise lesson plan. Reduce activities and keep only the essentials." : ""}${regenerateAction === "expand" ? "\nIMPORTANT: Create a more detailed and comprehensive lesson plan with additional activities, more vocabulary, and deeper content." : ""}`;
 
     const response = await fetch(
       "https://ai.gateway.lovable.dev/v1/chat/completions",

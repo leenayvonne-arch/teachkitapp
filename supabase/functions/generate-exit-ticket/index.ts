@@ -11,7 +11,7 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
 
   try {
-    const { gradeLevel, subject, topic } = await req.json();
+    const { gradeLevel, subject, topic, regenerateAction } = await req.json();
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
@@ -43,7 +43,8 @@ Requirements:
 - Include at least one comprehension check question, one reflection question, and one skill application question.
 - Questions should be concise and answerable in 2–5 minutes total.
 - Make questions grade-appropriate, clear, and focused on the topic.
-- Vary the cognitive demand across questions.`;
+- Vary the cognitive demand across questions.
+${regenerateAction === "simplify" ? "- IMPORTANT: Make questions simpler and more accessible." : ""}${regenerateAction === "challenge" ? "- IMPORTANT: Increase rigor — add analysis and synthesis questions." : ""}${regenerateAction === "shorten" ? "- IMPORTANT: Generate only 3 questions." : ""}${regenerateAction === "expand" ? "- IMPORTANT: Generate 5 questions with more depth." : ""}`;
 
     const response = await fetch(
       "https://ai.gateway.lovable.dev/v1/chat/completions",
