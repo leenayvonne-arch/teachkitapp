@@ -137,6 +137,10 @@ export const shopProducts: ShopProduct[] = [
       "Multiple difficulty levels",
       "Printable PDF format",
     ],
+    previewPages: [
+      { label: "Lab Report Template", description: "Guided sections: Hypothesis → Materials → Procedure → Data → Conclusion with sentence starters." },
+      { label: "Vocabulary Support Page", description: "Key science terms with definitions, examples, and space for student illustrations." },
+    ],
   },
   {
     slug: "social-studies-project-pack",
