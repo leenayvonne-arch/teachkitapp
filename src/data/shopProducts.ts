@@ -131,7 +131,7 @@ export const shopProducts: ShopProduct[] = [
     title: "Classroom Quiz Builder Kit",
     description: "100 quiz questions with answer keys across core subjects including Social Studies and History.",
     fullDescription:
-      "Quickly build quizzes with this collection of 100 pre-written questions spanning Math, ELA, Science, and Social Studies. Each question comes with an answer key and can be mixed and matched to create custom assessments for your classroom.",
+      "Quickly build quizzes with this collection of 100 pre-written questions spanning Math, ELA, Science, Social Studies, and History. Each question comes with an answer key and can be mixed and matched to create custom assessments for your classroom.",
     gradeLevel: "Grades 3–8",
     price: "$4.99",
     category: "Quizzes",
