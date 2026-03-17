@@ -1,3 +1,8 @@
+export interface PreviewPage {
+  label: string;
+  description: string;
+}
+
 export interface ShopProduct {
   slug: string;
   title: string;
@@ -7,6 +12,7 @@ export interface ShopProduct {
   price: string;
   category: string;
   includes: string[];
+  previewPages: PreviewPage[];
 }
 
 export const shopProducts: ShopProduct[] = [
