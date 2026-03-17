@@ -64,17 +64,30 @@ const QuizGenerator = () => {
   const [isRegenerating, setIsRegenerating] = useState(false);
   const [regenAction, setRegenAction] = useState<RegenerateAction | null>(null);
 
-  const saPercent = Math.max(0, 100 - mcPercent - tfPercent);
+  const saPercent = Math.max(0, 100 - mcPercent - tfPercent - fitbPercent);
   const total = Number(numberOfQuestions);
 
-  // Clamp tfPercent so MC + TF never exceeds 100
+  const clampOthers = (mc: number, tf: number, fitb: number) => {
+    const sum = mc + tf + fitb;
+    if (sum > 100) {
+      const excess = sum - 100;
+      // Reduce SA first (implicit), then proportionally
+      return { mc, tf, fitb: Math.max(0, fitb - excess) };
+    }
+    return { mc, tf, fitb };
+  };
+
   const handleMcChange = (v: number) => {
-    setMcPercent(v);
-    if (v + tfPercent > 100) setTfPercent(100 - v);
+    const { tf, fitb } = clampOthers(v, tfPercent, fitbPercent);
+    setMcPercent(v); setTfPercent(tf); setFitbPercent(fitb);
   };
   const handleTfChange = (v: number) => {
-    setTfPercent(v);
-    if (mcPercent + v > 100) setMcPercent(100 - v);
+    const { mc, fitb } = clampOthers(mcPercent, v, fitbPercent);
+    setMcPercent(mc); setTfPercent(v); setFitbPercent(fitb);
+  };
+  const handleFitbChange = (v: number) => {
+    const { mc, tf } = clampOthers(mcPercent, tfPercent, v);
+    setMcPercent(mc); setTfPercent(tf); setFitbPercent(v);
   };
 
   const handleGenerate = async (regenerateAction?: RegenerateAction) => {
