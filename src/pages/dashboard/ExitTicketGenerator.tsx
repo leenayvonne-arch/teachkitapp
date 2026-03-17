@@ -9,6 +9,7 @@ import { toast } from "@/hooks/use-toast";
 import { Loader2, Download, Save, LogOut, Sparkles, Brain, Lightbulb, Target } from "lucide-react";
 import { saveResource, downloadElementAsPDF } from "@/lib/resourceUtils";
 import RegenerateOptions, { type RegenerateAction } from "@/components/lesson/RegenerateOptions";
+import TopicSuggestions from "@/components/TopicSuggestions";
 
 interface ExitTicketQuestion {
   number: number;
@@ -125,6 +126,7 @@ const ExitTicketGenerator = () => {
             <div>
               <Label>Topic *</Label>
               <Input value={topic} onChange={(e) => setTopic(e.target.value)} placeholder="e.g. Fractions" className="mt-1 rounded-xl" />
+              <TopicSuggestions subject={subject} onSelect={setTopic} />
             </div>
           </div>
 
