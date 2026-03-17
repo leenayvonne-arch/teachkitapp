@@ -20,6 +20,7 @@ import LessonLibrary from "./pages/dashboard/LessonLibrary";
 import PlaceholderPage from "./pages/dashboard/PlaceholderPage";
 import ProfilePage from "./pages/dashboard/ProfilePage";
 import ResourceShop from "./pages/dashboard/ResourceShop";
+import ProductDetail from "./pages/dashboard/ProductDetail";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,7 @@ const App = () => (
             <Route path="pricing" element={<PlaceholderPage title="Pricing" description="Manage your TeachKit subscription." />} />
             <Route path="account" element={<ProfilePage />} />
             <Route path="shop" element={<ResourceShop />} />
+            <Route path="shop/:slug" element={<ProductDetail />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
