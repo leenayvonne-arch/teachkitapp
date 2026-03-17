@@ -22,6 +22,7 @@ serve(async (req) => {
       differentiationLevel,
       studentNeeds,
       instructionalStyle,
+      regenerateAction,
     } = await req.json();
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
