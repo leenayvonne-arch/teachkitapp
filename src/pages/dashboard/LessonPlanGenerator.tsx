@@ -14,6 +14,8 @@ import LessonPlanOutput from "@/components/lesson/LessonPlanOutput";
 import LessonWorksheetOutput from "@/components/lesson/LessonWorksheetOutput";
 import LessonQuizOutput from "@/components/lesson/LessonQuizOutput";
 import RegenerateOptions, { type RegenerateAction } from "@/components/lesson/RegenerateOptions";
+import LessonDifferentiationPanel, { type LessonDiffLevel } from "@/components/lesson/LessonDifferentiationPanel";
+import LessonVersionTabs from "@/components/lesson/LessonVersionTabs";
 
 export interface LessonPlan {
   lessonTitle: string;
