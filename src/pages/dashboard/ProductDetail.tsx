@@ -4,10 +4,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { ArrowLeft, CheckCircle2, ShoppingCart, FileText, X } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
+import WorksheetPreviewCard from "@/components/shop/WorksheetPreviewCard";
 
 const ProductDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -79,38 +80,14 @@ const ProductDetail = () => {
           {product.previewPages.length > 0 && (
             <div>
               <h2 className="mb-4 text-base font-semibold text-foreground">Preview This Resource</h2>
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {product.previewPages.map((page, i) => (
-                  <motion.button
+                  <WorksheetPreviewCard
                     key={i}
-                    type="button"
+                    page={page}
+                    compact
                     onClick={() => setLightboxIndex(i)}
-                    whileHover={{ y: -2 }}
-                    className="group cursor-pointer rounded-lg border border-border bg-card text-left shadow-sm transition-shadow hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary/40"
-                  >
-                    {/* Faux document header */}
-                    <div className="flex items-center gap-2 border-b border-border px-4 py-3">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary/10">
-                        <FileText className="h-4 w-4 text-primary" />
-                      </div>
-                      <span className="text-xs font-medium text-foreground">{page.label}</span>
-                    </div>
-                    {/* Faux document body */}
-                    <div className="space-y-2 px-4 py-4">
-                      <div className="h-1.5 w-3/4 rounded-full bg-muted" />
-                      <div className="h-1.5 w-full rounded-full bg-muted" />
-                      <div className="h-1.5 w-5/6 rounded-full bg-muted" />
-                      <p className="mt-3 text-[11px] leading-relaxed text-muted-foreground line-clamp-3">
-                        {page.description}
-                      </p>
-                      <div className="h-1.5 w-2/3 rounded-full bg-muted" />
-                    </div>
-                    <div className="border-t border-border px-4 py-2 text-center">
-                      <span className="text-[10px] font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
-                        Click to enlarge
-                      </span>
-                    </div>
-                  </motion.button>
+                  />
                 ))}
               </div>
             </div>
@@ -139,38 +116,10 @@ const ProductDetail = () => {
 
       {/* Lightbox dialog */}
       <Dialog open={lightboxIndex !== null} onOpenChange={() => setLightboxIndex(null)}>
-        <DialogContent className="max-w-lg p-0 overflow-hidden">
+        <DialogContent className="max-w-md p-0 overflow-hidden">
           {lightboxIndex !== null && product.previewPages[lightboxIndex] && (
-            <div className="p-6">
-              <div className="mb-4 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                  <FileText className="h-5 w-5 text-primary" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-foreground">
-                    {product.previewPages[lightboxIndex].label}
-                  </h3>
-                  <p className="text-xs text-muted-foreground">Sample preview</p>
-                </div>
-              </div>
-
-              {/* Faux enlarged document */}
-              <div className="rounded-lg border border-border bg-muted/30 p-6">
-                <div className="space-y-3 mb-5">
-                  <div className="h-2 w-1/2 rounded-full bg-muted" />
-                  <div className="h-2 w-3/4 rounded-full bg-muted" />
-                </div>
-                <p className="text-sm leading-relaxed text-foreground">
-                  {product.previewPages[lightboxIndex].description}
-                </p>
-                <div className="mt-5 space-y-2">
-                  <div className="h-2 w-full rounded-full bg-muted" />
-                  <div className="h-2 w-5/6 rounded-full bg-muted" />
-                  <div className="h-2 w-2/3 rounded-full bg-muted" />
-                  <div className="h-2 w-4/5 rounded-full bg-muted" />
-                </div>
-              </div>
-
+            <div className="p-4">
+              <WorksheetPreviewCard page={product.previewPages[lightboxIndex]} />
               {/* Navigation dots */}
               <div className="mt-4 flex items-center justify-center gap-2">
                 {product.previewPages.map((_, i) => (
