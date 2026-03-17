@@ -47,6 +47,15 @@ const ResourceShop = () => {
       </div>
 
       <div className="mb-6 flex flex-wrap items-center gap-3">
+        <div className="relative w-full sm:w-[240px]">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder="Search products…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-9"
+          />
+        </div>
         <Select value={category} onValueChange={setCategory}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Category" />
