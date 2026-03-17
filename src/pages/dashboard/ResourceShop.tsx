@@ -6,17 +6,17 @@ import { ShoppingBag } from "lucide-react";
 
 const products = [
   {
-    title: "100 Exit Tickets – Grades 3–5",
-    description: "Ready-to-print exit tickets across Math, ELA, Science, and Social Studies.",
+    title: "100 Exit Tickets for Grades 3–5",
+    description: "Ready-to-use daily exit tickets for Math, ELA, Science, and Social Studies.",
     gradeLevel: "Grades 3–5",
-    price: "$4.99",
+    price: "$19",
     category: "Exit Tickets",
   },
   {
-    title: "100 Exit Tickets – Grades 6–8",
-    description: "Middle school exit tickets with critical thinking and analytical prompts.",
+    title: "100 Exit Tickets for Grades 6–8",
+    description: "Engaging and higher-level exit tickets designed for middle school classrooms.",
     gradeLevel: "Grades 6–8",
-    price: "$4.99",
+    price: "$19",
     category: "Exit Tickets",
   },
   {
