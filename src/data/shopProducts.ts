@@ -157,6 +157,10 @@ export const shopProducts: ShopProduct[] = [
       "Graphic organizers",
       "Printable PDF format",
     ],
+    previewPages: [
+      { label: "Research Guide", description: "Step-by-step instructions for choosing a topic, gathering sources, and organizing notes." },
+      { label: "Graphic Organizer", description: "Compare & contrast organizer for analyzing two historical events or figures." },
+    ],
   },
   {
     slug: "classroom-quiz-builder-kit",
