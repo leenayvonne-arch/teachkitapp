@@ -98,6 +98,7 @@ Subject: ${subject}
 Topic: ${topic}
 
 Requirements:
+- Difficulty: ${difficulty === "easy" ? "EASY — Focus on basic recall, simple vocabulary, and straightforward facts. Avoid complex reasoning." : difficulty === "hard" ? "HARD — Focus on analysis, application, evaluation, and higher-order thinking. Include nuanced distractors." : "MEDIUM — Balance recall with comprehension and application. Standard grade-level rigor."}
 - Include exactly ${mcCount} multiple choice questions with options A, B, C, D.
 - Include exactly ${tfCount} true/false questions. Each true/false question must have a correctAnswer of either "True" or "False".
 - Include exactly ${fitbCount} fill in the blank questions. Each question must contain _____ where the blank is. Provide the correct word or phrase as correctAnswer.
