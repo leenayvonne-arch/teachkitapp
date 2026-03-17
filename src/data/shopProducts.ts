@@ -177,6 +177,10 @@ export const shopProducts: ShopProduct[] = [
       "Mix-and-match format",
       "Printable PDF format",
     ],
+    previewPages: [
+      { label: "Math Quiz Sample", description: "10 multiple-choice questions covering fractions, decimals, and order of operations." },
+      { label: "History Quiz Sample", description: "5 short-answer questions on the American Revolution with answer key." },
+    ],
   },
 ];
 
