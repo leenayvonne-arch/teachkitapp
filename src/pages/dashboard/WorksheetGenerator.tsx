@@ -9,6 +9,7 @@ import { toast } from "@/hooks/use-toast";
 import { Loader2, Download, Save, FileText, Sparkles, CheckCircle } from "lucide-react";
 import { saveResource, downloadElementAsPDF } from "@/lib/resourceUtils";
 import RegenerateOptions, { type RegenerateAction } from "@/components/lesson/RegenerateOptions";
+import TopicSuggestions from "@/components/TopicSuggestions";
 
 interface WorksheetQuestion {
   number: number;
