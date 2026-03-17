@@ -10,7 +10,11 @@ interface Props {
 }
 
 const QuizOutput = ({ quiz, gradeLevel, subject, topic, elementId = "quiz-output" }: Props) => {
-  const totalQuestions = quiz.multipleChoice.length + (quiz.trueFalse?.length || 0) + quiz.shortAnswer.length;
+  const totalQuestions =
+    quiz.multipleChoice.length +
+    (quiz.trueFalse?.length || 0) +
+    (quiz.fillInTheBlank?.length || 0) +
+    quiz.shortAnswer.length;
   let sectionNum = 0;
 
   return (
@@ -74,6 +78,22 @@ const QuizOutput = ({ quiz, gradeLevel, subject, topic, elementId = "quiz-output
         </div>
       )}
 
+      {/* Fill in the Blank */}
+      {quiz.fillInTheBlank && quiz.fillInTheBlank.length > 0 && (
+        <div className="space-y-6">
+          <h3 className="font-display text-lg font-semibold text-foreground border-b border-border pb-2">
+            Section {++sectionNum}: Fill in the Blank
+          </h3>
+          <p className="text-sm text-muted-foreground">Write the correct word or phrase in the blank.</p>
+          {quiz.fillInTheBlank.map((q) => (
+            <div key={q.number} className="flex items-start gap-3">
+              <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">{q.number}</span>
+              <p className="text-sm font-medium text-foreground flex-1">{q.question}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* Short Answer */}
       {quiz.shortAnswer.length > 0 && (
         <div className="space-y-6">
@@ -120,6 +140,19 @@ const QuizOutput = ({ quiz, gradeLevel, subject, topic, elementId = "quiz-output
             <h4 className="mb-2 text-sm font-semibold text-muted-foreground uppercase tracking-wide">True / False</h4>
             <div className="grid grid-cols-5 gap-2">
               {quiz.trueFalse.map((q) => (
+                <div key={q.number} className="flex gap-1.5 text-sm">
+                  <span className="font-bold text-primary">{q.number}.</span>
+                  <span className="font-medium text-foreground">{q.correctAnswer}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        {quiz.fillInTheBlank && quiz.fillInTheBlank.length > 0 && (
+          <div className="mb-4">
+            <h4 className="mb-2 text-sm font-semibold text-muted-foreground uppercase tracking-wide">Fill in the Blank</h4>
+            <div className="grid grid-cols-5 gap-2">
+              {quiz.fillInTheBlank.map((q) => (
                 <div key={q.number} className="flex gap-1.5 text-sm">
                   <span className="font-bold text-primary">{q.number}.</span>
                   <span className="font-medium text-foreground">{q.correctAnswer}</span>

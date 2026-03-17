@@ -211,10 +211,18 @@ const QuizGenerator = () => {
                   </div>
                   <Slider value={[tfPercent]} onValueChange={([v]) => handleTfChange(v)} min={0} max={100} step={5} className="w-full" />
                 </div>
+                {/* FITB slider */}
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Fill in the Blank</span>
+                    <span className="font-semibold text-foreground">{fitbPercent}% <span className="font-normal text-muted-foreground">(≈{Math.round(total * fitbPercent / 100)})</span></span>
+                  </div>
+                  <Slider value={[fitbPercent]} onValueChange={([v]) => handleFitbChange(v)} min={0} max={100} step={5} className="w-full" />
+                </div>
                 {/* SA readout */}
                 <div className="flex items-center justify-between text-sm rounded-lg bg-muted/50 px-3 py-2">
                   <span className="text-muted-foreground">Short Answer</span>
-                  <span className="font-semibold text-foreground">{saPercent}% <span className="font-normal text-muted-foreground">(≈{total - Math.round(total * mcPercent / 100) - Math.round(total * tfPercent / 100)})</span></span>
+                  <span className="font-semibold text-foreground">{saPercent}% <span className="font-normal text-muted-foreground">(≈{total - Math.round(total * mcPercent / 100) - Math.round(total * tfPercent / 100) - Math.round(total * fitbPercent / 100)})</span></span>
                 </div>
               </div>
             )}
