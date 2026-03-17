@@ -6,35 +6,42 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
-import { Loader2, Download, Save, HelpCircle, Sparkles, CheckCircle, SlidersHorizontal } from "lucide-react";
+import { Loader2, Download, Save, HelpCircle, Sparkles, SlidersHorizontal } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { saveResource, downloadElementAsPDF } from "@/lib/resourceUtils";
 import RegenerateOptions, { type RegenerateAction } from "@/components/lesson/RegenerateOptions";
+import QuizOutput from "@/components/quiz/QuizOutput";
 
-interface MCQuestion {
+export interface TFQuestion {
+  number: number;
+  question: string;
+  correctAnswer: "True" | "False";
+}
+
+export interface MCQuestion {
   number: number;
   question: string;
   options: { A: string; B: string; C: string; D: string };
   correctAnswer: string;
 }
 
-interface SAQuestion {
+export interface SAQuestion {
   number: number;
   question: string;
   sampleAnswer: string;
 }
 
-interface Quiz {
+export interface Quiz {
   title: string;
   multipleChoice: MCQuestion[];
+  trueFalse: TFQuestion[];
   shortAnswer: SAQuestion[];
-  answerKey: { number: number; section: "multiple_choice" | "short_answer"; answer: string }[];
+  answerKey: { number: number; section: "multiple_choice" | "true_false" | "short_answer"; answer: string }[];
 }
 
 const GRADES = ["K", "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th"];
 const QUESTION_COUNTS = ["5", "10", "15", "20", "25", "30", "40", "50"];
-const DEFAULT_MC_PERCENT = -1; // -1 means "auto"
 
 const QuizGenerator = () => {
   const [gradeLevel, setGradeLevel] = useState("");
@@ -42,11 +49,25 @@ const QuizGenerator = () => {
   const [topic, setTopic] = useState("");
   const [numberOfQuestions, setNumberOfQuestions] = useState("10");
   const [useCustomSplit, setUseCustomSplit] = useState(false);
-  const [mcPercent, setMcPercent] = useState(70);
+  const [mcPercent, setMcPercent] = useState(50);
+  const [tfPercent, setTfPercent] = useState(20);
   const [isGenerating, setIsGenerating] = useState(false);
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [isRegenerating, setIsRegenerating] = useState(false);
   const [regenAction, setRegenAction] = useState<RegenerateAction | null>(null);
+
+  const saPercent = Math.max(0, 100 - mcPercent - tfPercent);
+  const total = Number(numberOfQuestions);
+
+  // Clamp tfPercent so MC + TF never exceeds 100
+  const handleMcChange = (v: number) => {
+    setMcPercent(v);
+    if (v + tfPercent > 100) setTfPercent(100 - v);
+  };
+  const handleTfChange = (v: number) => {
+    setTfPercent(v);
+    if (mcPercent + v > 100) setMcPercent(100 - v);
+  };
 
   const handleGenerate = async (regenerateAction?: RegenerateAction) => {
     if (!gradeLevel || !subject || !topic) {
@@ -60,13 +81,20 @@ const QuizGenerator = () => {
 
     try {
       const { data, error } = await supabase.functions.invoke("generate-quiz", {
-        body: { gradeLevel, subject, topic, numberOfQuestions, regenerateAction, mcPercent: useCustomSplit ? mcPercent : undefined },
+        body: {
+          gradeLevel, subject, topic, numberOfQuestions, regenerateAction,
+          mcPercent: useCustomSplit ? mcPercent : undefined,
+          tfPercent: useCustomSplit ? tfPercent : undefined,
+        },
       });
 
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
 
-      setQuiz(data.quiz);
+      // Ensure trueFalse array exists for backward compat
+      const quizData = data.quiz;
+      if (!quizData.trueFalse) quizData.trueFalse = [];
+      setQuiz(quizData);
       toast({ title: isRegen ? "Quiz regenerated!" : "Quiz generated!" });
     } catch (e: any) {
       console.error(e);
@@ -95,7 +123,7 @@ const QuizGenerator = () => {
   return (
     <div className="mx-auto max-w-4xl">
       <h1 className="mb-1 font-display text-2xl font-bold text-foreground">Quiz Generator</h1>
-      <p className="mb-8 text-muted-foreground">Create structured quizzes with multiple choice and short answer sections.</p>
+      <p className="mb-8 text-muted-foreground">Create structured quizzes with multiple choice, true/false, and short answer sections.</p>
 
       <Card className="mb-8 rounded-2xl">
         <CardHeader className="pb-4">
@@ -143,27 +171,33 @@ const QuizGenerator = () => {
               <Switch checked={useCustomSplit} onCheckedChange={setUseCustomSplit} />
             </div>
             {useCustomSplit && (
-              <div className="space-y-3 pt-2">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Multiple Choice: <span className="font-semibold text-foreground">{mcPercent}%</span></span>
-                  <span className="text-muted-foreground">Short Answer: <span className="font-semibold text-foreground">{100 - mcPercent}%</span></span>
+              <div className="space-y-4 pt-2">
+                {/* MC slider */}
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Multiple Choice</span>
+                    <span className="font-semibold text-foreground">{mcPercent}% <span className="font-normal text-muted-foreground">(≈{Math.round(total * mcPercent / 100)})</span></span>
+                  </div>
+                  <Slider value={[mcPercent]} onValueChange={([v]) => handleMcChange(v)} min={0} max={100} step={5} className="w-full" />
                 </div>
-                <Slider
-                  value={[mcPercent]}
-                  onValueChange={([v]) => setMcPercent(v)}
-                  min={20}
-                  max={100}
-                  step={5}
-                  className="w-full"
-                />
-                <p className="text-xs text-muted-foreground">
-                  ≈ {Math.round(Number(numberOfQuestions) * mcPercent / 100)} multiple choice, {Number(numberOfQuestions) - Math.round(Number(numberOfQuestions) * mcPercent / 100)} short answer
-                </p>
+                {/* TF slider */}
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">True / False</span>
+                    <span className="font-semibold text-foreground">{tfPercent}% <span className="font-normal text-muted-foreground">(≈{Math.round(total * tfPercent / 100)})</span></span>
+                  </div>
+                  <Slider value={[tfPercent]} onValueChange={([v]) => handleTfChange(v)} min={0} max={100} step={5} className="w-full" />
+                </div>
+                {/* SA readout */}
+                <div className="flex items-center justify-between text-sm rounded-lg bg-muted/50 px-3 py-2">
+                  <span className="text-muted-foreground">Short Answer</span>
+                  <span className="font-semibold text-foreground">{saPercent}% <span className="font-normal text-muted-foreground">(≈{total - Math.round(total * mcPercent / 100) - Math.round(total * tfPercent / 100)})</span></span>
+                </div>
               </div>
             )}
           </div>
 
-          {Number(numberOfQuestions) >= 30 && (
+          {total >= 30 && (
             <p className="text-sm text-muted-foreground rounded-lg bg-muted/50 px-3 py-2">
               ℹ️ Larger quizzes may take a few extra seconds to generate.
             </p>
@@ -199,97 +233,7 @@ const QuizGenerator = () => {
             />
           </div>
 
-          <div id="quiz-output" className="rounded-2xl border bg-card p-8 space-y-8">
-            <div className="border-b border-border pb-6 text-center">
-              <h2 className="font-display text-2xl font-bold text-foreground">{quiz.title}</h2>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Grade: {gradeLevel} &nbsp;•&nbsp; Subject: {subject} &nbsp;•&nbsp; Topic: {topic}
-              </p>
-              <p className="mt-1 text-xs text-muted-foreground italic">
-                ⏱ Estimated completion time: ~{Math.max(5, Math.round((quiz.multipleChoice.length + quiz.shortAnswer.length) * 1.5))} minutes
-              </p>
-              <div className="mx-auto mt-4 flex max-w-lg justify-between text-sm text-muted-foreground">
-                <span>Name: ______________________</span>
-                <span>Date: _______________</span>
-                <span>Subject: {subject}</span>
-              </div>
-            </div>
-
-            {quiz.multipleChoice.length > 0 && (
-              <div className="space-y-6">
-                <h3 className="font-display text-lg font-semibold text-foreground border-b border-border pb-2">Section 1: Multiple Choice</h3>
-                <p className="text-sm text-muted-foreground">Choose the best answer for each question.</p>
-                {quiz.multipleChoice.map((q) => (
-                  <div key={q.number} className="space-y-3">
-                    <p className="text-sm font-medium text-foreground">
-                      <span className="mr-2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">{q.number}</span>
-                      {q.question}
-                    </p>
-                    <div className="ml-8 grid gap-2 sm:grid-cols-2">
-                      {(["A", "B", "C", "D"] as const).map((letter) => (
-                        <div key={letter} className="flex items-start gap-2 rounded-lg border border-border p-2.5 text-sm">
-                          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-primary/30 text-xs font-bold text-primary">{letter}</span>
-                          <span className="text-foreground">{q.options[letter]}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {quiz.shortAnswer.length > 0 && (
-              <div className="space-y-6">
-                <h3 className="font-display text-lg font-semibold text-foreground border-b border-border pb-2">Section 2: Short Answer</h3>
-                <p className="text-sm text-muted-foreground">Answer each question in complete sentences.</p>
-                {quiz.shortAnswer.map((q) => (
-                  <div key={q.number} className="space-y-2">
-                    <p className="text-sm font-medium text-foreground">
-                      <span className="mr-2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">{q.number}</span>
-                      {q.question}
-                    </p>
-                    <div className="ml-8 space-y-2">
-                      {Array.from({ length: 4 }).map((_, i) => (
-                        <div key={i} className="border-b border-muted-foreground/20 h-6" />
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <div className="mt-8 border-t-2 border-dashed border-border pt-6">
-              <h3 className="mb-4 flex items-center gap-2 font-display text-lg font-semibold text-foreground">
-                <CheckCircle className="h-5 w-5 text-secondary" /> Teacher Answer Key
-              </h3>
-              {quiz.multipleChoice.length > 0 && (
-                <div className="mb-4">
-                  <h4 className="mb-2 text-sm font-semibold text-muted-foreground uppercase tracking-wide">Multiple Choice</h4>
-                  <div className="grid grid-cols-5 gap-2">
-                    {quiz.multipleChoice.map((q) => (
-                      <div key={q.number} className="flex gap-1.5 text-sm">
-                        <span className="font-bold text-primary">{q.number}.</span>
-                        <span className="font-medium text-foreground">{q.correctAnswer}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-              {quiz.shortAnswer.length > 0 && (
-                <div>
-                  <h4 className="mb-2 text-sm font-semibold text-muted-foreground uppercase tracking-wide">Short Answer</h4>
-                  <div className="space-y-2">
-                    {quiz.shortAnswer.map((q) => (
-                      <div key={q.number} className="flex gap-2 text-sm">
-                        <span className="font-bold text-primary min-w-[2rem]">{q.number}.</span>
-                        <span className="text-foreground">{q.sampleAnswer}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+          <QuizOutput quiz={quiz} gradeLevel={gradeLevel} subject={subject} topic={topic} />
         </>
       )}
     </div>

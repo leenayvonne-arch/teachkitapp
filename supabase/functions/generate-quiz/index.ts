@@ -11,28 +11,35 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
 
   try {
-    const { gradeLevel, subject, topic, numberOfQuestions, regenerateAction, mcPercent } = await req.json();
+    const { gradeLevel, subject, topic, numberOfQuestions, regenerateAction, mcPercent, tfPercent } = await req.json();
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
     const total = Number(numberOfQuestions || 10);
     let mcCount: number;
+    let tfCount: number;
     let saCount: number;
 
     if (mcPercent !== undefined && mcPercent !== null) {
       // Custom split from user
+      const tf = tfPercent ?? 0;
       mcCount = Math.round(total * mcPercent / 100);
-      saCount = total - mcCount;
+      tfCount = Math.round(total * tf / 100);
+      saCount = total - mcCount - tfCount;
+      if (saCount < 0) { saCount = 0; tfCount = total - mcCount; }
     } else if (total <= 10) {
-      mcCount = Math.ceil(total * 0.6);
-      saCount = total - mcCount;
+      mcCount = Math.ceil(total * 0.5);
+      tfCount = Math.ceil(total * 0.2);
+      saCount = total - mcCount - tfCount;
     } else if (total <= 25) {
-      mcCount = Math.ceil(total * 0.75);
-      saCount = total - mcCount;
+      mcCount = Math.ceil(total * 0.5);
+      tfCount = Math.ceil(total * 0.25);
+      saCount = total - mcCount - tfCount;
     } else {
       saCount = 5;
-      mcCount = total - saCount;
+      tfCount = Math.ceil(total * 0.2);
+      mcCount = total - saCount - tfCount;
     }
 
     const systemPrompt = `You are TeachKit, an expert curriculum designer. You create professional, printable quizzes for K-12 teachers.
@@ -48,6 +55,13 @@ Always respond with a valid JSON object matching this exact structure (no markdo
       "correctAnswer": "A"
     }
   ],
+  "trueFalse": [
+    {
+      "number": 1,
+      "question": "string",
+      "correctAnswer": "True"
+    }
+  ],
   "shortAnswer": [
     {
       "number": 1,
@@ -58,7 +72,7 @@ Always respond with a valid JSON object matching this exact structure (no markdo
   "answerKey": [
     {
       "number": 1,
-      "section": "multiple_choice" | "short_answer",
+      "section": "multiple_choice" | "true_false" | "short_answer",
       "answer": "string"
     }
   ]
@@ -72,8 +86,9 @@ Topic: ${topic}
 
 Requirements:
 - Include exactly ${mcCount} multiple choice questions with options A, B, C, D.
+- Include exactly ${tfCount} true/false questions. Each true/false question must have a correctAnswer of either "True" or "False".
 - Include exactly ${saCount} short answer questions.
-- Number multiple choice questions 1–${mcCount} and short answer questions 1–${saCount}.
+- Number multiple choice questions 1–${mcCount}, true/false questions 1–${tfCount}, and short answer questions 1–${saCount}.
 - Questions should be rigorous, engaging, and grade-appropriate.
 - Provide a complete answer key covering all questions.
 ${regenerateAction === "simplify" ? "- IMPORTANT: Make questions easier — use simpler language, more straightforward questions, and basic recall." : ""}${regenerateAction === "challenge" ? "- IMPORTANT: Make questions harder — include analysis, application, and higher-order thinking." : ""}${regenerateAction === "shorten" ? "- IMPORTANT: Reduce the total number of questions by about half." : ""}${regenerateAction === "expand" ? "- IMPORTANT: Add 5 more questions beyond the requested count." : ""}${regenerateAction === "add_questions" ? "- IMPORTANT: Add 5 additional questions beyond the requested count." : ""}`;
@@ -122,6 +137,8 @@ ${regenerateAction === "simplify" ? "- IMPORTANT: Make questions easier — use 
     try {
       const cleaned = content.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
       quiz = JSON.parse(cleaned);
+      // Ensure trueFalse array exists
+      if (!quiz.trueFalse) quiz.trueFalse = [];
     } catch {
       console.error("Failed to parse AI response:", content);
       throw new Error("Failed to parse quiz");
