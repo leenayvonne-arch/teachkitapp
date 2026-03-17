@@ -43,6 +43,9 @@ const LessonQuizOutput = ({ quiz, lessonPlan }: Props) => {
           <p className="mt-2 text-sm text-muted-foreground">
             Grade: {lessonPlan.gradeLevel} &nbsp;•&nbsp; Subject: {lessonPlan.subject} &nbsp;•&nbsp; Topic: {lessonPlan.topic}
           </p>
+          <p className="mt-1 text-xs text-muted-foreground italic">
+            ⏱ Estimated completion time: ~{Math.max(5, Math.round((quiz.multipleChoice.length + quiz.shortAnswer.length) * 1.5))} minutes
+          </p>
           <div className="mx-auto mt-4 flex max-w-lg justify-between text-sm text-muted-foreground">
             <span>Name: ______________________</span>
             <span>Date: _______________</span>
