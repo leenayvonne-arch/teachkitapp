@@ -106,6 +106,7 @@ const QuizGenerator = () => {
           gradeLevel, subject, topic, numberOfQuestions, regenerateAction,
           mcPercent: useCustomSplit ? mcPercent : undefined,
           tfPercent: useCustomSplit ? tfPercent : undefined,
+          fitbPercent: useCustomSplit ? fitbPercent : undefined,
         },
       });
 
