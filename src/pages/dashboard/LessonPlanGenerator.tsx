@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
-import { Loader2, Download, Save, FileText, HelpCircle, BookOpen, Clock, Target, Lightbulb, Users, CheckCircle, List, Sparkles } from "lucide-react";
+import { Loader2, Download, Save, FileText, HelpCircle, BookOpen, Clock, Target, Lightbulb, Users, CheckCircle, List, Sparkles, Printer } from "lucide-react";
 import { saveResource, downloadElementAsPDF } from "@/lib/resourceUtils";
 import TopicSuggestions from "@/components/TopicSuggestions";
 import LessonPlanOutput from "@/components/lesson/LessonPlanOutput";
