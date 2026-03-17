@@ -31,7 +31,7 @@ interface Quiz {
 }
 
 const GRADES = ["K", "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th"];
-const QUESTION_COUNTS = ["5", "8", "10", "12", "15", "20"];
+const QUESTION_COUNTS = ["5", "10", "15", "20", "25", "30", "40", "50"];
 
 const QuizGenerator = () => {
   const [gradeLevel, setGradeLevel] = useState("");
@@ -128,6 +128,12 @@ const QuizGenerator = () => {
               </Select>
             </div>
           </div>
+
+          {Number(numberOfQuestions) >= 30 && (
+            <p className="text-sm text-muted-foreground rounded-lg bg-muted/50 px-3 py-2">
+              ℹ️ Larger quizzes may take a few extra seconds to generate.
+            </p>
+          )}
 
           <Button onClick={() => handleGenerate()} disabled={isGenerating} className="w-full rounded-xl" size="lg">
             {isGenerating ? (
