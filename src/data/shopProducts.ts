@@ -293,6 +293,46 @@ export const shopProducts: ShopProduct[] = [
       },
     ],
   },
+  {
+    slug: "math-exit-ticket-pack-3-5",
+    title: "Grades 3–5 Math Exit Ticket Pack (30 Pack)",
+    description: "30 ready-to-use math exit tickets designed for quick daily assessment in Grades 3–5. Perfect for checking understanding, end-of-lesson assessment, and small group instruction.",
+    fullDescription:
+      "30 ready-to-use math exit tickets designed for quick daily assessment in Grades 3–5. Perfect for checking understanding, end-of-lesson assessment, and small group instruction. Includes 30 exit tickets covering mixed math topics in a printable format with student answer space. Great for quick, no-prep classroom use.",
+    gradeLevel: "Grades 3–5",
+    price: "$5.00",
+    category: "Exit Tickets",
+    includes: [
+      "30 ready-to-use exit tickets",
+      "Mixed math topics",
+      "Printable format",
+      "Student answer space",
+      "No-prep classroom use",
+    ],
+    previewPages: [
+      {
+        subject: "Math",
+        title: "Exit Ticket — Place Value",
+        directions: "Answer the question below. Show your work.",
+        question: "What is the value of the digit 7 in the number 4,723? Explain how you know.",
+        responseLines: 4,
+      },
+      {
+        subject: "Math",
+        title: "Exit Ticket — Multiplication",
+        directions: "Solve the problem and show your work.",
+        question: "A classroom has 6 rows of desks with 4 desks in each row. How many desks are there in all? Write a multiplication equation and solve.",
+        responseLines: 4,
+      },
+      {
+        subject: "Math",
+        title: "Exit Ticket — Fractions",
+        directions: "Read carefully and answer the question below.",
+        question: "Which is greater: 2/3 or 3/5? Use a drawing or explanation to prove your answer.",
+        responseLines: 4,
+      },
+    ],
+  },
 ];
 
 export function getProductBySlug(slug: string): ShopProduct | undefined {
