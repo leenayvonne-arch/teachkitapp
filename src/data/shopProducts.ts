@@ -1,3 +1,8 @@
+export interface PreviewPage {
+  label: string;
+  description: string;
+}
+
 export interface ShopProduct {
   slug: string;
   title: string;
@@ -7,6 +12,7 @@ export interface ShopProduct {
   price: string;
   category: string;
   includes: string[];
+  previewPages: PreviewPage[];
 }
 
 export const shopProducts: ShopProduct[] = [
@@ -27,6 +33,11 @@ export const shopProducts: ShopProduct[] = [
       "Student response lines included",
       "Professional cover page",
     ],
+    previewPages: [
+      { label: "Page 1 — Math Exit Ticket", description: "Solve: 3/4 + 1/2. Show your work and explain your strategy." },
+      { label: "Page 2 — ELA Exit Ticket", description: "What is the main idea of the passage? Use one detail to support your answer." },
+      { label: "Page 3 — Science Exit Ticket", description: "Draw and label the three states of matter. Give one example of each." },
+    ],
   },
   {
     slug: "exit-tickets-6-8",
@@ -45,6 +56,11 @@ export const shopProducts: ShopProduct[] = [
       "Student response lines included",
       "Professional cover page",
     ],
+    previewPages: [
+      { label: "Page 1 — Math Critical Thinking", description: "A store sells 3 notebooks for $7.50. What is the unit price? Explain your reasoning." },
+      { label: "Page 2 — History Analysis", description: "How did the Industrial Revolution change daily life? Give two specific examples." },
+      { label: "Page 3 — Science Exit Ticket", description: "Compare mitosis and meiosis using a Venn diagram." },
+    ],
   },
   {
     slug: "differentiated-lesson-bundle",
@@ -60,6 +76,10 @@ export const shopProducts: ShopProduct[] = [
       "5 versions per lesson (Standard, Simplified, Advanced, ELL, IEP)",
       "Aligned to common standards",
       "Printable PDF format",
+    ],
+    previewPages: [
+      { label: "Standard Version", description: "Objective: Students will identify the three branches of government and explain their roles." },
+      { label: "ELL Support Version", description: "Vocabulary-first approach with visual aids and sentence frames for key civics terms." },
     ],
   },
   {
@@ -77,6 +97,10 @@ export const shopProducts: ShopProduct[] = [
       "Answer keys included",
       "Printable PDF format",
     ],
+    previewPages: [
+      { label: "Fractions Worksheet", description: "Add and subtract fractions with unlike denominators. Includes 12 practice problems." },
+      { label: "Geometry Worksheet", description: "Identify and calculate the area of triangles, rectangles, and parallelograms." },
+    ],
   },
   {
     slug: "reading-comprehension-toolkit",
@@ -92,6 +116,10 @@ export const shopProducts: ShopProduct[] = [
       "Text-dependent comprehension questions",
       "Vocabulary support",
       "Printable PDF format",
+    ],
+    previewPages: [
+      { label: "Fiction Passage", description: "'The Lighthouse Keeper' — a short story with 5 text-dependent comprehension questions." },
+      { label: "Nonfiction Passage", description: "'Coral Reefs in Danger' — informational text with vocabulary and analysis questions." },
     ],
   },
   {
@@ -109,6 +137,10 @@ export const shopProducts: ShopProduct[] = [
       "Multiple difficulty levels",
       "Printable PDF format",
     ],
+    previewPages: [
+      { label: "Lab Report Template", description: "Guided sections: Hypothesis → Materials → Procedure → Data → Conclusion with sentence starters." },
+      { label: "Vocabulary Support Page", description: "Key science terms with definitions, examples, and space for student illustrations." },
+    ],
   },
   {
     slug: "social-studies-project-pack",
@@ -125,6 +157,10 @@ export const shopProducts: ShopProduct[] = [
       "Graphic organizers",
       "Printable PDF format",
     ],
+    previewPages: [
+      { label: "Research Guide", description: "Step-by-step instructions for choosing a topic, gathering sources, and organizing notes." },
+      { label: "Graphic Organizer", description: "Compare & contrast organizer for analyzing two historical events or figures." },
+    ],
   },
   {
     slug: "classroom-quiz-builder-kit",
@@ -140,6 +176,10 @@ export const shopProducts: ShopProduct[] = [
       "Answer keys included",
       "Mix-and-match format",
       "Printable PDF format",
+    ],
+    previewPages: [
+      { label: "Math Quiz Sample", description: "10 multiple-choice questions covering fractions, decimals, and order of operations." },
+      { label: "History Quiz Sample", description: "5 short-answer questions on the American Revolution with answer key." },
     ],
   },
 ];
