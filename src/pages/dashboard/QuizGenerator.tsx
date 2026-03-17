@@ -6,7 +6,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
-import { Loader2, Download, Save, HelpCircle, Sparkles, CheckCircle } from "lucide-react";
+import { Loader2, Download, Save, HelpCircle, Sparkles, CheckCircle, SlidersHorizontal } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Slider } from "@/components/ui/slider";
 import { saveResource, downloadElementAsPDF } from "@/lib/resourceUtils";
 import RegenerateOptions, { type RegenerateAction } from "@/components/lesson/RegenerateOptions";
 
@@ -32,12 +34,15 @@ interface Quiz {
 
 const GRADES = ["K", "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th"];
 const QUESTION_COUNTS = ["5", "10", "15", "20", "25", "30", "40", "50"];
+const DEFAULT_MC_PERCENT = -1; // -1 means "auto"
 
 const QuizGenerator = () => {
   const [gradeLevel, setGradeLevel] = useState("");
   const [subject, setSubject] = useState("");
   const [topic, setTopic] = useState("");
   const [numberOfQuestions, setNumberOfQuestions] = useState("10");
+  const [useCustomSplit, setUseCustomSplit] = useState(false);
+  const [mcPercent, setMcPercent] = useState(70);
   const [isGenerating, setIsGenerating] = useState(false);
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [isRegenerating, setIsRegenerating] = useState(false);
@@ -55,7 +60,7 @@ const QuizGenerator = () => {
 
     try {
       const { data, error } = await supabase.functions.invoke("generate-quiz", {
-        body: { gradeLevel, subject, topic, numberOfQuestions, regenerateAction },
+        body: { gradeLevel, subject, topic, numberOfQuestions, regenerateAction, mcPercent: useCustomSplit ? mcPercent : undefined },
       });
 
       if (error) throw error;
@@ -127,6 +132,35 @@ const QuizGenerator = () => {
                 </SelectContent>
               </Select>
             </div>
+          </div>
+
+          <div className="space-y-3 rounded-xl border border-border p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <SlidersHorizontal className="h-4 w-4 text-muted-foreground" />
+                <Label className="text-sm font-medium">Custom Question Type Distribution</Label>
+              </div>
+              <Switch checked={useCustomSplit} onCheckedChange={setUseCustomSplit} />
+            </div>
+            {useCustomSplit && (
+              <div className="space-y-3 pt-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">Multiple Choice: <span className="font-semibold text-foreground">{mcPercent}%</span></span>
+                  <span className="text-muted-foreground">Short Answer: <span className="font-semibold text-foreground">{100 - mcPercent}%</span></span>
+                </div>
+                <Slider
+                  value={[mcPercent]}
+                  onValueChange={([v]) => setMcPercent(v)}
+                  min={20}
+                  max={100}
+                  step={5}
+                  className="w-full"
+                />
+                <p className="text-xs text-muted-foreground">
+                  ≈ {Math.round(Number(numberOfQuestions) * mcPercent / 100)} multiple choice, {Number(numberOfQuestions) - Math.round(Number(numberOfQuestions) * mcPercent / 100)} short answer
+                </p>
+              </div>
+            )}
           </div>
 
           {Number(numberOfQuestions) >= 30 && (
