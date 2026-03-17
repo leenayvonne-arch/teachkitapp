@@ -39,7 +39,7 @@ Always respond with a valid JSON object matching this exact structure (no markdo
   "duration": "string",
   "standards": ["string array of 2-3 academic standards, e.g. CCSS or NGSS codes with descriptions"],
   "objectives": ["string array of 2-3 measurable learning objectives using Bloom's taxonomy verbs"],
-  "keyVocabulary": [{"term": "string", "definition": "string"}],
+  "keyVocabulary": [{"term": "string", "definition": "string"}],  // IMPORTANT: Generate at least 5-8 vocabulary terms
   "materials": ["string array of materials and resources needed"],
   "instructionalStrategies": ["string array of 2-3 teaching strategies"],
   "procedures": {
