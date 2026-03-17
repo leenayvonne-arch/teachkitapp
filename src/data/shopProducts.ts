@@ -1,6 +1,9 @@
 export interface PreviewPage {
-  label: string;
-  description: string;
+  subject: string;
+  title: string;
+  directions: string;
+  question: string;
+  responseLines: number; // how many blank lines to show
 }
 
 export interface ShopProduct {
@@ -34,9 +37,27 @@ export const shopProducts: ShopProduct[] = [
       "Professional cover page",
     ],
     previewPages: [
-      { label: "Page 1 — Math Exit Ticket", description: "Solve: 3/4 + 1/2. Show your work and explain your strategy." },
-      { label: "Page 2 — ELA Exit Ticket", description: "What is the main idea of the passage? Use one detail to support your answer." },
-      { label: "Page 3 — Science Exit Ticket", description: "Draw and label the three states of matter. Give one example of each." },
+      {
+        subject: "Math",
+        title: "Exit Ticket — Fractions",
+        directions: "Solve the problem below. Show your work in the space provided.",
+        question: "Maria ate 2/4 of a pizza. Jake ate 1/4 of the same pizza. How much pizza did they eat altogether? Write your answer as a fraction and explain how you solved it.",
+        responseLines: 4,
+      },
+      {
+        subject: "ELA",
+        title: "Exit Ticket — Main Idea",
+        directions: "Read the passage your teacher provided, then answer the question below.",
+        question: "What is the main idea of today's passage? Write one sentence that tells the main idea, and give one detail from the text that supports it.",
+        responseLines: 4,
+      },
+      {
+        subject: "Social Studies",
+        title: "Exit Ticket — Communities",
+        directions: "Think about what we learned today, then answer the question below.",
+        question: "Name two ways that people in a community help each other. Give a real-life example for each one.",
+        responseLines: 4,
+      },
     ],
   },
   {
@@ -57,9 +78,27 @@ export const shopProducts: ShopProduct[] = [
       "Professional cover page",
     ],
     previewPages: [
-      { label: "Page 1 — Math Critical Thinking", description: "A store sells 3 notebooks for $7.50. What is the unit price? Explain your reasoning." },
-      { label: "Page 2 — History Analysis", description: "How did the Industrial Revolution change daily life? Give two specific examples." },
-      { label: "Page 3 — Science Exit Ticket", description: "Compare mitosis and meiosis using a Venn diagram." },
+      {
+        subject: "Math",
+        title: "Exit Ticket — Ratios & Unit Rates",
+        directions: "Show all work. Use complete sentences to explain your reasoning.",
+        question: "A store sells 3 notebooks for $7.50. Another store sells 5 notebooks for $11.25. Which store offers the better deal? Find the unit price for each and explain your answer.",
+        responseLines: 5,
+      },
+      {
+        subject: "ELA",
+        title: "Exit Ticket — Author's Purpose",
+        directions: "Refer to today's reading passage to answer the question below.",
+        question: "What was the author's primary purpose in writing this passage — to inform, persuade, or entertain? Cite two specific pieces of evidence from the text to support your answer.",
+        responseLines: 5,
+      },
+      {
+        subject: "History",
+        title: "Exit Ticket — Industrial Revolution",
+        directions: "Use what you learned in today's lesson to answer the following.",
+        question: "Describe two ways the Industrial Revolution changed daily life for ordinary people. Include at least one positive and one negative effect in your response.",
+        responseLines: 5,
+      },
     ],
   },
   {
@@ -78,8 +117,20 @@ export const shopProducts: ShopProduct[] = [
       "Printable PDF format",
     ],
     previewPages: [
-      { label: "Standard Version", description: "Objective: Students will identify the three branches of government and explain their roles." },
-      { label: "ELL Support Version", description: "Vocabulary-first approach with visual aids and sentence frames for key civics terms." },
+      {
+        subject: "Civics",
+        title: "Lesson Plan — Three Branches of Government (Standard)",
+        directions: "Objective: Students will identify the three branches of U.S. government and explain their roles.",
+        question: "Warm-Up: Look at the diagram on the board. Which branch do you think makes the laws? Write your prediction below.",
+        responseLines: 3,
+      },
+      {
+        subject: "Civics",
+        title: "Lesson Plan — Three Branches of Government (ELL Support)",
+        directions: "Vocabulary-first approach. Use visual aids and sentence frames provided on the next page.",
+        question: "The branch that makes laws is called the ___________. Use the word bank: Legislative, Executive, Judicial.",
+        responseLines: 3,
+      },
     ],
   },
   {
@@ -98,8 +149,20 @@ export const shopProducts: ShopProduct[] = [
       "Printable PDF format",
     ],
     previewPages: [
-      { label: "Fractions Worksheet", description: "Add and subtract fractions with unlike denominators. Includes 12 practice problems." },
-      { label: "Geometry Worksheet", description: "Identify and calculate the area of triangles, rectangles, and parallelograms." },
+      {
+        subject: "Math",
+        title: "Worksheet — Adding Fractions with Unlike Denominators",
+        directions: "Add each pair of fractions. Simplify your answer if possible. Show your work.",
+        question: "1)  1/3 + 1/6 = ______\n2)  2/5 + 1/4 = ______\n3)  3/8 + 1/2 = ______",
+        responseLines: 4,
+      },
+      {
+        subject: "Math",
+        title: "Worksheet — Area of Shapes",
+        directions: "Find the area of each shape. Remember to label your answer with square units.",
+        question: "1) A rectangle with length 8 cm and width 5 cm.\n2) A triangle with base 10 in and height 6 in.\n3) A parallelogram with base 7 m and height 4 m.",
+        responseLines: 4,
+      },
     ],
   },
   {
@@ -118,8 +181,20 @@ export const shopProducts: ShopProduct[] = [
       "Printable PDF format",
     ],
     previewPages: [
-      { label: "Fiction Passage", description: "'The Lighthouse Keeper' — a short story with 5 text-dependent comprehension questions." },
-      { label: "Nonfiction Passage", description: "'Coral Reefs in Danger' — informational text with vocabulary and analysis questions." },
+      {
+        subject: "ELA — Fiction",
+        title: "Reading Passage — \"The Lighthouse Keeper\"",
+        directions: "Read the passage carefully, then answer the questions below using evidence from the text.",
+        question: "1) What is the central conflict the main character faces?\n2) How does the setting influence the mood of the story?\n3) Find one example of figurative language and explain its meaning.",
+        responseLines: 5,
+      },
+      {
+        subject: "ELA — Nonfiction",
+        title: "Reading Passage — \"Coral Reefs in Danger\"",
+        directions: "Read the informational text, then complete the questions using text evidence.",
+        question: "1) What are two main threats to coral reefs described in the article?\n2) The author states coral reefs are \"the rainforests of the sea.\" What does this comparison mean?",
+        responseLines: 5,
+      },
     ],
   },
   {
@@ -138,8 +213,20 @@ export const shopProducts: ShopProduct[] = [
       "Printable PDF format",
     ],
     previewPages: [
-      { label: "Lab Report Template", description: "Guided sections: Hypothesis → Materials → Procedure → Data → Conclusion with sentence starters." },
-      { label: "Vocabulary Support Page", description: "Key science terms with definitions, examples, and space for student illustrations." },
+      {
+        subject: "Science",
+        title: "Lab Report Template — Guided Version",
+        directions: "Complete each section of the lab report using the sentence starters provided.",
+        question: "Hypothesis: I think that _________ because _________.\n\nMaterials: List all materials you used.\n\nConclusion: My hypothesis was (supported / not supported) because _________.",
+        responseLines: 4,
+      },
+      {
+        subject: "Science",
+        title: "Vocabulary Support — Key Lab Terms",
+        directions: "Match each term to its definition, then use it in a sentence.",
+        question: "1) Variable — _______________\n2) Control group — _______________\n3) Data — _______________",
+        responseLines: 4,
+      },
     ],
   },
   {
@@ -158,8 +245,20 @@ export const shopProducts: ShopProduct[] = [
       "Printable PDF format",
     ],
     previewPages: [
-      { label: "Research Guide", description: "Step-by-step instructions for choosing a topic, gathering sources, and organizing notes." },
-      { label: "Graphic Organizer", description: "Compare & contrast organizer for analyzing two historical events or figures." },
+      {
+        subject: "Social Studies",
+        title: "Research Project Guide — Step by Step",
+        directions: "Follow each step to complete your research project. Check off each step as you finish.",
+        question: "Step 1: Choose your topic from the list provided.\nStep 2: Find at least 3 reliable sources.\nStep 3: Take notes using the graphic organizer on the next page.\nStep 4: Write a short report (3–5 paragraphs).",
+        responseLines: 3,
+      },
+      {
+        subject: "Social Studies",
+        title: "Graphic Organizer — Compare & Contrast",
+        directions: "Use this organizer to compare two historical events, people, or places.",
+        question: "Topic 1: _______________     Topic 2: _______________\n\nSimilarities:\n•\n•\n\nDifferences:\n•\n•",
+        responseLines: 4,
+      },
     ],
   },
   {
@@ -178,8 +277,20 @@ export const shopProducts: ShopProduct[] = [
       "Printable PDF format",
     ],
     previewPages: [
-      { label: "Math Quiz Sample", description: "10 multiple-choice questions covering fractions, decimals, and order of operations." },
-      { label: "History Quiz Sample", description: "5 short-answer questions on the American Revolution with answer key." },
+      {
+        subject: "Math",
+        title: "Quiz — Fractions & Decimals",
+        directions: "Choose the best answer for each question. Show your work where indicated.",
+        question: "1) What is 3/5 as a decimal?\n   A) 0.35   B) 0.6   C) 0.53   D) 0.8\n\n2) Which fraction is equivalent to 0.75?\n   A) 3/5   B) 7/5   C) 3/4   D) 4/5",
+        responseLines: 3,
+      },
+      {
+        subject: "History",
+        title: "Quiz — The American Revolution",
+        directions: "Answer each question in complete sentences.",
+        question: "1) What event is often considered the \"shot heard round the world\"? Why was it significant?\n\n2) Name two key figures of the American Revolution and describe their contributions.",
+        responseLines: 5,
+      },
     ],
   },
 ];
