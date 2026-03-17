@@ -56,6 +56,11 @@ export const shopProducts: ShopProduct[] = [
       "Student response lines included",
       "Professional cover page",
     ],
+    previewPages: [
+      { label: "Page 1 — Math Critical Thinking", description: "A store sells 3 notebooks for $7.50. What is the unit price? Explain your reasoning." },
+      { label: "Page 2 — History Analysis", description: "How did the Industrial Revolution change daily life? Give two specific examples." },
+      { label: "Page 3 — Science Exit Ticket", description: "Compare mitosis and meiosis using a Venn diagram." },
+    ],
   },
   {
     slug: "differentiated-lesson-bundle",
