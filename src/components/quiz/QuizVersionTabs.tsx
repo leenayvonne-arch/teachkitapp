@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Save, Download } from "lucide-react";
+import { Save, Download, Printer } from "lucide-react";
 import { saveResource, downloadElementAsPDF } from "@/lib/resourceUtils";
 import QuizOutput from "@/components/quiz/QuizOutput";
 import type { Quiz } from "@/pages/dashboard/QuizGenerator";
@@ -69,6 +69,9 @@ const QuizVersionTabs = ({ versions, gradeLevel, subject, topic, activeTab, onTa
                 </Button>
                 <Button variant="outline" className="rounded-xl" onClick={() => handleDownload(v)}>
                   <Download className="mr-2 h-4 w-4" /> Download PDF
+                </Button>
+                <Button variant="outline" className="rounded-xl" onClick={() => window.print()}>
+                  <Printer className="mr-2 h-4 w-4" /> Print
                 </Button>
               </div>
               <QuizOutput

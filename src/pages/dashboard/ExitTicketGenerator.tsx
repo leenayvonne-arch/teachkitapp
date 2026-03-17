@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
-import { Loader2, Download, Save, LogOut, Sparkles, Brain, Lightbulb, Target } from "lucide-react";
+import { Loader2, Download, Save, LogOut, Sparkles, Brain, Lightbulb, Target, Printer } from "lucide-react";
 import { saveResource, downloadElementAsPDF } from "@/lib/resourceUtils";
 import RegenerateOptions, { type RegenerateAction } from "@/components/lesson/RegenerateOptions";
 import TopicSuggestions from "@/components/TopicSuggestions";
@@ -148,6 +148,9 @@ const ExitTicketGenerator = () => {
             </Button>
             <Button variant="outline" className="rounded-xl" onClick={handleDownloadPDF}>
               <Download className="mr-2 h-4 w-4" /> Download PDF
+            </Button>
+            <Button variant="outline" className="rounded-xl" onClick={() => window.print()}>
+              <Printer className="mr-2 h-4 w-4" /> Print
             </Button>
           </div>
 

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Save, Download, CheckCircle } from "lucide-react";
+import { Save, Download, CheckCircle, Printer } from "lucide-react";
 import { saveResource, downloadElementAsPDF } from "@/lib/resourceUtils";
 import type { LessonPlan, LessonWorksheet } from "@/pages/dashboard/LessonPlanGenerator";
 
@@ -33,6 +33,9 @@ const LessonWorksheetOutput = ({ worksheet, lessonPlan }: Props) => {
         </Button>
         <Button variant="outline" className="rounded-xl" onClick={handleDownloadPDF}>
           <Download className="mr-2 h-4 w-4" /> Download PDF
+        </Button>
+        <Button variant="outline" className="rounded-xl" onClick={() => window.print()}>
+          <Printer className="mr-2 h-4 w-4" /> Print
         </Button>
       </div>
 
