@@ -56,8 +56,9 @@ const QuizGenerator = () => {
   const [topic, setTopic] = useState("");
   const [numberOfQuestions, setNumberOfQuestions] = useState("10");
   const [useCustomSplit, setUseCustomSplit] = useState(false);
-  const [mcPercent, setMcPercent] = useState(50);
+  const [mcPercent, setMcPercent] = useState(40);
   const [tfPercent, setTfPercent] = useState(20);
+  const [fitbPercent, setFitbPercent] = useState(20);
   const [isGenerating, setIsGenerating] = useState(false);
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [isRegenerating, setIsRegenerating] = useState(false);
