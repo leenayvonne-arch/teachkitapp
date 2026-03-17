@@ -58,7 +58,7 @@ const QuizGenerator = () => {
 
     try {
       const { data, error } = await supabase.functions.invoke("generate-quiz", {
-        body: { gradeLevel, subject, topic, numberOfQuestions, regenerateAction },
+        body: { gradeLevel, subject, topic, numberOfQuestions, regenerateAction, mcPercent: useCustomSplit ? mcPercent : undefined },
       });
 
       if (error) throw error;
