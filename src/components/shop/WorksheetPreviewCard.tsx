@@ -1,3 +1,4 @@
+import { GraduationCap } from "lucide-react";
 import type { PreviewPage } from "@/data/shopProducts";
 
 interface WorksheetPreviewCardProps {
