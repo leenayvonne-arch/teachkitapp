@@ -189,6 +189,20 @@ const QuizGenerator = () => {
                 </SelectContent>
               </Select>
             </div>
+            <div>
+              <Label>Difficulty Level</Label>
+              <Select value={difficulty} onValueChange={setDifficulty}>
+                <SelectTrigger className="mt-1 rounded-xl"><SelectValue placeholder="Medium" /></SelectTrigger>
+                <SelectContent>
+                  {DIFFICULTY_LEVELS.map((d) => (
+                    <SelectItem key={d.value} value={d.value}>{d.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {DIFFICULTY_LEVELS.find((d) => d.value === difficulty)?.description}
+              </p>
+            </div>
           </div>
 
           <div className="space-y-3 rounded-xl border border-border p-4">
