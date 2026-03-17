@@ -1,6 +1,4 @@
-import { Button } from "@/components/ui/button";
-import { Download, Package } from "lucide-react";
-import { downloadElementAsPDF } from "@/lib/resourceUtils";
+import { Package } from "lucide-react";
 import { exitTicketData } from "@/data/exitTicketMegaPack";
 
 const sectionColors: Record<string, string> = {
