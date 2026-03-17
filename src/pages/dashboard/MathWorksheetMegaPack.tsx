@@ -1,5 +1,5 @@
 import { Package, GraduationCap } from "lucide-react";
-import { downloadElementAsPDF } from "@/lib/resourceUtils";
+
 import { mathWorksheetData, mathWorksheetTopics } from "@/data/mathWorksheetMegaPack";
 
 const topicColors: Record<string, string> = {
