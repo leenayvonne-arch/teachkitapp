@@ -20,6 +20,47 @@ export interface ShopProduct {
 
 export const shopProducts: ShopProduct[] = [
   {
+    slug: "math-classroom-bundle-3-5",
+    title: "Grades 3–5 Math Classroom Resource Bundle (Best Value)",
+    description: "Everything you need for a full math workflow in one bundle — 50 worksheets, 30 exit tickets, and 20 quizzes with answer keys.",
+    fullDescription:
+      "Everything you need for a full math workflow in one bundle. Perfect for daily practice, assessment, homework, and test prep. Includes 50 Math Worksheets, 30 Exit Tickets, and 20 Quizzes — all with answer keys included. Covers key topics like fractions, geometry, measurement, and word problems. Save hours of planning time with ready-to-use classroom resources.",
+    gradeLevel: "Grades 3–5",
+    price: "$13.00",
+    category: "Bundles",
+    includes: [
+      "50 printable math worksheets",
+      "30 ready-to-use exit tickets",
+      "20 math quizzes with multiple question types",
+      "Answer keys included for all resources",
+      "Covers fractions, geometry, measurement & word problems",
+      "Printable PDF format",
+    ],
+    previewPages: [
+      {
+        subject: "Math — Worksheets",
+        title: "Worksheet — Adding Fractions with Unlike Denominators",
+        directions: "Add each pair of fractions. Simplify your answer if possible. Show your work.",
+        question: "1)  1/3 + 1/6 = ______\n2)  2/5 + 1/4 = ______\n3)  3/8 + 1/2 = ______",
+        responseLines: 4,
+      },
+      {
+        subject: "Math — Exit Tickets",
+        title: "Exit Ticket — Place Value",
+        directions: "Answer the question below. Show your work.",
+        question: "What is the value of the digit 7 in the number 4,723? Explain how you know.",
+        responseLines: 4,
+      },
+      {
+        subject: "Math — Quizzes",
+        title: "Quiz — Word Problems",
+        directions: "Read each problem carefully. Show all work and label your answer.",
+        question: "1) A baker made 144 muffins and packed them into boxes of 12. How many boxes did he fill?\n2) Sofia read 45 pages on Monday and 38 pages on Tuesday. How many pages did she read in all?",
+        responseLines: 5,
+      },
+    ],
+  },
+  {
     slug: "exit-tickets-3-5",
     title: "100 Exit Tickets for Grades 3–5",
     description: "Ready-to-use daily exit tickets for Math, ELA, Science, Social Studies, and History.",
