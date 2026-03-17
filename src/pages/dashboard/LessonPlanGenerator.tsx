@@ -296,6 +296,7 @@ const LessonPlanGenerator = () => {
             <div>
               <Label>Topic *</Label>
               <Input value={topic} onChange={(e) => setTopic(e.target.value)} placeholder="e.g. Fractions, Photosynthesis" className="mt-1 rounded-xl" />
+              <TopicSuggestions subject={subject} onSelect={setTopic} />
             </div>
             <div>
               <Label>Lesson Title <span className="text-muted-foreground text-xs">(optional)</span></Label>

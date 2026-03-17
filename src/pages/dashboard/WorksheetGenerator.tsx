@@ -120,6 +120,7 @@ const WorksheetGenerator = () => {
             <div>
               <Label>Topic *</Label>
               <Input value={topic} onChange={(e) => setTopic(e.target.value)} placeholder="e.g. Fractions, Photosynthesis" className="mt-1 rounded-xl" />
+              <TopicSuggestions subject={subject} onSelect={setTopic} />
             </div>
             <div>
               <Label>Number of Questions</Label>
