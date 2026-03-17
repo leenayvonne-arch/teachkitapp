@@ -1,6 +1,4 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Download, Package, GraduationCap } from "lucide-react";
+import { Package, GraduationCap } from "lucide-react";
 import { downloadElementAsPDF } from "@/lib/resourceUtils";
 import { mathWorksheetData, mathWorksheetTopics } from "@/data/mathWorksheetMegaPack";
 
