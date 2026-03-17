@@ -159,45 +159,50 @@ const ExitTicketGenerator = () => {
             />
           </div>
 
-          <div id="exit-ticket-output" className="rounded-2xl border bg-card p-8 space-y-6">
-            <div className="border-b border-border pb-5 text-center">
-              <div className="mx-auto mb-3 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary">
-                <LogOut className="h-3.5 w-3.5" /> Exit Ticket
-              </div>
-              <h2 className="font-display text-xl font-bold text-foreground">{exitTicket.title}</h2>
-              <p className="mt-1.5 text-sm text-muted-foreground">
-                Grade: {gradeLevel} &nbsp;•&nbsp; Subject: {subject} &nbsp;•&nbsp; Topic: {topic}
-              </p>
-              <div className="mx-auto mt-4 flex max-w-md gap-6 text-sm text-muted-foreground">
-                <span>Name: ______________________</span>
-                <span>Date: _______________</span>
-              </div>
-            </div>
-
-            <div className="space-y-6">
-              {exitTicket.questions.map((q) => (
-                <div key={q.number} className="rounded-xl border border-border p-5 space-y-3">
-                  <div className="flex items-center gap-3">
-                    <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">{q.number}</span>
-                    <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${typeBg[q.type] || "bg-muted text-muted-foreground"}`}>
-                      {typeIcon[q.type]}
-                      {q.typeLabel}
-                    </span>
-                  </div>
-                  <p className="text-sm font-medium text-foreground leading-relaxed">{q.question}</p>
-                  <div className="space-y-2 pt-1">
-                    {Array.from({ length: q.linesForResponse || 3 }).map((_, i) => (
-                      <div key={i} className="border-b border-muted-foreground/20 h-6" />
-                    ))}
-                  </div>
+          <div id="exit-ticket-output" className="rounded-2xl border bg-white dark:bg-card shadow-sm" style={{ maxWidth: 816, margin: "0 auto", fontFamily: "'Georgia', 'Times New Roman', serif" }}>
+            <div className="px-12 py-10">
+              {/* Header */}
+              <div className="rounded-lg bg-muted/30 px-5 py-4 border-b-2 border-foreground/20 text-center">
+                <div className="mx-auto mb-3 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 font-sans text-xs font-semibold uppercase tracking-wider text-primary">
+                  <LogOut className="h-3.5 w-3.5" /> Exit Ticket
                 </div>
-              ))}
-            </div>
+                <h2 className="font-display text-xl font-bold text-foreground">{exitTicket.title}</h2>
+                <p className="mt-1.5 text-sm text-muted-foreground">
+                  Grade: {gradeLevel} &nbsp;•&nbsp; Subject: {subject} &nbsp;•&nbsp; Topic: {topic}
+                </p>
+                <div className="mx-auto mt-4 flex max-w-md justify-between text-sm text-muted-foreground">
+                  <span>Name: ______________________</span>
+                  <span>Date: _______________</span>
+                </div>
+              </div>
 
-            <div className="border-t border-border pt-4 text-center">
-              <p className="text-xs text-muted-foreground italic">
-                ✅ Hand this in before you leave. Thank you!
-              </p>
+              {/* Questions */}
+              <div className="mt-8 space-y-4">
+                {exitTicket.questions.map((q) => (
+                  <div key={q.number} className="rounded-md border border-border/40 px-5 py-4 space-y-3">
+                    <div className="flex items-center gap-3">
+                      <span className="font-bold text-foreground text-sm">{q.number})</span>
+                      <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 font-sans text-xs font-medium ${typeBg[q.type] || "bg-muted text-muted-foreground"}`}>
+                        {typeIcon[q.type]}
+                        {q.typeLabel}
+                      </span>
+                    </div>
+                    <p className="text-sm font-medium text-foreground leading-relaxed">{q.question}</p>
+                    <div className="ml-5 space-y-3 pt-1">
+                      {Array.from({ length: q.linesForResponse || 3 }).map((_, i) => (
+                        <div key={i} className="border-b border-muted-foreground/25 h-5" />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Footer */}
+              <div className="mt-10 flex items-center justify-between border-t border-foreground/10 pt-3">
+                <span className="text-[10px] text-muted-foreground/50">© TeachKit</span>
+                <span className="text-xs text-muted-foreground italic">✅ Hand this in before you leave.</span>
+                <span className="text-[10px] text-muted-foreground/50">Page 1</span>
+              </div>
             </div>
           </div>
         </>

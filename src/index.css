@@ -88,14 +88,17 @@
   #quiz-output,
   #quiz-output *,
   #lesson-quiz-output,
-  #lesson-quiz-output * {
+  #lesson-quiz-output *,
+  #exit-ticket-output,
+  #exit-ticket-output * {
     visibility: visible;
   }
 
   #worksheet-output,
   #lesson-worksheet-output,
   #quiz-output,
-  #lesson-quiz-output {
+  #lesson-quiz-output,
+  #exit-ticket-output {
     position: absolute;
     left: 0;
     top: 0;
