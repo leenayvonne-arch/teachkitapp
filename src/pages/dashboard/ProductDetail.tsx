@@ -32,8 +32,8 @@ const ProductDetail = () => {
     setTimeout(() => {
       setBuying(false);
       toast({
-        title: "Thanks for your interest!",
-        description: "Checkout coming soon. We'll notify you when purchases go live.",
+        title: "Thank you for your purchase!",
+        description: "Download will be available soon.",
       });
     }, 1200);
   };
