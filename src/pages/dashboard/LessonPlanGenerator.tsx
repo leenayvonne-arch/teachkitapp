@@ -222,6 +222,43 @@ const LessonPlanGenerator = () => {
 
   const handleDownloadPDF = () => downloadElementAsPDF("lesson-plan-output", lessonPlan?.lessonTitle || "lesson-plan");
 
+  const handleDifferentiate = async (level: LessonDiffLevel) => {
+    if (!lessonPlan) return;
+    setIsDiffGenerating(true);
+    setDiffGeneratingLevel(level);
+    try {
+      const { data, error } = await supabase.functions.invoke("generate-lesson", {
+        body: {
+          gradeLevel: lessonPlan.gradeLevel,
+          subject: lessonPlan.subject,
+          topic: lessonPlan.topic,
+          lessonTitle: lessonPlan.lessonTitle,
+          classDuration: lessonPlan.duration,
+          standards: lessonPlan.standards.join("; "),
+          objectives: lessonPlan.objectives.join("; "),
+          differentiationLevel: level,
+          studentNeeds,
+          instructionalStyle,
+        },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      const newVersion = { level, lessonPlan: data.lessonPlan as LessonPlan };
+      setDiffVersions((prev) => {
+        const filtered = prev.filter((v) => v.level !== level);
+        return [...filtered, newVersion];
+      });
+      setActiveDiffTab(level);
+      toast({ title: "Differentiated lesson generated!", description: `${level.charAt(0).toUpperCase() + level.slice(1)} version is ready.` });
+    } catch (e: any) {
+      console.error(e);
+      toast({ title: "Generation failed", description: e.message || "Something went wrong.", variant: "destructive" });
+    } finally {
+      setIsDiffGenerating(false);
+      setDiffGeneratingLevel(null);
+    }
+  };
+
   return (
     <div className="mx-auto max-w-4xl">
       <h1 className="mb-1 font-display text-2xl font-bold text-foreground">Lesson Plan Generator</h1>
