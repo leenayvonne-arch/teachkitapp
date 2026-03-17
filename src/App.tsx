@@ -16,6 +16,7 @@ import QuizGenerator from "./pages/dashboard/QuizGenerator";
 import ExitTicketGenerator from "./pages/dashboard/ExitTicketGenerator";
 import LessonLibrary from "./pages/dashboard/LessonLibrary";
 import PlaceholderPage from "./pages/dashboard/PlaceholderPage";
+import ProfilePage from "./pages/dashboard/ProfilePage";
 
 const queryClient = new QueryClient();
 
@@ -44,7 +45,7 @@ const App = () => (
             <Route path="exit-tickets" element={<ExitTicketGenerator />} />
             <Route path="library" element={<LessonLibrary />} />
             <Route path="pricing" element={<PlaceholderPage title="Pricing" description="Manage your TeachKit subscription." />} />
-            <Route path="account" element={<PlaceholderPage title="Account" description="Manage your account settings." />} />
+            <Route path="account" element={<ProfilePage />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
