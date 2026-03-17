@@ -51,6 +51,7 @@ const App = () => (
             <Route path="library" element={<LessonLibrary />} />
             <Route path="pricing" element={<PlaceholderPage title="Pricing" description="Manage your TeachKit subscription." />} />
             <Route path="account" element={<ProfilePage />} />
+            <Route path="shop" element={<ResourceShop />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
