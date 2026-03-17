@@ -171,6 +171,9 @@ const QuizGenerator = () => {
               <p className="mt-2 text-sm text-muted-foreground">
                 Grade: {gradeLevel} &nbsp;•&nbsp; Subject: {subject} &nbsp;•&nbsp; Topic: {topic}
               </p>
+              <p className="mt-1 text-xs text-muted-foreground italic">
+                ⏱ Estimated completion time: ~{Math.max(5, Math.round((quiz.multipleChoice.length + quiz.shortAnswer.length) * 1.5)} minutes
+              </p>
               <div className="mx-auto mt-4 flex max-w-lg justify-between text-sm text-muted-foreground">
                 <span>Name: ______________________</span>
                 <span>Date: _______________</span>
