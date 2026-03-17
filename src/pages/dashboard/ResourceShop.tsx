@@ -100,20 +100,24 @@ const ResourceShop = () => {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
+              className={isBundle ? "sm:col-span-2 lg:col-span-2" : ""}
             >
-              <Card className={`flex h-full flex-col transition-shadow hover:shadow-md ${isBundle ? "ring-2 ring-primary" : ""}`}>
-                <CardHeader className="pb-3">
+              <Card className={`flex h-full flex-col transition-shadow hover:shadow-md ${isBundle ? "ring-2 ring-primary shadow-lg bg-primary/[0.03] relative overflow-hidden" : ""}`}>
+                {isBundle && (
+                  <div className="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-primary to-primary/60" />
+                )}
+                <CardHeader className={isBundle ? "pb-3 pt-5" : "pb-3"}>
                   <div className="mb-2 flex flex-wrap items-center gap-2">
                     <Badge variant="secondary" className="text-[11px]">{product.category}</Badge>
                     <Badge variant="outline" className="text-[11px]">{product.gradeLevel}</Badge>
                     {isBundle && (
                       <>
-                        <Badge className="bg-primary text-primary-foreground text-[11px]">Best Value</Badge>
-                        <Badge className="bg-accent text-accent-foreground text-[11px]">Most Popular</Badge>
+                        <Badge className="bg-primary text-primary-foreground text-[11px] font-semibold">🏆 Best Value</Badge>
+                        <Badge className="bg-accent text-accent-foreground text-[11px] font-semibold">🔥 Most Popular</Badge>
                       </>
                     )}
                   </div>
-                  <h3 className="text-base font-semibold leading-snug text-foreground">{product.title}</h3>
+                  <h3 className={`font-semibold leading-snug text-foreground ${isBundle ? "text-lg" : "text-base"}`}>{product.title}</h3>
                 </CardHeader>
                 <CardContent className="flex-1 pb-4">
                   <p className="text-sm text-muted-foreground">{product.description}</p>
@@ -123,9 +127,12 @@ const ResourceShop = () => {
                     {isBundle && (
                       <span className="mr-2 text-sm text-muted-foreground line-through">$25.97</span>
                     )}
-                    <span className="text-lg font-bold text-foreground">{product.price}</span>
+                    <span className={`font-bold text-foreground ${isBundle ? "text-xl" : "text-lg"}`}>{product.price}</span>
+                    {isBundle && (
+                      <span className="ml-2 text-xs font-medium text-primary">Save 50%</span>
+                    )}
                   </div>
-                  <Button size="sm" asChild>
+                  <Button size={isBundle ? "default" : "sm"} asChild>
                     <Link to={`/dashboard/shop/${product.slug}`}>View Details</Link>
                   </Button>
                 </CardFooter>
