@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Save, Download } from "lucide-react";
+import { Save, Download, Printer } from "lucide-react";
 import { saveResource, downloadElementAsPDF } from "@/lib/resourceUtils";
 import LessonPlanOutput from "@/components/lesson/LessonPlanOutput";
 import type { LessonPlan } from "@/pages/dashboard/LessonPlanGenerator";
