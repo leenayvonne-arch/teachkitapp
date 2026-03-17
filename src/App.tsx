@@ -14,7 +14,6 @@ import LessonPlanGenerator from "./pages/dashboard/LessonPlanGenerator";
 import WorksheetGenerator from "./pages/dashboard/WorksheetGenerator";
 import QuizGenerator from "./pages/dashboard/QuizGenerator";
 import ExitTicketGenerator from "./pages/dashboard/ExitTicketGenerator";
-import ExitTicketPack from "./pages/dashboard/ExitTicketPack";
 import LessonLibrary from "./pages/dashboard/LessonLibrary";
 import PlaceholderPage from "./pages/dashboard/PlaceholderPage";
 import ProfilePage from "./pages/dashboard/ProfilePage";
@@ -44,7 +43,6 @@ const App = () => (
             <Route path="worksheets" element={<WorksheetGenerator />} />
             <Route path="quizzes" element={<QuizGenerator />} />
             <Route path="exit-tickets" element={<ExitTicketGenerator />} />
-            <Route path="exit-ticket-pack" element={<ExitTicketPack />} />
             <Route path="library" element={<LessonLibrary />} />
             <Route path="pricing" element={<PlaceholderPage title="Pricing" description="Manage your TeachKit subscription." />} />
             <Route path="account" element={<ProfilePage />} />

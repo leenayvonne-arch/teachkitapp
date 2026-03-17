@@ -1,4 +1,4 @@
-import { BookOpen, FileText, HelpCircle, LogOut, LayoutDashboard, Library, CreditCard, User, Sparkles, Package } from "lucide-react";
+import { BookOpen, FileText, HelpCircle, LogOut, LayoutDashboard, Library, CreditCard, User, Sparkles } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -21,7 +21,6 @@ const navItems = [
   { title: "Worksheet Generator", url: "/dashboard/worksheets", icon: FileText },
   { title: "Quiz Generator", url: "/dashboard/quizzes", icon: HelpCircle },
   { title: "Exit Ticket Generator", url: "/dashboard/exit-tickets", icon: LogOut },
-  { title: "Exit Ticket Pack", url: "/dashboard/exit-ticket-pack", icon: Package },
   { title: "Lesson Library", url: "/dashboard/library", icon: Library },
   { title: "Pricing", url: "/dashboard/pricing", icon: CreditCard },
   { title: "Account", url: "/dashboard/account", icon: User },
