@@ -15,6 +15,7 @@ import WorksheetGenerator from "./pages/dashboard/WorksheetGenerator";
 import QuizGenerator from "./pages/dashboard/QuizGenerator";
 import ExitTicketGenerator from "./pages/dashboard/ExitTicketGenerator";
 import ExitTicketMegaPack from "./pages/dashboard/ExitTicketMegaPack";
+import ExitTicketMegaPack68 from "./pages/dashboard/ExitTicketMegaPack68";
 import LessonLibrary from "./pages/dashboard/LessonLibrary";
 import PlaceholderPage from "./pages/dashboard/PlaceholderPage";
 import ProfilePage from "./pages/dashboard/ProfilePage";
