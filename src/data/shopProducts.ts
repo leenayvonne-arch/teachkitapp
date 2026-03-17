@@ -333,6 +333,46 @@ export const shopProducts: ShopProduct[] = [
       },
     ],
   },
+  {
+    slug: "math-quiz-pack-3-5",
+    title: "Grades 3–5 Math Quiz Pack (20 Assessments)",
+    description: "20 ready-to-use math quizzes for Grades 3–5 designed to assess student understanding. Perfect for weekly assessments, review, and test prep.",
+    fullDescription:
+      "20 ready-to-use math quizzes for Grades 3–5 designed to assess student understanding. Perfect for weekly assessments, review, and test prep. Includes 20 quizzes with multiple question types, answer keys included, in a printable format. Save time with ready-to-use assessments.",
+    gradeLevel: "Grades 3–5",
+    price: "$6.00",
+    category: "Quizzes",
+    includes: [
+      "20 ready-to-use quizzes",
+      "Multiple question types",
+      "Answer keys included",
+      "Printable format",
+      "Aligned to Grades 3–5 math standards",
+    ],
+    previewPages: [
+      {
+        subject: "Math",
+        title: "Quiz — Addition & Subtraction",
+        directions: "Solve each problem. Show your work.",
+        question: "1) 347 + 586 = ______\n2) 1,002 − 478 = ______\n3) Emma had 250 stickers and gave away 118. How many does she have left?",
+        responseLines: 4,
+      },
+      {
+        subject: "Math",
+        title: "Quiz — Geometry Basics",
+        directions: "Answer each question. Use complete sentences where needed.",
+        question: "1) How many sides does a hexagon have?\n2) What is the difference between a square and a rectangle?\n3) Draw a line of symmetry on the shape your teacher provides.",
+        responseLines: 4,
+      },
+      {
+        subject: "Math",
+        title: "Quiz — Word Problems",
+        directions: "Read each problem carefully. Show all work and label your answer.",
+        question: "1) A baker made 144 muffins and packed them into boxes of 12. How many boxes did he fill?\n2) Sofia read 45 pages on Monday and 38 pages on Tuesday. How many pages did she read in all?",
+        responseLines: 5,
+      },
+    ],
+  },
 ];
 
 export function getProductBySlug(slug: string): ShopProduct | undefined {
