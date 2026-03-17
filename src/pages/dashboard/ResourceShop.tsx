@@ -19,13 +19,20 @@ const ResourceShop = () => {
   const [category, setCategory] = useState("All");
   const [sort, setSort] = useState<SortOption>("default");
 
+  const [search, setSearch] = useState("");
+
   const filtered = useMemo(() => {
-    let list = category === "All" ? shopProducts : shopProducts.filter((p) => p.category === category);
+    const q = search.toLowerCase();
+    let list = shopProducts.filter((p) => {
+      const matchesCategory = category === "All" || p.category === category;
+      const matchesSearch = !q || p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q) || p.category.toLowerCase().includes(q);
+      return matchesCategory && matchesSearch;
+    });
     if (sort === "price-low") list = [...list].sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
     else if (sort === "price-high") list = [...list].sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
     else if (sort === "name") list = [...list].sort((a, b) => a.title.localeCompare(b.title));
     return list;
-  }, [category, sort]);
+  }, [category, sort, search]);
 
   return (
     <div>
