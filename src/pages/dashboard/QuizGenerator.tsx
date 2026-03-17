@@ -60,6 +60,7 @@ const QuizGenerator = () => {
   const [subject, setSubject] = useState("");
   const [topic, setTopic] = useState("");
   const [numberOfQuestions, setNumberOfQuestions] = useState("10");
+  const [difficulty, setDifficulty] = useState("medium");
   const [useCustomSplit, setUseCustomSplit] = useState(false);
   const [mcPercent, setMcPercent] = useState(40);
   const [tfPercent, setTfPercent] = useState(20);
