@@ -111,7 +111,7 @@
     border-radius: 0 !important;
   }
 
-  /* Remove background colors/artifacts */
+  /* Force print color accuracy */
   #worksheet-output,
   #worksheet-output *,
   #lesson-worksheet-output,
@@ -124,25 +124,61 @@
   #exit-ticket-output * {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
-    background: white !important;
     color: black !important;
+  }
+
+  /* White background for main containers */
+  #worksheet-output,
+  #lesson-worksheet-output,
+  #quiz-output,
+  #lesson-quiz-output,
+  #exit-ticket-output {
+    background: white !important;
+  }
+
+  /* Keep light header shading */
+  #worksheet-output .rounded-lg[style*="linear-gradient"],
+  #lesson-worksheet-output .rounded-lg[style*="linear-gradient"],
+  #quiz-output .rounded-lg[style*="linear-gradient"],
+  #lesson-quiz-output .rounded-lg[style*="linear-gradient"],
+  #exit-ticket-output .rounded-lg[style*="linear-gradient"] {
+    background: hsl(0 0% 96%) !important;
   }
 
   /* Keep subtle borders for question boxes */
   #worksheet-output .rounded-md,
+  #worksheet-output .rounded-lg,
   #lesson-worksheet-output .rounded-md,
+  #lesson-worksheet-output .rounded-lg,
   #quiz-output .rounded-md,
+  #quiz-output .rounded-lg,
   #lesson-quiz-output .rounded-md,
-  #exit-ticket-output .rounded-md {
+  #lesson-quiz-output .rounded-lg,
+  #exit-ticket-output .rounded-md,
+  #exit-ticket-output .rounded-lg {
     border-color: hsl(0 0% 85%) !important;
   }
 
-  /* Keep header shading very light */
+  /* Question blocks – light bg and avoid splitting across pages */
+  #worksheet-output .rounded-lg[style*="muted"],
+  #lesson-worksheet-output .rounded-lg[style*="muted"],
+  #quiz-output .rounded-lg[style*="muted"],
+  #lesson-quiz-output .rounded-lg[style*="muted"],
+  #exit-ticket-output .rounded-lg[style*="muted"] {
+    background: hsl(0 0% 99%) !important;
+    break-inside: avoid;
+  }
+
+  /* Directions box */
   #worksheet-output .bg-muted\/30,
   #lesson-worksheet-output .bg-muted\/30,
   #quiz-output .bg-muted\/30,
   #lesson-quiz-output .bg-muted\/30,
-  #exit-ticket-output .bg-muted\/30 {
+  #exit-ticket-output .bg-muted\/30,
+  #worksheet-output [style*="muted/0.25"],
+  #lesson-worksheet-output [style*="muted/0.25"],
+  #quiz-output [style*="muted/0.25"],
+  #lesson-quiz-output [style*="muted/0.25"] {
     background: hsl(0 0% 96%) !important;
   }
 
@@ -153,12 +189,19 @@
   }
 
   /* Subject badge */
-  #worksheet-output .bg-primary\/10,
-  #lesson-worksheet-output .bg-primary\/10,
+  #worksheet-output [style*="primary/0.12"],
+  #lesson-worksheet-output [style*="primary/0.12"],
   #quiz-output .bg-primary\/10,
   #lesson-quiz-output .bg-primary\/10,
   #exit-ticket-output .bg-primary\/10 {
     background: hsl(0 0% 92%) !important;
+    color: black !important;
+  }
+
+  /* Numbered circle badges */
+  #worksheet-output [style*="primary/0.1"],
+  #lesson-worksheet-output [style*="primary/0.1"] {
+    background: hsl(0 0% 90%) !important;
     color: black !important;
   }
 
@@ -171,7 +214,7 @@
     border-color: hsl(0 0% 75%) !important;
   }
 
-  /* Clean page breaks */
+  /* Answer key page break */
   #worksheet-output .border-t-2.border-dashed,
   #lesson-worksheet-output .border-t-2.border-dashed,
   #quiz-output .border-t-2.border-dashed,
