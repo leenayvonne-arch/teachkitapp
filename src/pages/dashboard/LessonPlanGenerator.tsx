@@ -127,7 +127,7 @@ const LessonPlanGenerator = () => {
     const isRegen = !!regenerateAction;
     if (isRegen) { setIsRegenerating(true); setRegenAction(regenerateAction!); }
     else { setIsGenerating(true); }
-    if (!isRegen) { setWorksheet(null); setQuiz(null); }
+    if (!isRegen) { setWorksheet(null); setQuiz(null); setDiffVersions([]); }
 
     try {
       const { data, error } = await supabase.functions.invoke("generate-lesson", {
