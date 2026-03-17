@@ -116,6 +116,7 @@ const QuizGenerator = () => {
       // Ensure trueFalse array exists for backward compat
       const quizData = data.quiz;
       if (!quizData.trueFalse) quizData.trueFalse = [];
+      if (!quizData.fillInTheBlank) quizData.fillInTheBlank = [];
       setQuiz(quizData);
       toast({ title: isRegen ? "Quiz regenerated!" : "Quiz generated!" });
     } catch (e: any) {
