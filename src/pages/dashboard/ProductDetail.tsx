@@ -53,9 +53,15 @@ const ProductDetail = () => {
         {/* Main content */}
         <div className="space-y-6">
           <div>
-            <div className="mb-3 flex items-center gap-2">
+            <div className="mb-3 flex flex-wrap items-center gap-2">
               <Badge variant="secondary">{product.category}</Badge>
               <Badge variant="outline">{product.gradeLevel}</Badge>
+              {slug === "math-classroom-bundle-3-5" && (
+                <>
+                  <Badge className="bg-primary text-primary-foreground">Best Value</Badge>
+                  <Badge className="bg-accent text-accent-foreground">Most Popular</Badge>
+                </>
+              )}
             </div>
             <h1 className="text-2xl font-bold text-foreground">{product.title}</h1>
             <p className="mt-2 text-muted-foreground">{product.fullDescription}</p>
