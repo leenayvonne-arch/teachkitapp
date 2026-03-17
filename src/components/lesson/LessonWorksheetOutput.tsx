@@ -44,7 +44,10 @@ const LessonWorksheetOutput = ({ worksheet, lessonPlan }: Props) => {
         <div className="px-[0.75in] py-[0.6in]">
           {/* Premium Header Bar */}
           <div className="rounded-lg border border-border/60" style={{ background: "linear-gradient(135deg, hsl(var(--muted)) 0%, hsl(var(--muted)/0.4) 100%)" }}>
-            <div className="flex items-start justify-between gap-4 px-6 py-5">
+            <div className="flex items-center justify-between px-6 pt-2 pb-0">
+              <span className="font-sans text-[9px] font-semibold tracking-[0.15em] uppercase text-muted-foreground/50">TeachKit</span>
+            </div>
+            <div className="flex items-start justify-between gap-4 px-6 pb-5 pt-1">
               <div className="space-y-2">
                 <span className="inline-block rounded-full px-3 py-1 font-sans text-[11px] font-bold tracking-wide uppercase" style={{ background: "hsl(var(--primary)/0.12)", color: "hsl(var(--primary))" }}>
                   {lessonPlan.subject}

@@ -19,7 +19,10 @@ const WorksheetPreviewCard = ({ page, compact = false, onClick }: WorksheetPrevi
       <div className={compact ? "px-5 py-4" : "px-7 py-5"} style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}>
         {/* Premium Header */}
         <div className="rounded-lg border border-border/50 px-4 py-3" style={{ background: "linear-gradient(135deg, hsl(var(--muted)) 0%, hsl(var(--muted)/0.4) 100%)" }}>
-          <div className="flex items-start justify-between gap-2">
+          <div className="flex items-center justify-between pb-0">
+            <span className={`font-sans font-semibold tracking-[0.15em] uppercase text-muted-foreground/50 ${compact ? "text-[6px]" : "text-[7px]"}`}>TeachKit</span>
+          </div>
+          <div className="flex items-start justify-between gap-2 pt-1">
             <div className="space-y-1.5">
               <span className={`inline-block rounded-full px-2.5 py-0.5 font-sans font-bold tracking-wide uppercase ${compact ? "text-[8px]" : "text-[9px]"}`} style={{ background: "hsl(var(--primary)/0.12)", color: "hsl(var(--primary))" }}>
                 {page.subject}
