@@ -11,7 +11,7 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
 
   try {
-    const { gradeLevel, subject, topic, numberOfQuestions, difficultyLevel } =
+    const { gradeLevel, subject, topic, numberOfQuestions, difficultyLevel, regenerateAction } =
       await req.json();
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
