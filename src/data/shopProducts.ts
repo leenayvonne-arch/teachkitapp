@@ -97,6 +97,10 @@ export const shopProducts: ShopProduct[] = [
       "Answer keys included",
       "Printable PDF format",
     ],
+    previewPages: [
+      { label: "Fractions Worksheet", description: "Add and subtract fractions with unlike denominators. Includes 12 practice problems." },
+      { label: "Geometry Worksheet", description: "Identify and calculate the area of triangles, rectangles, and parallelograms." },
+    ],
   },
   {
     slug: "reading-comprehension-toolkit",
