@@ -40,7 +40,7 @@ const LessonWorksheetOutput = ({ worksheet, lessonPlan }: Props) => {
         {/* Page with print margins */}
         <div className="px-12 py-10">
           {/* Header */}
-          <div className="flex items-start justify-between gap-4 border-b-2 border-foreground/20 pb-4">
+          <div className="flex items-start justify-between gap-4 rounded-lg bg-muted/30 px-5 py-4 border-b-2 border-foreground/20">
             <div>
               <span className="inline-block rounded bg-primary/10 px-2.5 py-0.5 font-sans text-xs font-semibold text-primary">
                 {lessonPlan.subject}
@@ -65,9 +65,9 @@ const LessonWorksheetOutput = ({ worksheet, lessonPlan }: Props) => {
           </div>
 
           {/* Questions */}
-          <div className="mt-8 space-y-0">
+          <div className="mt-8 space-y-4">
             {worksheet.questions.map((q, idx) => (
-              <div key={q.number} className={idx > 0 ? "border-t border-dashed border-border pt-6 mt-6" : ""}>
+              <div key={q.number} className="rounded-md border border-border/40 px-5 py-4">
                 <p className="text-sm text-foreground">
                   <span className="mr-2 font-bold text-foreground">{q.number})</span>
                   {q.question}
