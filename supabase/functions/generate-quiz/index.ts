@@ -59,7 +59,8 @@ Requirements:
 - Include exactly ${saCount} short answer questions.
 - Number multiple choice questions 1–${mcCount} and short answer questions 1–${saCount}.
 - Questions should be rigorous, engaging, and grade-appropriate.
-- Provide a complete answer key covering all questions.`;
+- Provide a complete answer key covering all questions.
+${regenerateAction === "simplify" ? "- IMPORTANT: Make questions easier — use simpler language, more straightforward questions, and basic recall." : ""}${regenerateAction === "challenge" ? "- IMPORTANT: Make questions harder — include analysis, application, and higher-order thinking." : ""}${regenerateAction === "shorten" ? "- IMPORTANT: Reduce the total number of questions by about half." : ""}${regenerateAction === "expand" ? "- IMPORTANT: Add 5 more questions beyond the requested count." : ""}${regenerateAction === "add_questions" ? "- IMPORTANT: Add 5 additional questions beyond the requested count." : ""}`;
 
     const response = await fetch(
       "https://ai.gateway.lovable.dev/v1/chat/completions",

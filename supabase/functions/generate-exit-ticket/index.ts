@@ -43,7 +43,8 @@ Requirements:
 - Include at least one comprehension check question, one reflection question, and one skill application question.
 - Questions should be concise and answerable in 2–5 minutes total.
 - Make questions grade-appropriate, clear, and focused on the topic.
-- Vary the cognitive demand across questions.`;
+- Vary the cognitive demand across questions.
+${regenerateAction === "simplify" ? "- IMPORTANT: Make questions simpler and more accessible." : ""}${regenerateAction === "challenge" ? "- IMPORTANT: Increase rigor — add analysis and synthesis questions." : ""}${regenerateAction === "shorten" ? "- IMPORTANT: Generate only 3 questions." : ""}${regenerateAction === "expand" ? "- IMPORTANT: Generate 5 questions with more depth." : ""}`;
 
     const response = await fetch(
       "https://ai.gateway.lovable.dev/v1/chat/completions",
