@@ -73,3 +73,88 @@
     font-family: var(--font-body);
   }
 }
+
+/* Print styles for worksheet pages */
+@media print {
+  /* Hide everything except the worksheet */
+  body * {
+    visibility: hidden;
+  }
+
+  #worksheet-output,
+  #worksheet-output *,
+  #lesson-worksheet-output,
+  #lesson-worksheet-output * {
+    visibility: visible;
+  }
+
+  #worksheet-output,
+  #lesson-worksheet-output {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  /* Remove background colors/artifacts */
+  #worksheet-output,
+  #worksheet-output *,
+  #lesson-worksheet-output,
+  #lesson-worksheet-output * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background: white !important;
+    color: black !important;
+  }
+
+  /* Keep subtle borders for question boxes */
+  #worksheet-output .rounded-md,
+  #lesson-worksheet-output .rounded-md {
+    border-color: hsl(0 0% 85%) !important;
+  }
+
+  /* Keep header shading very light */
+  #worksheet-output .bg-muted\/30,
+  #lesson-worksheet-output .bg-muted\/30 {
+    background: hsl(0 0% 96%) !important;
+  }
+
+  /* Subject badge */
+  #worksheet-output .bg-primary\/10,
+  #lesson-worksheet-output .bg-primary\/10 {
+    background: hsl(0 0% 92%) !important;
+    color: black !important;
+  }
+
+  /* Answer lines stay visible */
+  #worksheet-output .border-b,
+  #lesson-worksheet-output .border-b {
+    border-color: hsl(0 0% 75%) !important;
+  }
+
+  /* Clean page breaks */
+  #worksheet-output .border-t-2.border-dashed,
+  #lesson-worksheet-output .border-t-2.border-dashed {
+    page-break-before: always;
+    border: none !important;
+    padding-top: 2rem !important;
+  }
+
+  /* Hide navigation, buttons, sidebars */
+  nav, aside, header, footer,
+  button, [role="navigation"],
+  .sidebar, .toaster {
+    display: none !important;
+  }
+
+  @page {
+    margin: 0.75in;
+    size: letter;
+  }
+}
