@@ -112,6 +112,12 @@ const LessonPlanGenerator = () => {
   const [isRegeneratingQuiz, setIsRegeneratingQuiz] = useState(false);
   const [regenQuizAction, setRegenQuizAction] = useState<RegenerateAction | null>(null);
 
+  // Differentiation state
+  const [diffVersions, setDiffVersions] = useState<{ level: LessonDiffLevel; lessonPlan: LessonPlan }[]>([]);
+  const [isDiffGenerating, setIsDiffGenerating] = useState(false);
+  const [diffGeneratingLevel, setDiffGeneratingLevel] = useState<LessonDiffLevel | null>(null);
+  const [activeDiffTab, setActiveDiffTab] = useState<LessonDiffLevel>("simplified");
+
   const handleGenerate = async (regenerateAction?: RegenerateAction) => {
     if (!gradeLevel || !subject || !topic) {
       toast({ title: "Missing fields", description: "Please fill in Grade Level, Subject, and Topic.", variant: "destructive" });
