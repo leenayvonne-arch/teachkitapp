@@ -1,7 +1,5 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Download, Package, GraduationCap } from "lucide-react";
-import { downloadElementAsPDF } from "@/lib/resourceUtils";
+import { Package, GraduationCap } from "lucide-react";
+
 import { mathWorksheetData, mathWorksheetTopics } from "@/data/mathWorksheetMegaPack";
 
 const topicColors: Record<string, string> = {
@@ -26,26 +24,11 @@ const typeBadgeColors: Record<string, string> = {
 };
 
 const MathWorksheetMegaPack = () => {
-  const [showAnswers, setShowAnswers] = useState(false);
-
-  const handleDownload = () =>
-    downloadElementAsPDF("math-mega-pack-output", "Math-Worksheet-Mega-Pack-Grades-3-5");
-
   return (
     <div className="mx-auto max-w-4xl">
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="font-display text-2xl font-bold text-foreground">Math Worksheet Mega Pack</h1>
-          <p className="text-muted-foreground">50 printable math worksheets for Grades 3–5</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <Button variant="outline" size="sm" onClick={() => setShowAnswers(!showAnswers)}>
-            {showAnswers ? "Hide Answers" : "Show Answers"}
-          </Button>
-          <Button onClick={handleDownload} className="rounded-xl">
-            <Download className="mr-2 h-4 w-4" /> Download PDF
-          </Button>
-        </div>
+      <div className="mb-6">
+        <h1 className="font-display text-2xl font-bold text-foreground">Math Worksheet Mega Pack</h1>
+        <p className="text-muted-foreground">50 printable math worksheets for Grades 3–5</p>
       </div>
 
       <div id="math-mega-pack-output" className="space-y-0 rounded-2xl border bg-card">
@@ -132,12 +115,6 @@ const MathWorksheetMegaPack = () => {
                             <div key={i} className="h-6 border-b border-muted-foreground/20" />
                           ))}
                         </div>
-                        {/* Answer (toggle) */}
-                        {showAnswers && (
-                          <div className="mt-2 rounded-lg bg-primary/5 px-4 py-2 text-sm text-primary">
-                            <span className="font-semibold">Answer:</span> {q.answer}
-                          </div>
-                        )}
                       </div>
                     ))}
                   </div>
