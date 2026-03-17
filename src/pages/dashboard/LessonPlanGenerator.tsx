@@ -10,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { Loader2, Download, Save, FileText, HelpCircle, BookOpen, Clock, Target, Lightbulb, Users, CheckCircle, List, Sparkles } from "lucide-react";
 import { saveResource, downloadElementAsPDF } from "@/lib/resourceUtils";
+import TopicSuggestions from "@/components/TopicSuggestions";
 import LessonPlanOutput from "@/components/lesson/LessonPlanOutput";
 import LessonWorksheetOutput from "@/components/lesson/LessonWorksheetOutput";
 import LessonQuizOutput from "@/components/lesson/LessonQuizOutput";
