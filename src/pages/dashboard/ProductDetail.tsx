@@ -128,6 +128,9 @@ const ProductDetail = () => {
                   </Link>
                 </Button>
               )}
+              <p className="text-center text-[11px] text-muted-foreground">
+                Instant digital download · PDF format
+              </p>
             </CardContent>
           </Card>
         </div>
