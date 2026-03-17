@@ -106,8 +106,13 @@ const ProductDetail = () => {
           <Card>
             <CardContent className="space-y-4 pt-6">
               <div className="text-center">
+                {slug === "math-classroom-bundle-3-5" && (
+                  <p className="mb-1 text-sm text-muted-foreground line-through">Total Value: $25.97</p>
+                )}
                 <span className="text-3xl font-bold text-foreground">{product.price}</span>
-                <p className="mt-1 text-xs text-muted-foreground">One-time purchase</p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {slug === "math-classroom-bundle-3-5" ? "Bundle price · Save 50%" : "One-time purchase"}
+                </p>
               </div>
               <Button className="w-full" size="lg" onClick={handleBuy} disabled={buying}>
                 <ShoppingCart className="mr-2 h-4 w-4" />

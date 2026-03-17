@@ -92,33 +92,47 @@ const ResourceShop = () => {
       </h2>
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {filtered.map((product, i) => (
-          <motion.div
-            key={product.slug}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.05 }}
-          >
-            <Card className="flex h-full flex-col transition-shadow hover:shadow-md">
-              <CardHeader className="pb-3">
-                <div className="mb-2 flex items-center gap-2">
-                  <Badge variant="secondary" className="text-[11px]">{product.category}</Badge>
-                  <Badge variant="outline" className="text-[11px]">{product.gradeLevel}</Badge>
-                </div>
-                <h3 className="text-base font-semibold leading-snug text-foreground">{product.title}</h3>
-              </CardHeader>
-              <CardContent className="flex-1 pb-4">
-                <p className="text-sm text-muted-foreground">{product.description}</p>
-              </CardContent>
-              <CardFooter className="flex items-center justify-between border-t pt-4">
-                <span className="text-lg font-bold text-foreground">{product.price}</span>
-                <Button size="sm" asChild>
-                  <Link to={`/dashboard/shop/${product.slug}`}>View Details</Link>
-                </Button>
-              </CardFooter>
-            </Card>
-          </motion.div>
-        ))}
+        {filtered.map((product, i) => {
+          const isBundle = product.slug === "math-classroom-bundle-3-5";
+          return (
+            <motion.div
+              key={product.slug}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.05 }}
+            >
+              <Card className={`flex h-full flex-col transition-shadow hover:shadow-md ${isBundle ? "ring-2 ring-primary" : ""}`}>
+                <CardHeader className="pb-3">
+                  <div className="mb-2 flex flex-wrap items-center gap-2">
+                    <Badge variant="secondary" className="text-[11px]">{product.category}</Badge>
+                    <Badge variant="outline" className="text-[11px]">{product.gradeLevel}</Badge>
+                    {isBundle && (
+                      <>
+                        <Badge className="bg-primary text-primary-foreground text-[11px]">Best Value</Badge>
+                        <Badge className="bg-accent text-accent-foreground text-[11px]">Most Popular</Badge>
+                      </>
+                    )}
+                  </div>
+                  <h3 className="text-base font-semibold leading-snug text-foreground">{product.title}</h3>
+                </CardHeader>
+                <CardContent className="flex-1 pb-4">
+                  <p className="text-sm text-muted-foreground">{product.description}</p>
+                </CardContent>
+                <CardFooter className="flex items-center justify-between border-t pt-4">
+                  <div>
+                    {isBundle && (
+                      <span className="mr-2 text-sm text-muted-foreground line-through">$25.97</span>
+                    )}
+                    <span className="text-lg font-bold text-foreground">{product.price}</span>
+                  </div>
+                  <Button size="sm" asChild>
+                    <Link to={`/dashboard/shop/${product.slug}`}>View Details</Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+            </motion.div>
+          );
+        })}
       </div>
     </div>
   );
