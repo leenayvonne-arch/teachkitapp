@@ -12,6 +12,8 @@ import { Slider } from "@/components/ui/slider";
 import { saveResource, downloadElementAsPDF } from "@/lib/resourceUtils";
 import RegenerateOptions, { type RegenerateAction } from "@/components/lesson/RegenerateOptions";
 import QuizOutput from "@/components/quiz/QuizOutput";
+import DifferentiationPanel, { type DiffLevel } from "@/components/quiz/DifferentiationPanel";
+import QuizVersionTabs from "@/components/quiz/QuizVersionTabs";
 
 export interface TFQuestion {
   number: number;
@@ -70,6 +72,12 @@ const QuizGenerator = () => {
   const [isRegenerating, setIsRegenerating] = useState(false);
   const [regenAction, setRegenAction] = useState<RegenerateAction | null>(null);
 
+  // Differentiation state
+  const [diffVersions, setDiffVersions] = useState<{ level: DiffLevel; quiz: Quiz }[]>([]);
+  const [isDifferentiating, setIsDifferentiating] = useState(false);
+  const [diffGeneratingLevel, setDiffGeneratingLevel] = useState<DiffLevel | null>(null);
+  const [activeDiffTab, setActiveDiffTab] = useState<DiffLevel>("simplified");
+
   const saPercent = Math.max(0, 100 - mcPercent - tfPercent - fitbPercent);
   const total = Number(numberOfQuestions);
 
@@ -77,7 +85,6 @@ const QuizGenerator = () => {
     const sum = mc + tf + fitb;
     if (sum > 100) {
       const excess = sum - 100;
-      // Reduce SA first (implicit), then proportionally
       return { mc, tf, fitb: Math.max(0, fitb - excess) };
     }
     return { mc, tf, fitb };
@@ -94,6 +101,12 @@ const QuizGenerator = () => {
   const handleFitbChange = (v: number) => {
     const { mc, tf } = clampOthers(mcPercent, tfPercent, v);
     setMcPercent(mc); setTfPercent(tf); setFitbPercent(v);
+  };
+
+  const normalizeQuiz = (q: any): Quiz => {
+    if (!q.trueFalse) q.trueFalse = [];
+    if (!q.fillInTheBlank) q.fillInTheBlank = [];
+    return q;
   };
 
   const handleGenerate = async (regenerateAction?: RegenerateAction) => {
@@ -119,11 +132,9 @@ const QuizGenerator = () => {
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
 
-      // Ensure trueFalse array exists for backward compat
-      const quizData = data.quiz;
-      if (!quizData.trueFalse) quizData.trueFalse = [];
-      if (!quizData.fillInTheBlank) quizData.fillInTheBlank = [];
-      setQuiz(quizData);
+      setQuiz(normalizeQuiz(data.quiz));
+      // Clear differentiated versions when generating a new base quiz
+      if (!isRegen) setDiffVersions([]);
       toast({ title: isRegen ? "Quiz regenerated!" : "Quiz generated!" });
     } catch (e: any) {
       console.error(e);
@@ -132,6 +143,44 @@ const QuizGenerator = () => {
       setIsGenerating(false);
       setIsRegenerating(false);
       setRegenAction(null);
+    }
+  };
+
+  const handleDifferentiate = async (level: DiffLevel) => {
+    if (!quiz) return;
+    setIsDifferentiating(true);
+    setDiffGeneratingLevel(level);
+
+    try {
+      const { data, error } = await supabase.functions.invoke("generate-quiz", {
+        body: {
+          gradeLevel, subject, topic, numberOfQuestions, difficulty,
+          differentiationLevel: level,
+          mcPercent: useCustomSplit ? mcPercent : undefined,
+          tfPercent: useCustomSplit ? tfPercent : undefined,
+          fitbPercent: useCustomSplit ? fitbPercent : undefined,
+        },
+      });
+
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+
+      const diffQuiz = normalizeQuiz(data.quiz);
+      setDiffVersions((prev) => {
+        const filtered = prev.filter((v) => v.level !== level);
+        return [...filtered, { level, quiz: diffQuiz }].sort(
+          (a, b) => ["simplified", "standard", "advanced", "ell", "iep"].indexOf(a.level) -
+                     ["simplified", "standard", "advanced", "ell", "iep"].indexOf(b.level)
+        );
+      });
+      setActiveDiffTab(level);
+      toast({ title: "Differentiated version generated!" });
+    } catch (e: any) {
+      console.error(e);
+      toast({ title: "Differentiation failed", description: e.message || "Something went wrong.", variant: "destructive" });
+    } finally {
+      setIsDifferentiating(false);
+      setDiffGeneratingLevel(null);
     }
   };
 
@@ -152,7 +201,7 @@ const QuizGenerator = () => {
   return (
     <div className="mx-auto max-w-4xl">
       <h1 className="mb-1 font-display text-2xl font-bold text-foreground">Quiz Generator</h1>
-      <p className="mb-8 text-muted-foreground">Create structured quizzes with multiple choice, true/false, and short answer sections.</p>
+      <p className="mb-8 text-muted-foreground">Create structured quizzes with multiple choice, true/false, fill in the blank, and short answer sections.</p>
 
       <Card className="mb-8 rounded-2xl">
         <CardHeader className="pb-4">
@@ -215,7 +264,6 @@ const QuizGenerator = () => {
             </div>
             {useCustomSplit && (
               <div className="space-y-4 pt-2">
-                {/* MC slider */}
                 <div className="space-y-1">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground">Multiple Choice</span>
@@ -223,7 +271,6 @@ const QuizGenerator = () => {
                   </div>
                   <Slider value={[mcPercent]} onValueChange={([v]) => handleMcChange(v)} min={0} max={100} step={5} className="w-full" />
                 </div>
-                {/* TF slider */}
                 <div className="space-y-1">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground">True / False</span>
@@ -231,7 +278,6 @@ const QuizGenerator = () => {
                   </div>
                   <Slider value={[tfPercent]} onValueChange={([v]) => handleTfChange(v)} min={0} max={100} step={5} className="w-full" />
                 </div>
-                {/* FITB slider */}
                 <div className="space-y-1">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground">Fill in the Blank</span>
@@ -239,7 +285,6 @@ const QuizGenerator = () => {
                   </div>
                   <Slider value={[fitbPercent]} onValueChange={([v]) => handleFitbChange(v)} min={0} max={100} step={5} className="w-full" />
                 </div>
-                {/* SA readout */}
                 <div className="flex items-center justify-between text-sm rounded-lg bg-muted/50 px-3 py-2">
                   <span className="text-muted-foreground">Short Answer</span>
                   <span className="font-semibold text-foreground">{saPercent}% <span className="font-normal text-muted-foreground">(≈{total - Math.round(total * mcPercent / 100) - Math.round(total * tfPercent / 100) - Math.round(total * fitbPercent / 100)})</span></span>
@@ -265,8 +310,9 @@ const QuizGenerator = () => {
       </Card>
 
       {quiz && (
-        <>
-          <div className="mb-4 flex flex-wrap gap-2">
+        <div className="space-y-6">
+          {/* Original quiz actions */}
+          <div className="flex flex-wrap gap-2">
             <Button variant="outline" className="rounded-xl" onClick={handleSave}>
               <Save className="mr-2 h-4 w-4" /> Save Quiz
             </Button>
@@ -275,17 +321,36 @@ const QuizGenerator = () => {
             </Button>
           </div>
 
-          <div className="mb-4">
-            <RegenerateOptions
-              onAction={(action) => handleGenerate(action)}
-              isLoading={isRegenerating}
-              loadingAction={regenAction}
-              showAddQuestions
-            />
-          </div>
+          <RegenerateOptions
+            onAction={(action) => handleGenerate(action)}
+            isLoading={isRegenerating}
+            loadingAction={regenAction}
+            showAddQuestions
+          />
 
+          {/* Original quiz output */}
           <QuizOutput quiz={quiz} gradeLevel={gradeLevel} subject={subject} topic={topic} />
-        </>
+
+          {/* Differentiation panel */}
+          <DifferentiationPanel
+            onDifferentiate={handleDifferentiate}
+            generatedVersions={diffVersions.map((v) => v.level)}
+            isGenerating={isDifferentiating}
+            generatingLevel={diffGeneratingLevel}
+          />
+
+          {/* Differentiated version tabs */}
+          {diffVersions.length > 0 && (
+            <QuizVersionTabs
+              versions={diffVersions}
+              gradeLevel={gradeLevel}
+              subject={subject}
+              topic={topic}
+              activeTab={activeDiffTab}
+              onTabChange={setActiveDiffTab}
+            />
+          )}
+        </div>
       )}
     </div>
   );
