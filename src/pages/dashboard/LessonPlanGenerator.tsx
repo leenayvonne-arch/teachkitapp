@@ -162,7 +162,7 @@ const LessonPlanGenerator = () => {
           gradeLevel: lessonPlan.gradeLevel,
           subject: lessonPlan.subject,
           topic: `${lessonPlan.topic} — Key concepts: ${lessonPlan.objectives.join("; ")}`,
-          numberOfQuestions: "8",
+          numberOfQuestions: "10",
         },
       });
       if (error) throw error;
