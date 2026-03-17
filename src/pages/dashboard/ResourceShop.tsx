@@ -4,7 +4,8 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ShoppingBag } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Search, ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
 import { shopProducts } from "@/data/shopProducts";
 
@@ -18,13 +19,20 @@ const ResourceShop = () => {
   const [category, setCategory] = useState("All");
   const [sort, setSort] = useState<SortOption>("default");
 
+  const [search, setSearch] = useState("");
+
   const filtered = useMemo(() => {
-    let list = category === "All" ? shopProducts : shopProducts.filter((p) => p.category === category);
+    const q = search.toLowerCase();
+    let list = shopProducts.filter((p) => {
+      const matchesCategory = category === "All" || p.category === category;
+      const matchesSearch = !q || p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q) || p.category.toLowerCase().includes(q);
+      return matchesCategory && matchesSearch;
+    });
     if (sort === "price-low") list = [...list].sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
     else if (sort === "price-high") list = [...list].sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
     else if (sort === "name") list = [...list].sort((a, b) => a.title.localeCompare(b.title));
     return list;
-  }, [category, sort]);
+  }, [category, sort, search]);
 
   return (
     <div>
@@ -39,6 +47,15 @@ const ResourceShop = () => {
       </div>
 
       <div className="mb-6 flex flex-wrap items-center gap-3">
+        <div className="relative w-full sm:w-[240px]">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder="Search products…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-9"
+          />
+        </div>
         <Select value={category} onValueChange={setCategory}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Category" />
