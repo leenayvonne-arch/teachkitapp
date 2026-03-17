@@ -1,12 +1,31 @@
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
 import { shopProducts } from "@/data/shopProducts";
 
+const categories = ["All", ...Array.from(new Set(shopProducts.map((p) => p.category)))];
+
+type SortOption = "default" | "price-low" | "price-high" | "name";
+
+const parsePrice = (price: string) => parseFloat(price.replace(/[^0-9.]/g, ""));
+
 const ResourceShop = () => {
+  const [category, setCategory] = useState("All");
+  const [sort, setSort] = useState<SortOption>("default");
+
+  const filtered = useMemo(() => {
+    let list = category === "All" ? shopProducts : shopProducts.filter((p) => p.category === category);
+    if (sort === "price-low") list = [...list].sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
+    else if (sort === "price-high") list = [...list].sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
+    else if (sort === "name") list = [...list].sort((a, b) => a.title.localeCompare(b.title));
+    return list;
+  }, [category, sort]);
+
   return (
     <div>
       <div className="mb-8 flex items-center gap-3">
@@ -19,10 +38,44 @@ const ResourceShop = () => {
         </div>
       </div>
 
-      <h2 className="mb-4 text-lg font-semibold text-foreground">Featured Products</h2>
+      <div className="mb-6 flex flex-wrap items-center gap-3">
+        <Select value={category} onValueChange={setCategory}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Category" />
+          </SelectTrigger>
+          <SelectContent>
+            {categories.map((c) => (
+              <SelectItem key={c} value={c}>{c}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <Select value={sort} onValueChange={(v) => setSort(v as SortOption)}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Sort by" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="default">Featured</SelectItem>
+            <SelectItem value="price-low">Price: Low → High</SelectItem>
+            <SelectItem value="price-high">Price: High → Low</SelectItem>
+            <SelectItem value="name">Name: A → Z</SelectItem>
+          </SelectContent>
+        </Select>
+
+        {category !== "All" && (
+          <Button variant="ghost" size="sm" onClick={() => setCategory("All")}>
+            Clear filter
+          </Button>
+        )}
+      </div>
+
+      <h2 className="mb-4 text-lg font-semibold text-foreground">
+        {category === "All" ? "All Products" : category}
+        <span className="ml-2 text-sm font-normal text-muted-foreground">({filtered.length})</span>
+      </h2>
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {shopProducts.map((product, i) => (
+        {filtered.map((product, i) => (
           <motion.div
             key={product.slug}
             initial={{ opacity: 0, y: 12 }}
