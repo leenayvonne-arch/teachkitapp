@@ -79,7 +79,8 @@ const ProductDetail = () => {
           {/* Preview section */}
           {product.previewPages.length > 0 && (
             <div>
-              <h2 className="mb-4 text-base font-semibold text-foreground">Preview This Resource</h2>
+              <h2 className="mb-1 text-base font-semibold text-foreground">Preview This Resource</h2>
+              <p className="mb-4 text-sm text-muted-foreground">See exactly what you'll get before you buy.</p>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {product.previewPages.map((page, i) => (
                   <WorksheetPreviewCard
