@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
-import { Loader2, Download, Save, FileText, Sparkles, CheckCircle, Printer } from "lucide-react";
+import { Loader2, Download, Save, FileText, Sparkles, CheckCircle, Printer, GraduationCap } from "lucide-react";
 import { saveResource, downloadElementAsPDF } from "@/lib/resourceUtils";
 import RegenerateOptions, { type RegenerateAction } from "@/components/lesson/RegenerateOptions";
 import TopicSuggestions from "@/components/TopicSuggestions";
