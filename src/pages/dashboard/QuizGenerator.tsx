@@ -49,12 +49,18 @@ export interface Quiz {
 
 const GRADES = ["K", "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th"];
 const QUESTION_COUNTS = ["5", "10", "15", "20", "25", "30", "40", "50"];
+const DIFFICULTY_LEVELS = [
+  { value: "easy", label: "Easy", description: "Basic recall & simple understanding" },
+  { value: "medium", label: "Medium", description: "Application & comprehension" },
+  { value: "hard", label: "Hard", description: "Analysis & higher-order thinking" },
+];
 
 const QuizGenerator = () => {
   const [gradeLevel, setGradeLevel] = useState("");
   const [subject, setSubject] = useState("");
   const [topic, setTopic] = useState("");
   const [numberOfQuestions, setNumberOfQuestions] = useState("10");
+  const [difficulty, setDifficulty] = useState("medium");
   const [useCustomSplit, setUseCustomSplit] = useState(false);
   const [mcPercent, setMcPercent] = useState(40);
   const [tfPercent, setTfPercent] = useState(20);
@@ -103,7 +109,7 @@ const QuizGenerator = () => {
     try {
       const { data, error } = await supabase.functions.invoke("generate-quiz", {
         body: {
-          gradeLevel, subject, topic, numberOfQuestions, regenerateAction,
+          gradeLevel, subject, topic, numberOfQuestions, regenerateAction, difficulty,
           mcPercent: useCustomSplit ? mcPercent : undefined,
           tfPercent: useCustomSplit ? tfPercent : undefined,
           fitbPercent: useCustomSplit ? fitbPercent : undefined,
@@ -182,6 +188,20 @@ const QuizGenerator = () => {
                   {QUESTION_COUNTS.map((n) => <SelectItem key={n} value={n}>{n} questions</SelectItem>)}
                 </SelectContent>
               </Select>
+            </div>
+            <div>
+              <Label>Difficulty Level</Label>
+              <Select value={difficulty} onValueChange={setDifficulty}>
+                <SelectTrigger className="mt-1 rounded-xl"><SelectValue placeholder="Medium" /></SelectTrigger>
+                <SelectContent>
+                  {DIFFICULTY_LEVELS.map((d) => (
+                    <SelectItem key={d.value} value={d.value}>{d.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {DIFFICULTY_LEVELS.find((d) => d.value === difficulty)?.description}
+              </p>
             </div>
           </div>
 
