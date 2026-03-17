@@ -115,12 +115,6 @@ const MathWorksheetMegaPack = () => {
                             <div key={i} className="h-6 border-b border-muted-foreground/20" />
                           ))}
                         </div>
-                        {/* Answer (toggle) */}
-                        {showAnswers && (
-                          <div className="mt-2 rounded-lg bg-primary/5 px-4 py-2 text-sm text-primary">
-                            <span className="font-semibold">Answer:</span> {q.answer}
-                          </div>
-                        )}
                       </div>
                     ))}
                   </div>

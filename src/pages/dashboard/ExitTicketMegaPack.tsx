@@ -9,18 +9,11 @@ const sectionColors: Record<string, string> = {
 };
 
 const ExitTicketMegaPack = () => {
-  const handleDownload = () => downloadElementAsPDF("mega-pack-output", "Exit-Ticket-Mega-Pack-Grades-3-5");
-
   return (
     <div className="mx-auto max-w-4xl">
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="font-display text-2xl font-bold text-foreground">Exit Ticket Mega Pack</h1>
-          <p className="text-muted-foreground">100 ready-to-print exit tickets for Grades 3–5</p>
-        </div>
-        <Button onClick={handleDownload} className="rounded-xl">
-          <Download className="mr-2 h-4 w-4" /> Download PDF
-        </Button>
+      <div className="mb-6">
+        <h1 className="font-display text-2xl font-bold text-foreground">Exit Ticket Mega Pack</h1>
+        <p className="text-muted-foreground">100 ready-to-print exit tickets for Grades 3–5</p>
       </div>
 
       <div id="mega-pack-output" className="space-y-0 rounded-2xl border bg-card">
