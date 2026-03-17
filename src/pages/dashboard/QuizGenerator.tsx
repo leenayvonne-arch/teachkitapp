@@ -11,6 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { saveResource, downloadElementAsPDF } from "@/lib/resourceUtils";
 import RegenerateOptions, { type RegenerateAction } from "@/components/lesson/RegenerateOptions";
+import TopicSuggestions from "@/components/TopicSuggestions";
 import QuizOutput from "@/components/quiz/QuizOutput";
 import DifferentiationPanel, { type DiffLevel } from "@/components/quiz/DifferentiationPanel";
 import QuizVersionTabs from "@/components/quiz/QuizVersionTabs";
