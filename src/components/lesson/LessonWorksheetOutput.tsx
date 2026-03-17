@@ -36,67 +36,81 @@ const LessonWorksheetOutput = ({ worksheet, lessonPlan }: Props) => {
         </Button>
       </div>
 
-      <div id="lesson-worksheet-output" className="rounded-2xl border bg-card p-8 space-y-8">
-        {/* Header */}
-        <div className="border-b border-border pb-6 text-center">
-          <h2 className="font-display text-2xl font-bold text-foreground">{worksheet.title}</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Grade: {lessonPlan.gradeLevel} &nbsp;•&nbsp; Subject: {lessonPlan.subject} &nbsp;•&nbsp; Topic: {lessonPlan.topic}
-          </p>
-          <div className="mx-auto mt-4 flex max-w-md gap-6 text-sm text-muted-foreground">
-            <span>Name: ______________________</span>
-            <span>Date: _______________</span>
+      <div id="lesson-worksheet-output" className="rounded-2xl border bg-white dark:bg-card shadow-sm" style={{ maxWidth: 816, margin: "0 auto", fontFamily: "'Georgia', 'Times New Roman', serif" }}>
+        {/* Page with print margins */}
+        <div className="px-12 py-10">
+          {/* Header */}
+          <div className="flex items-start justify-between gap-4 border-b-2 border-foreground/20 pb-4">
+            <div>
+              <span className="inline-block rounded bg-primary/10 px-2.5 py-0.5 font-sans text-xs font-semibold text-primary">
+                {lessonPlan.subject}
+              </span>
+              <h2 className="mt-2 text-xl font-bold text-foreground">{worksheet.title}</h2>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Grade {lessonPlan.gradeLevel} &nbsp;•&nbsp; {lessonPlan.topic}
+              </p>
+            </div>
+            <div className="text-right text-sm text-muted-foreground whitespace-nowrap">
+              <div>Name: ________________________________</div>
+              <div className="mt-1.5">Date: ___________________</div>
+            </div>
+          </div>
+
+          {/* Instructions */}
+          <div className="mt-6 rounded-lg border border-border bg-muted/20 px-5 py-3">
+            <p className="text-sm text-muted-foreground">
+              <span className="font-bold text-foreground">Directions:</span>{" "}
+              <span className="italic">{worksheet.instructions}</span>
+            </p>
+          </div>
+
+          {/* Questions */}
+          <div className="mt-8 space-y-0">
+            {worksheet.questions.map((q, idx) => (
+              <div key={q.number} className={idx > 0 ? "border-t border-dashed border-border pt-6 mt-6" : ""}>
+                <p className="text-sm text-foreground">
+                  <span className="mr-2 font-bold text-foreground">{q.number})</span>
+                  {q.question}
+                </p>
+
+                {q.responseType === "multiple_choice" && q.options.length > 0 && (
+                  <div className="ml-7 mt-2 space-y-1">
+                    {q.options.map((opt, i) => (
+                      <p key={i} className="text-sm text-foreground">
+                        <span className="mr-2 font-medium text-muted-foreground">{String.fromCharCode(65 + i)}.</span>
+                        {opt}
+                      </p>
+                    ))}
+                  </div>
+                )}
+
+                {q.responseType === "fill_in_blank" && (
+                  <div className="ml-7 mt-3 space-y-3">
+                    <div className="border-b border-muted-foreground/30 h-5" />
+                  </div>
+                )}
+
+                {(q.responseType === "short_answer" || q.responseType === "open_ended") && (
+                  <div className="ml-7 mt-3 space-y-3">
+                    {Array.from({ length: q.linesForResponse || 3 }).map((_, i) => (
+                      <div key={i} className="border-b border-muted-foreground/25 h-5" />
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Footer */}
+          <div className="mt-10 flex items-center justify-between border-t border-foreground/10 pt-3">
+            <span className="text-[10px] text-muted-foreground/50">© TeachKit</span>
+            <span className="text-[10px] text-muted-foreground/50">Page 1</span>
           </div>
         </div>
 
-        {/* Instructions */}
-        <div className="rounded-xl border bg-muted/30 p-4">
-          <h3 className="mb-1 font-semibold text-foreground">Instructions</h3>
-          <p className="text-sm text-muted-foreground">{worksheet.instructions}</p>
-        </div>
-
-        {/* Questions */}
-        <div className="space-y-6">
-          {worksheet.questions.map((q) => (
-            <div key={q.number} className="space-y-2">
-              <p className="text-sm font-medium text-foreground">
-                <span className="mr-2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
-                  {q.number}
-                </span>
-                {q.question}
-              </p>
-
-              {q.responseType === "multiple_choice" && q.options.length > 0 && (
-                <div className="ml-8 space-y-1">
-                  {q.options.map((opt, i) => (
-                    <p key={i} className="text-sm text-foreground">
-                      <span className="mr-2 font-medium text-muted-foreground">{String.fromCharCode(65 + i)}.</span>
-                      {opt}
-                    </p>
-                  ))}
-                </div>
-              )}
-
-              {q.responseType === "fill_in_blank" && (
-                <div className="ml-8">
-                  <div className="mt-1 border-b-2 border-dashed border-muted-foreground/40 w-3/4 h-6" />
-                </div>
-              )}
-
-              {(q.responseType === "short_answer" || q.responseType === "open_ended") && (
-                <div className="ml-8 space-y-2">
-                  {Array.from({ length: q.linesForResponse || 3 }).map((_, i) => (
-                    <div key={i} className="border-b border-muted-foreground/20 h-6" />
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Answer Key */}
-        <div className="mt-8 border-t-2 border-dashed border-border pt-6">
-          <h3 className="mb-4 flex items-center gap-2 font-display text-lg font-semibold text-foreground">
+        {/* Answer Key — separate "page" */}
+        <div className="border-t-2 border-dashed border-border px-12 py-10">
+          <h3 className="mb-5 flex items-center gap-2 text-lg font-bold text-foreground">
             <CheckCircle className="h-5 w-5 text-secondary" /> Answer Key
           </h3>
           <div className="space-y-2">
@@ -106,6 +120,10 @@ const LessonWorksheetOutput = ({ worksheet, lessonPlan }: Props) => {
                 <span className="text-foreground">{a.answer}</span>
               </div>
             ))}
+          </div>
+          <div className="mt-8 flex items-center justify-between border-t border-foreground/10 pt-3">
+            <span className="text-[10px] text-muted-foreground/50">© TeachKit</span>
+            <span className="text-[10px] text-muted-foreground/50">Answer Key</span>
           </div>
         </div>
       </div>
