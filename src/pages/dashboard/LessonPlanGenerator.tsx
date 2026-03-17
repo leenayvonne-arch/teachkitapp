@@ -414,6 +414,27 @@ const LessonPlanGenerator = () => {
 
           <LessonPlanOutput lessonPlan={lessonPlan} />
 
+          {/* Differentiation Panel */}
+          <div className="mt-8">
+            <LessonDifferentiationPanel
+              onDifferentiate={handleDifferentiate}
+              generatedVersions={diffVersions.map((v) => v.level)}
+              isGenerating={isDiffGenerating}
+              generatingLevel={diffGeneratingLevel}
+            />
+          </div>
+
+          {/* Differentiated Versions */}
+          {diffVersions.length > 0 && (
+            <div className="mt-8">
+              <LessonVersionTabs
+                versions={diffVersions}
+                activeTab={activeDiffTab}
+                onTabChange={setActiveDiffTab}
+              />
+            </div>
+          )}
+
           {/* Derived Worksheet */}
           {worksheet && (
             <div className="mt-8 space-y-4">

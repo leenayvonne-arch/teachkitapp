@@ -69,12 +69,35 @@ ${lessonTitle ? `Lesson Title: ${lessonTitle}` : "Generate an appropriate lesson
 Class Duration: ${classDuration || "45 minutes"}
 ${standards ? `Standards to align to: ${standards}` : "Generate appropriate academic standards (CCSS, NGSS, or relevant state standards)."}
 ${objectives ? `Learning Objectives: ${objectives}` : "Generate 2-3 measurable learning objectives using Bloom's taxonomy action verbs."}
-${differentiationLevel ? `Differentiation Level: ${differentiationLevel}` : ""}
+    ${differentiationLevel === "simplified" ? `\nDIFFERENTIATION LEVEL: Simplified
+- Use shorter instructions with simpler vocabulary
+- Add more guided practice and scaffolding
+- Reduce complexity of activities
+- Provide sentence starters and visual cues
+- Lower reading level significantly` : ""}${differentiationLevel === "standard" ? `\nDIFFERENTIATION LEVEL: Standard (Grade-Level)
+- Use grade-appropriate vocabulary and complexity
+- Balanced pacing and rigor` : ""}${differentiationLevel === "advanced" ? `\nDIFFERENTIATION LEVEL: Advanced
+- Include deeper thinking tasks and higher-level questions
+- Add extended activities and complex analysis
+- Use sophisticated vocabulary
+- Encourage independent exploration and synthesis` : ""}${differentiationLevel === "ell" ? `\nDIFFERENTIATION LEVEL: ELL Support
+- Use simplified language throughout
+- Include vocabulary definitions in parentheses after key terms
+- Add sentence frames where appropriate
+- Provide visual cues and graphic organizer suggestions
+- Reduce idiomatic expressions` : ""}${differentiationLevel === "iep" ? `\nDIFFERENTIATION LEVEL: IEP Accommodations
+- Chunk all instructions into small, clear steps
+- Add scaffolding supports (graphic organizers, word banks, checklists)
+- Include flexible pacing suggestions
+- Reduce complexity while maintaining core objectives
+- Provide multiple means of engagement and expression` : ""}
+${!["simplified", "standard", "advanced", "ell", "iep"].includes(differentiationLevel || "") && differentiationLevel ? `Differentiation Level: ${differentiationLevel}` : ""}
 ${studentNeeds ? `Student Needs to Address: ${studentNeeds}` : ""}
 ${instructionalStyle ? `Preferred Instructional Style: ${instructionalStyle}` : ""}
 
 Ensure all time allocations fit within the class duration. Make the lesson engaging, rigorous, and practical for classroom use.
 IMPORTANT: Include at least 5-8 key vocabulary terms with brief, student-friendly definitions that directly relate to the lesson topic.
+${differentiationLevel && ["simplified", "standard", "advanced", "ell", "iep"].includes(differentiationLevel) ? `IMPORTANT: Clearly indicate the version level in the lesson title by appending " (${differentiationLevel === "ell" ? "ELL Support" : differentiationLevel === "iep" ? "IEP Accommodations" : differentiationLevel.charAt(0).toUpperCase() + differentiationLevel.slice(1)} Version)".` : ""}
 ${regenerateAction === "simplify" ? "\nIMPORTANT: Simplify the lesson — use easier vocabulary, shorter activities, and more scaffolding." : ""}${regenerateAction === "challenge" ? "\nIMPORTANT: Make this lesson more rigorous — add higher-order thinking, complex tasks, and extension activities." : ""}${regenerateAction === "shorten" ? "\nIMPORTANT: Create a shorter, more concise lesson plan. Reduce activities and keep only the essentials." : ""}${regenerateAction === "expand" ? "\nIMPORTANT: Create a more detailed and comprehensive lesson plan with additional activities, more vocabulary, and deeper content." : ""}`;
 
     const response = await fetch(
