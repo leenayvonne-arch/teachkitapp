@@ -16,6 +16,7 @@ import QuizGenerator from "./pages/dashboard/QuizGenerator";
 import ExitTicketGenerator from "./pages/dashboard/ExitTicketGenerator";
 import LessonLibrary from "./pages/dashboard/LessonLibrary";
 import PlaceholderPage from "./pages/dashboard/PlaceholderPage";
+import ProfilePage from "./pages/dashboard/ProfilePage";
 
 const queryClient = new QueryClient();
 
