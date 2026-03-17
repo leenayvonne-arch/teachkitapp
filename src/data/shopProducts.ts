@@ -33,6 +33,11 @@ export const shopProducts: ShopProduct[] = [
       "Student response lines included",
       "Professional cover page",
     ],
+    previewPages: [
+      { label: "Page 1 — Math Exit Ticket", description: "Solve: 3/4 + 1/2. Show your work and explain your strategy." },
+      { label: "Page 2 — ELA Exit Ticket", description: "What is the main idea of the passage? Use one detail to support your answer." },
+      { label: "Page 3 — Science Exit Ticket", description: "Draw and label the three states of matter. Give one example of each." },
+    ],
   },
   {
     slug: "exit-tickets-6-8",
