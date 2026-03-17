@@ -31,7 +31,7 @@ export const shopProducts: ShopProduct[] = [
   {
     slug: "exit-tickets-6-8",
     title: "100 Exit Tickets for Grades 6–8",
-    description: "Engaging and higher-level exit tickets designed for middle school classrooms.",
+    description: "Engaging and higher-level exit tickets for Math, ELA, Science, Social Studies, and History.",
     fullDescription:
       "Elevate your formative assessment with 100 middle-school-level exit tickets that go beyond simple recall. These tickets feature analytical prompts, deeper critical thinking questions, and short written responses across Math, ELA, Science, Social Studies, and History. Ideal for building a daily exit ticket routine in grades 6–8.",
     gradeLevel: "Grades 6–8",
