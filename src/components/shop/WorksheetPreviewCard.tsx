@@ -21,7 +21,7 @@ const WorksheetPreviewCard = ({ page, compact = false, onClick }: WorksheetPrevi
       {/* Page */}
       <div className={compact ? "px-5 py-4" : "px-8 py-6"} style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}>
         {/* Header */}
-        <div className="flex items-start justify-between gap-2">
+        <div className="flex items-start justify-between gap-2 rounded-lg bg-muted/40 px-3 py-2.5">
           <div>
             <span className={`inline-block rounded bg-primary/10 px-2 py-0.5 font-sans font-semibold text-primary ${compact ? "text-[9px]" : "text-[10px]"}`}>
               {page.subject}
@@ -51,7 +51,7 @@ const WorksheetPreviewCard = ({ page, compact = false, onClick }: WorksheetPrevi
         {/* Questions with answer lines */}
         <div className={compact ? "space-y-3" : "space-y-4"}>
           {questionBlocks.map((block, idx) => (
-            <div key={idx}>
+            <div key={idx} className="rounded-md border border-border/50 px-3 py-2.5">
               <p className={`whitespace-pre-line text-foreground ${compact ? "text-[9px] leading-relaxed" : "text-[10px] leading-relaxed"}`}>
                 <span className="font-bold">{block.trim()}</span>
               </p>

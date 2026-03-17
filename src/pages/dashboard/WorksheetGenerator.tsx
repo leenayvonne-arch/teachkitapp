@@ -175,7 +175,7 @@ const WorksheetGenerator = () => {
           <div id="worksheet-output" className="rounded-2xl border bg-white dark:bg-card shadow-sm" style={{ maxWidth: 816, margin: "0 auto", fontFamily: "'Georgia', 'Times New Roman', serif" }}>
             <div className="px-12 py-10">
               {/* Header */}
-              <div className="flex items-start justify-between gap-4 border-b-2 border-foreground/20 pb-4">
+              <div className="flex items-start justify-between gap-4 rounded-lg bg-muted/30 px-5 py-4 border-b-2 border-foreground/20">
                 <div>
                   <span className="inline-block rounded bg-primary/10 px-2.5 py-0.5 font-sans text-xs font-semibold text-primary">
                     {subject}
@@ -200,9 +200,9 @@ const WorksheetGenerator = () => {
               </div>
 
               {/* Questions */}
-              <div className="mt-8 space-y-0">
+              <div className="mt-8 space-y-4">
                 {worksheet.questions.map((q, idx) => (
-                  <div key={q.number} className={idx > 0 ? "border-t border-dashed border-border pt-6 mt-6" : ""}>
+                  <div key={q.number} className="rounded-md border border-border/40 px-5 py-4">
                     <p className="text-sm text-foreground">
                       <span className="mr-2 font-bold text-foreground">{q.number})</span>
                       {q.question}
