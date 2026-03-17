@@ -77,6 +77,10 @@ export const shopProducts: ShopProduct[] = [
       "Aligned to common standards",
       "Printable PDF format",
     ],
+    previewPages: [
+      { label: "Standard Version", description: "Objective: Students will identify the three branches of government and explain their roles." },
+      { label: "ELL Support Version", description: "Vocabulary-first approach with visual aids and sentence frames for key civics terms." },
+    ],
   },
   {
     slug: "math-worksheet-mega-pack",
