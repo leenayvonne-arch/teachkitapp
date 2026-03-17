@@ -14,6 +14,8 @@ import LessonPlanOutput from "@/components/lesson/LessonPlanOutput";
 import LessonWorksheetOutput from "@/components/lesson/LessonWorksheetOutput";
 import LessonQuizOutput from "@/components/lesson/LessonQuizOutput";
 import RegenerateOptions, { type RegenerateAction } from "@/components/lesson/RegenerateOptions";
+import LessonDifferentiationPanel, { type LessonDiffLevel } from "@/components/lesson/LessonDifferentiationPanel";
+import LessonVersionTabs from "@/components/lesson/LessonVersionTabs";
 
 export interface LessonPlan {
   lessonTitle: string;
@@ -110,6 +112,12 @@ const LessonPlanGenerator = () => {
   const [isRegeneratingQuiz, setIsRegeneratingQuiz] = useState(false);
   const [regenQuizAction, setRegenQuizAction] = useState<RegenerateAction | null>(null);
 
+  // Differentiation state
+  const [diffVersions, setDiffVersions] = useState<{ level: LessonDiffLevel; lessonPlan: LessonPlan }[]>([]);
+  const [isDiffGenerating, setIsDiffGenerating] = useState(false);
+  const [diffGeneratingLevel, setDiffGeneratingLevel] = useState<LessonDiffLevel | null>(null);
+  const [activeDiffTab, setActiveDiffTab] = useState<LessonDiffLevel>("simplified");
+
   const handleGenerate = async (regenerateAction?: RegenerateAction) => {
     if (!gradeLevel || !subject || !topic) {
       toast({ title: "Missing fields", description: "Please fill in Grade Level, Subject, and Topic.", variant: "destructive" });
@@ -119,7 +127,7 @@ const LessonPlanGenerator = () => {
     const isRegen = !!regenerateAction;
     if (isRegen) { setIsRegenerating(true); setRegenAction(regenerateAction!); }
     else { setIsGenerating(true); }
-    if (!isRegen) { setWorksheet(null); setQuiz(null); }
+    if (!isRegen) { setWorksheet(null); setQuiz(null); setDiffVersions([]); }
 
     try {
       const { data, error } = await supabase.functions.invoke("generate-lesson", {
@@ -213,6 +221,43 @@ const LessonPlanGenerator = () => {
   };
 
   const handleDownloadPDF = () => downloadElementAsPDF("lesson-plan-output", lessonPlan?.lessonTitle || "lesson-plan");
+
+  const handleDifferentiate = async (level: LessonDiffLevel) => {
+    if (!lessonPlan) return;
+    setIsDiffGenerating(true);
+    setDiffGeneratingLevel(level);
+    try {
+      const { data, error } = await supabase.functions.invoke("generate-lesson", {
+        body: {
+          gradeLevel: lessonPlan.gradeLevel,
+          subject: lessonPlan.subject,
+          topic: lessonPlan.topic,
+          lessonTitle: lessonPlan.lessonTitle,
+          classDuration: lessonPlan.duration,
+          standards: lessonPlan.standards.join("; "),
+          objectives: lessonPlan.objectives.join("; "),
+          differentiationLevel: level,
+          studentNeeds,
+          instructionalStyle,
+        },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      const newVersion = { level, lessonPlan: data.lessonPlan as LessonPlan };
+      setDiffVersions((prev) => {
+        const filtered = prev.filter((v) => v.level !== level);
+        return [...filtered, newVersion];
+      });
+      setActiveDiffTab(level);
+      toast({ title: "Differentiated lesson generated!", description: `${level.charAt(0).toUpperCase() + level.slice(1)} version is ready.` });
+    } catch (e: any) {
+      console.error(e);
+      toast({ title: "Generation failed", description: e.message || "Something went wrong.", variant: "destructive" });
+    } finally {
+      setIsDiffGenerating(false);
+      setDiffGeneratingLevel(null);
+    }
+  };
 
   return (
     <div className="mx-auto max-w-4xl">
@@ -368,6 +413,27 @@ const LessonPlanGenerator = () => {
           </div>
 
           <LessonPlanOutput lessonPlan={lessonPlan} />
+
+          {/* Differentiation Panel */}
+          <div className="mt-8">
+            <LessonDifferentiationPanel
+              onDifferentiate={handleDifferentiate}
+              generatedVersions={diffVersions.map((v) => v.level)}
+              isGenerating={isDiffGenerating}
+              generatingLevel={diffGeneratingLevel}
+            />
+          </div>
+
+          {/* Differentiated Versions */}
+          {diffVersions.length > 0 && (
+            <div className="mt-8">
+              <LessonVersionTabs
+                versions={diffVersions}
+                activeTab={activeDiffTab}
+                onTabChange={setActiveDiffTab}
+              />
+            </div>
+          )}
 
           {/* Derived Worksheet */}
           {worksheet && (
