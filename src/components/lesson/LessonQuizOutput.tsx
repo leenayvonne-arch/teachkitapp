@@ -28,6 +28,7 @@ const LessonQuizOutput = ({ quiz, lessonPlan }: Props) => {
   const quizData = {
     ...quiz,
     trueFalse: (quiz as any).trueFalse || [],
+    fillInTheBlank: (quiz as any).fillInTheBlank || [],
   };
 
   return (

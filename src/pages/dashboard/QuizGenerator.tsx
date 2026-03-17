@@ -32,12 +32,19 @@ export interface SAQuestion {
   sampleAnswer: string;
 }
 
+export interface FITBQuestion {
+  number: number;
+  question: string;
+  correctAnswer: string;
+}
+
 export interface Quiz {
   title: string;
   multipleChoice: MCQuestion[];
   trueFalse: TFQuestion[];
+  fillInTheBlank: FITBQuestion[];
   shortAnswer: SAQuestion[];
-  answerKey: { number: number; section: "multiple_choice" | "true_false" | "short_answer"; answer: string }[];
+  answerKey: { number: number; section: "multiple_choice" | "true_false" | "fill_in_the_blank" | "short_answer"; answer: string }[];
 }
 
 const GRADES = ["K", "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th"];
@@ -49,24 +56,38 @@ const QuizGenerator = () => {
   const [topic, setTopic] = useState("");
   const [numberOfQuestions, setNumberOfQuestions] = useState("10");
   const [useCustomSplit, setUseCustomSplit] = useState(false);
-  const [mcPercent, setMcPercent] = useState(50);
+  const [mcPercent, setMcPercent] = useState(40);
   const [tfPercent, setTfPercent] = useState(20);
+  const [fitbPercent, setFitbPercent] = useState(20);
   const [isGenerating, setIsGenerating] = useState(false);
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [isRegenerating, setIsRegenerating] = useState(false);
   const [regenAction, setRegenAction] = useState<RegenerateAction | null>(null);
 
-  const saPercent = Math.max(0, 100 - mcPercent - tfPercent);
+  const saPercent = Math.max(0, 100 - mcPercent - tfPercent - fitbPercent);
   const total = Number(numberOfQuestions);
 
-  // Clamp tfPercent so MC + TF never exceeds 100
+  const clampOthers = (mc: number, tf: number, fitb: number) => {
+    const sum = mc + tf + fitb;
+    if (sum > 100) {
+      const excess = sum - 100;
+      // Reduce SA first (implicit), then proportionally
+      return { mc, tf, fitb: Math.max(0, fitb - excess) };
+    }
+    return { mc, tf, fitb };
+  };
+
   const handleMcChange = (v: number) => {
-    setMcPercent(v);
-    if (v + tfPercent > 100) setTfPercent(100 - v);
+    const { tf, fitb } = clampOthers(v, tfPercent, fitbPercent);
+    setMcPercent(v); setTfPercent(tf); setFitbPercent(fitb);
   };
   const handleTfChange = (v: number) => {
-    setTfPercent(v);
-    if (mcPercent + v > 100) setMcPercent(100 - v);
+    const { mc, fitb } = clampOthers(mcPercent, v, fitbPercent);
+    setMcPercent(mc); setTfPercent(v); setFitbPercent(fitb);
+  };
+  const handleFitbChange = (v: number) => {
+    const { mc, tf } = clampOthers(mcPercent, tfPercent, v);
+    setMcPercent(mc); setTfPercent(tf); setFitbPercent(v);
   };
 
   const handleGenerate = async (regenerateAction?: RegenerateAction) => {
@@ -85,6 +106,7 @@ const QuizGenerator = () => {
           gradeLevel, subject, topic, numberOfQuestions, regenerateAction,
           mcPercent: useCustomSplit ? mcPercent : undefined,
           tfPercent: useCustomSplit ? tfPercent : undefined,
+          fitbPercent: useCustomSplit ? fitbPercent : undefined,
         },
       });
 
@@ -94,6 +116,7 @@ const QuizGenerator = () => {
       // Ensure trueFalse array exists for backward compat
       const quizData = data.quiz;
       if (!quizData.trueFalse) quizData.trueFalse = [];
+      if (!quizData.fillInTheBlank) quizData.fillInTheBlank = [];
       setQuiz(quizData);
       toast({ title: isRegen ? "Quiz regenerated!" : "Quiz generated!" });
     } catch (e: any) {
@@ -188,10 +211,18 @@ const QuizGenerator = () => {
                   </div>
                   <Slider value={[tfPercent]} onValueChange={([v]) => handleTfChange(v)} min={0} max={100} step={5} className="w-full" />
                 </div>
+                {/* FITB slider */}
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Fill in the Blank</span>
+                    <span className="font-semibold text-foreground">{fitbPercent}% <span className="font-normal text-muted-foreground">(≈{Math.round(total * fitbPercent / 100)})</span></span>
+                  </div>
+                  <Slider value={[fitbPercent]} onValueChange={([v]) => handleFitbChange(v)} min={0} max={100} step={5} className="w-full" />
+                </div>
                 {/* SA readout */}
                 <div className="flex items-center justify-between text-sm rounded-lg bg-muted/50 px-3 py-2">
                   <span className="text-muted-foreground">Short Answer</span>
-                  <span className="font-semibold text-foreground">{saPercent}% <span className="font-normal text-muted-foreground">(≈{total - Math.round(total * mcPercent / 100) - Math.round(total * tfPercent / 100)})</span></span>
+                  <span className="font-semibold text-foreground">{saPercent}% <span className="font-normal text-muted-foreground">(≈{total - Math.round(total * mcPercent / 100) - Math.round(total * tfPercent / 100) - Math.round(total * fitbPercent / 100)})</span></span>
                 </div>
               </div>
             )}
