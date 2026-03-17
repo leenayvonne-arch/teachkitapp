@@ -70,6 +70,9 @@ const QuizVersionTabs = ({ versions, gradeLevel, subject, topic, activeTab, onTa
                 <Button variant="outline" className="rounded-xl" onClick={() => handleDownload(v)}>
                   <Download className="mr-2 h-4 w-4" /> Download PDF
                 </Button>
+                <Button variant="outline" className="rounded-xl" onClick={() => window.print()}>
+                  <Printer className="mr-2 h-4 w-4" /> Print
+                </Button>
               </div>
               <QuizOutput
                 quiz={v.quiz}

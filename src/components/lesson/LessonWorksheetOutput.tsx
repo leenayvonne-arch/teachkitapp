@@ -34,6 +34,9 @@ const LessonWorksheetOutput = ({ worksheet, lessonPlan }: Props) => {
         <Button variant="outline" className="rounded-xl" onClick={handleDownloadPDF}>
           <Download className="mr-2 h-4 w-4" /> Download PDF
         </Button>
+        <Button variant="outline" className="rounded-xl" onClick={() => window.print()}>
+          <Printer className="mr-2 h-4 w-4" /> Print
+        </Button>
       </div>
 
       <div id="lesson-worksheet-output" className="rounded-2xl border bg-white dark:bg-card shadow-sm" style={{ maxWidth: 816, margin: "0 auto", fontFamily: "'Georgia', 'Times New Roman', serif" }}>

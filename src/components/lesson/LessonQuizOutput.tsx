@@ -42,6 +42,9 @@ const LessonQuizOutput = ({ quiz, lessonPlan }: Props) => {
         <Button variant="outline" className="rounded-xl" onClick={handleDownloadPDF}>
           <Download className="mr-2 h-4 w-4" /> Download PDF
         </Button>
+        <Button variant="outline" className="rounded-xl" onClick={() => window.print()}>
+          <Printer className="mr-2 h-4 w-4" /> Print
+        </Button>
       </div>
 
       <QuizOutput
