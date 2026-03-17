@@ -31,7 +31,7 @@ interface Quiz {
 }
 
 const GRADES = ["K", "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th"];
-const QUESTION_COUNTS = ["5", "8", "10", "12", "15", "20"];
+const QUESTION_COUNTS = ["5", "10", "15", "20", "25", "30", "40", "50"];
 
 const QuizGenerator = () => {
   const [gradeLevel, setGradeLevel] = useState("");
