@@ -47,27 +47,6 @@ const HeroSection = () => {
           </div>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="mx-auto mt-16 max-w-4xl"
-        >
-          <div className="rounded-2xl border bg-muted/30 p-4 shadow-2xl shadow-primary/5">
-            <div className="flex items-center gap-2 border-b pb-3">
-              <div className="h-3 w-3 rounded-full bg-destructive/60" />
-              <div className="h-3 w-3 rounded-full bg-accent/60" />
-              <div className="h-3 w-3 rounded-full bg-secondary/60" />
-              <span className="ml-2 text-sm text-muted-foreground font-body">TeachKit — Lesson Generator</span>
-            </div>
-            <div className="mt-4 space-y-3 p-4">
-              <div className="h-4 w-3/4 rounded bg-primary/10 animate-pulse-soft" />
-              <div className="h-4 w-full rounded bg-primary/5 animate-pulse-soft" style={{ animationDelay: "0.2s" }} />
-              <div className="h-4 w-5/6 rounded bg-primary/5 animate-pulse-soft" style={{ animationDelay: "0.4s" }} />
-              <div className="mt-6 h-10 w-40 rounded-lg bg-secondary/20 animate-pulse-soft" style={{ animationDelay: "0.6s" }} />
-            </div>
-          </div>
-        </motion.div>
       </div>
     </section>
   );
