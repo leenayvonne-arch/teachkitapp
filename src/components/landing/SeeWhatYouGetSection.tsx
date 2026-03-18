@@ -176,7 +176,7 @@ const SeeWhatYouGetSection = () => {
           </p>
         </motion.div>
 
-        <div className="mx-auto mt-14 grid max-w-6xl gap-8 md:grid-cols-3">
+        <div className="mx-auto mt-14 grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {previews.map((preview, index) => (
             <motion.div
               key={preview.label}
