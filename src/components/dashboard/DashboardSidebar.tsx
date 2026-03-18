@@ -1,4 +1,4 @@
-import { BookOpen, FileText, HelpCircle, LogOut, LayoutDashboard, Library, CreditCard, User, Sparkles, Package, ShoppingBag, MessageSquare } from "lucide-react";
+import { BookOpen, FileText, HelpCircle, LogOut, LayoutDashboard, Library, CreditCard, User, Sparkles, Package, ShoppingBag, MessageSquare, Mail } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
