@@ -96,8 +96,12 @@ const AdminContactSubmissions = () => {
         </div>
       </div>
 
-      <div className="mb-4">
+      <div className="mb-4 flex items-center gap-4">
         <Badge variant="secondary">{submissions.length} total</Badge>
+        <Badge variant="outline">
+          <CheckCircle2 className="mr-1 h-3 w-3" />
+          {submissions.filter((s) => s.read).length} read
+        </Badge>
       </div>
 
       {loading ? (
