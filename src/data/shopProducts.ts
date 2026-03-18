@@ -341,7 +341,7 @@ export const shopProducts: ShopProduct[] = [
     fullDescription:
       "30 ready-to-use math exit tickets designed for quick daily assessment in Grades 3–5. Perfect for checking understanding, end-of-lesson assessment, and small group instruction. Includes 30 exit tickets covering mixed math topics in a printable format with student answer space. Great for quick, no-prep classroom use.",
     gradeLevel: "Grades 3–5",
-    price: "$5.00",
+    price: "$4.99",
     category: "Exit Tickets",
     includes: [
       "30 ready-to-use exit tickets",
