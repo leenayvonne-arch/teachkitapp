@@ -32,6 +32,7 @@ const navItems = [
 
 const adminItems = [
   { title: "Feedback Review", url: "/dashboard/admin/feedback", icon: MessageSquare },
+  { title: "Contact Submissions", url: "/dashboard/admin/contact", icon: Mail },
 ];
 
 const DashboardSidebar = () => {
