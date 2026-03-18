@@ -1,6 +1,7 @@
 import { BookOpen, FileText, HelpCircle, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import FeedbackForm from "@/components/FeedbackForm";
 
 const quickActions = [
   {
@@ -64,6 +65,10 @@ const DashboardHome = () => {
       <div className="mt-12 rounded-2xl border bg-card p-8 text-center">
         <h2 className="mb-2 text-lg font-semibold text-foreground">Recent Activity</h2>
         <p className="text-sm text-muted-foreground">Your generated materials will appear here.</p>
+      </div>
+
+      <div className="mt-12">
+        <FeedbackForm />
       </div>
     </div>
   );
