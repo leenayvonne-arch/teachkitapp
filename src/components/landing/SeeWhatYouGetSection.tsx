@@ -16,7 +16,7 @@ const previews = [
 
 const SeeWhatYouGetSection = () => {
   return (
-    <section className="relative overflow-hidden bg-background py-24 md:py-36">
+    <section className="relative overflow-hidden bg-background py-16 md:py-24">
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-60 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-primary/5 blur-[100px]" />
       </div>
