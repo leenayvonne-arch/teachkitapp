@@ -67,7 +67,7 @@ export const shopProducts: ShopProduct[] = [
     fullDescription:
       "This comprehensive pack includes 100 carefully crafted exit tickets designed for upper elementary classrooms. Each ticket targets key concepts across five core subject areas — Math, ELA, Science, Social Studies, and History — and includes a mix of comprehension checks, short response prompts, and critical thinking questions. Perfect for daily formative assessment routines.",
     gradeLevel: "Grades 3–5",
-    price: "$20.00",
+    price: "$19.99",
     category: "Exit Tickets",
     includes: [
       "100 ready-to-print exit tickets",
