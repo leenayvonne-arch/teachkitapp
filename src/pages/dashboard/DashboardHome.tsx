@@ -66,6 +66,10 @@ const DashboardHome = () => {
         <h2 className="mb-2 text-lg font-semibold text-foreground">Recent Activity</h2>
         <p className="text-sm text-muted-foreground">Your generated materials will appear here.</p>
       </div>
+
+      <div className="mt-12">
+        <FeedbackForm />
+      </div>
     </div>
   );
 };
