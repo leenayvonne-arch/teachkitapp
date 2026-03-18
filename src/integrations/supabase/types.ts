@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      feedback: {
+        Row: {
+          created_at: string
+          featured: boolean
+          grade_level: string
+          id: string
+          message: string
+          name: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          featured?: boolean
+          grade_level: string
+          id?: string
+          message: string
+          name?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          featured?: boolean
+          grade_level?: string
+          id?: string
+          message?: string
+          name?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
