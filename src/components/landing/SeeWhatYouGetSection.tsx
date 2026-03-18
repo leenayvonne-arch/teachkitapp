@@ -200,6 +200,21 @@ const SeeWhatYouGetSection = () => {
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: 0.4 }}
+          className="mt-14 text-center"
+        >
+          <Button asChild size="lg" className="h-14 rounded-2xl px-8 text-lg font-semibold shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30">
+            <Link to="/signup">
+              Try It Free
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
+          </Button>
+        </motion.div>
       </div>
     </section>
   );
