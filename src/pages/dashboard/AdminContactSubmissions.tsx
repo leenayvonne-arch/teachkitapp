@@ -3,7 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Trash2, Mail, ShieldCheck, Reply } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Trash2, Mail, ShieldCheck, Reply, CheckCircle2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAdminRole } from "@/hooks/useAdminRole";
 
@@ -12,6 +13,7 @@ interface ContactRow {
   name: string;
   email: string;
   message: string;
+  read: boolean;
   created_at: string;
 }
 
@@ -39,6 +41,22 @@ const AdminContactSubmissions = () => {
   useEffect(() => {
     if (isAdmin) fetchSubmissions();
   }, [isAdmin]);
+
+  const toggleRead = async (id: string, current: boolean) => {
+    const { error } = await supabase
+      .from("contact_submissions")
+      .update({ read: !current } as any)
+      .eq("id", id);
+
+    if (error) {
+      toast({ title: "Update failed", description: error.message, variant: "destructive" });
+    } else {
+      setSubmissions((prev) =>
+        prev.map((s) => (s.id === id ? { ...s, read: !current } : s))
+      );
+      toast({ title: !current ? "Marked as read" : "Marked as unread" });
+    }
+  };
 
   const deleteSubmission = async (id: string) => {
     const { error } = await supabase.from("contact_submissions").delete().eq("id", id);
@@ -78,8 +96,12 @@ const AdminContactSubmissions = () => {
         </div>
       </div>
 
-      <div className="mb-4">
+      <div className="mb-4 flex items-center gap-4">
         <Badge variant="secondary">{submissions.length} total</Badge>
+        <Badge variant="outline">
+          <CheckCircle2 className="mr-1 h-3 w-3" />
+          {submissions.filter((s) => s.read).length} read
+        </Badge>
       </div>
 
       {loading ? (
@@ -93,7 +115,10 @@ const AdminContactSubmissions = () => {
       ) : (
         <div className="grid gap-4">
           {submissions.map((s) => (
-            <Card key={s.id}>
+            <Card
+              key={s.id}
+              className={s.read ? "opacity-75" : "ring-2 ring-primary/20"}
+            >
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -104,6 +129,9 @@ const AdminContactSubmissions = () => {
                     >
                       {s.email}
                     </a>
+                    {!s.read && (
+                      <Badge className="bg-primary text-primary-foreground text-[11px]">New</Badge>
+                    )}
                   </div>
                   <span className="text-xs text-muted-foreground">
                     {new Date(s.created_at).toLocaleDateString()}
@@ -112,7 +140,16 @@ const AdminContactSubmissions = () => {
               </CardHeader>
               <CardContent>
                 <p className="mb-4 text-sm text-foreground">{s.message}</p>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      checked={s.read}
+                      onCheckedChange={() => toggleRead(s.id, s.read)}
+                    />
+                    <span className="text-xs text-muted-foreground">
+                      {s.read ? "Read" : "Unread"}
+                    </span>
+                  </div>
                   <Button
                     variant="outline"
                     size="sm"
