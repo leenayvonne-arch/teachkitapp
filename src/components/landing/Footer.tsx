@@ -16,19 +16,19 @@ const Footer = () => {
 
           <nav className="flex flex-wrap items-center justify-center gap-6">
             {[
-              { label: "About", href: "#about" },
-              { label: "Pricing", href: "#pricing" },
-              { label: "Contact", href: "#contact" },
-              { label: "Terms", href: "#terms" },
-              { label: "Privacy", href: "#privacy" },
+              { label: "About", href: "/about" },
+              { label: "Pricing", href: "/pricing" },
+              { label: "Contact", href: "/contact" },
+              { label: "Terms", href: "/terms" },
+              { label: "Privacy", href: "/privacy" },
             ].map((item) => (
-              <a
+              <Link
                 key={item.label}
-                href={item.href}
+                to={item.href}
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
           </nav>
 

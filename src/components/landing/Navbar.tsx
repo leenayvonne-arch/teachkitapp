@@ -5,12 +5,12 @@ import { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 
 const navLinks = [
-  { label: "About", href: "#about" },
-  { label: "Pricing", href: "#pricing" },
+  { label: "About", href: "/about" },
+  { label: "Pricing", href: "/pricing" },
   { label: "Resource Shop", href: "/dashboard/shop" },
-  { label: "Contact", href: "#contact" },
-  { label: "Terms", href: "#terms" },
-  { label: "Privacy", href: "#privacy" },
+  { label: "Contact", href: "/contact" },
+  { label: "Terms", href: "/terms" },
+  { label: "Privacy", href: "/privacy" },
 ];
 
 const Navbar = () => {
