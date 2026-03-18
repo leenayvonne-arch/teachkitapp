@@ -381,7 +381,7 @@ export const shopProducts: ShopProduct[] = [
     fullDescription:
       "20 ready-to-use math quizzes for Grades 3–5 designed to assess student understanding. Perfect for weekly assessments, review, and test prep. Includes 20 quizzes with multiple question types, answer keys included, in a printable format. Save time with ready-to-use assessments.",
     gradeLevel: "Grades 3–5",
-    price: "$6.00",
+    price: "$5.99",
     category: "Quizzes",
     includes: [
       "20 ready-to-use quizzes",
