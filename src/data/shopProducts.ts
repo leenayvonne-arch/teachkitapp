@@ -181,7 +181,7 @@ export const shopProducts: ShopProduct[] = [
     fullDescription:
       "A robust collection of 50 math worksheets covering essential upper-elementary topics including fractions, geometry, measurement, and multi-step word problems. Each worksheet includes clear instructions and an answer key.",
     gradeLevel: "Grades 3–5",
-    price: "$7.00",
+    price: "$6.99",
     category: "Worksheets",
     includes: [
       "50 printable math worksheets",
