@@ -65,16 +65,16 @@ const TeacherTestimonials = () => {
   }, []);
 
   return (
-    <section className="py-16 px-4">
-      <div className="mx-auto max-w-6xl">
-        <h2 className="mb-2 text-center text-2xl font-bold text-foreground">
+    <section className="bg-background py-24 md:py-32">
+      <div className="mx-auto max-w-6xl px-4">
+        <h2 className="mb-4 text-center text-3xl font-extrabold text-foreground md:text-5xl">
           What Teachers Are Saying
         </h2>
-        <p className="mb-10 text-center text-sm text-muted-foreground">
+        <p className="mb-14 text-center text-lg text-muted-foreground">
           Real feedback from educators using TeachKit
         </p>
 
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {testimonials.map((t, i) => (
             <motion.div
               key={i}
@@ -83,25 +83,25 @@ const TeacherTestimonials = () => {
               viewport={{ once: true }}
               transition={{ delay: i * 0.08 }}
             >
-              <Card className="flex h-full flex-col">
-                <CardContent className="flex flex-1 flex-col gap-3 p-5">
+              <Card className="flex h-full flex-col shadow-md shadow-foreground/[0.03] transition-all hover:shadow-lg hover:-translate-y-0.5">
+                <CardContent className="flex flex-1 flex-col gap-4 p-6">
                   <div className="flex gap-0.5">
                     {Array.from({ length: t.stars }).map((_, s) => (
                       <Star
                         key={s}
-                        className="h-4 w-4 fill-primary text-primary"
+                        className="h-4 w-4 fill-accent text-accent"
                       />
                     ))}
                   </div>
-                  <p className="flex-1 text-sm italic text-foreground">
+                  <p className="flex-1 text-sm italic text-foreground leading-relaxed">
                     "{t.quote}"
                   </p>
-                  <div className="mt-auto pt-2 border-t">
-                    <p className="text-sm font-semibold text-foreground">
+                  <div className="mt-auto pt-3 border-t border-border">
+                    <p className="text-sm font-bold text-foreground">
                       — {t.name}
                     </p>
                     {t.tag && (
-                      <Badge variant="secondary" className="mt-1 text-[11px]">
+                      <Badge variant="secondary" className="mt-1.5 text-[11px]">
                         {t.tag}
                       </Badge>
                     )}
