@@ -1,6 +1,7 @@
 import { BookOpen, FileText, HelpCircle, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import FeedbackForm from "@/components/FeedbackForm";
 
 const quickActions = [
   {
