@@ -22,11 +22,8 @@ const navItems = [
   { title: "Worksheet Generator", url: "/dashboard/worksheets", icon: FileText },
   { title: "Quiz Generator", url: "/dashboard/quizzes", icon: HelpCircle },
   { title: "Exit Ticket Generator", url: "/dashboard/exit-tickets", icon: LogOut },
-  { title: "Exit Ticket Mega Pack", url: "/dashboard/exit-ticket-mega-pack", icon: Package },
-  { title: "Mega Pack (6–8)", url: "/dashboard/exit-ticket-mega-pack-68", icon: Package },
   { title: "Lesson Library", url: "/dashboard/library", icon: Library },
   { title: "Resource Shop", url: "/dashboard/shop", icon: ShoppingBag },
-  { title: "Pricing", url: "/dashboard/pricing", icon: CreditCard },
   { title: "Account", url: "/dashboard/account", icon: User },
 ];
 
