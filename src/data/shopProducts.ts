@@ -26,7 +26,7 @@ export const shopProducts: ShopProduct[] = [
     fullDescription:
       "Everything you need for a full math workflow in one bundle. Perfect for daily practice, assessment, homework, and test prep. Includes 50 Math Worksheets, 30 Exit Tickets, and 20 Quizzes — all with answer keys included. Covers key topics like fractions, geometry, measurement, and word problems. Save hours of planning time with ready-to-use classroom resources.",
     gradeLevel: "Grades 3–5",
-    price: "$13.00",
+    price: "$12.99",
     category: "Bundles",
     includes: [
       "50 printable math worksheets",
