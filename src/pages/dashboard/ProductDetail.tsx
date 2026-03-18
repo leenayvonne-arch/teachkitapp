@@ -118,13 +118,6 @@ const ProductDetail = () => {
                 <ShoppingCart className="mr-2 h-4 w-4" />
                 {buying ? "Processing…" : "Buy Now"}
               </Button>
-              {slug === "math-classroom-bundle-3-5" && (
-                <Button asChild variant="outline" className="w-full" size="lg">
-                  <Link to="/dashboard/math-classroom-bundle">
-                    <Eye className="mr-2 h-4 w-4" /> View Full Bundle
-                  </Link>
-                </Button>
-              )}
               {slug === "math-worksheet-mega-pack" && (
                 <Button asChild variant="outline" className="w-full" size="lg">
                   <Link to="/dashboard/math-worksheet-mega-pack">
