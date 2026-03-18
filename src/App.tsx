@@ -22,6 +22,7 @@ import PlaceholderPage from "./pages/dashboard/PlaceholderPage";
 import ProfilePage from "./pages/dashboard/ProfilePage";
 import ResourceShop from "./pages/dashboard/ResourceShop";
 import ProductDetail from "./pages/dashboard/ProductDetail";
+import AdminFeedback from "./pages/dashboard/AdminFeedback";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +57,7 @@ const App = () => (
             <Route path="account" element={<ProfilePage />} />
             <Route path="shop" element={<ResourceShop />} />
             <Route path="shop/:slug" element={<ProductDetail />} />
+            <Route path="admin/feedback" element={<AdminFeedback />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

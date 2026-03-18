@@ -1,7 +1,8 @@
-import { BookOpen, FileText, HelpCircle, LogOut, LayoutDashboard, Library, CreditCard, User, Sparkles, Package, ShoppingBag } from "lucide-react";
+import { BookOpen, FileText, HelpCircle, LogOut, LayoutDashboard, Library, CreditCard, User, Sparkles, Package, ShoppingBag, MessageSquare } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { useAdminRole } from "@/hooks/useAdminRole";
 import {
   Sidebar,
   SidebarContent,
@@ -29,10 +30,15 @@ const navItems = [
   { title: "Account", url: "/dashboard/account", icon: User },
 ];
 
+const adminItems = [
+  { title: "Feedback Review", url: "/dashboard/admin/feedback", icon: MessageSquare },
+];
+
 const DashboardSidebar = () => {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const navigate = useNavigate();
+  const { isAdmin } = useAdminRole();
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -64,6 +70,25 @@ const DashboardSidebar = () => {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {isAdmin && (
+          <SidebarGroup>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {adminItems.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild>
+                      <NavLink to={item.url} end className="hover:bg-sidebar-accent/50" activeClassName="bg-sidebar-accent text-sidebar-accent-foreground font-medium">
+                        <item.icon className="mr-2 h-4 w-4 flex-shrink-0" />
+                        {!collapsed && <span>{item.title}</span>}
+                      </NavLink>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
       </SidebarContent>
       <SidebarFooter className="border-t p-3">
         <Button variant="ghost" size="sm" className="w-full justify-start text-muted-foreground" onClick={handleLogout}>
