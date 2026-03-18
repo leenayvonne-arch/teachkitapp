@@ -38,6 +38,7 @@ const DashboardSidebar = () => {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const navigate = useNavigate();
+  const { isAdmin } = useAdminRole();
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
