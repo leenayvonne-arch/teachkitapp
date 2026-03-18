@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Trash2, Mail, ShieldCheck } from "lucide-react";
+import { Trash2, Mail, ShieldCheck, Reply } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAdminRole } from "@/hooks/useAdminRole";
 
@@ -112,14 +112,25 @@ const AdminContactSubmissions = () => {
               </CardHeader>
               <CardContent>
                 <p className="mb-4 text-sm text-foreground">{s.message}</p>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-destructive hover:text-destructive"
-                  onClick={() => deleteSubmission(s.id)}
-                >
-                  <Trash2 className="mr-1 h-3 w-3" /> Delete
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    asChild
+                  >
+                    <a href={`mailto:${s.email}?subject=${encodeURIComponent(`Re: Your message to TeachKit`)}`}>
+                      <Reply className="mr-1 h-3 w-3" /> Reply
+                    </a>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-destructive hover:text-destructive"
+                    onClick={() => deleteSubmission(s.id)}
+                  >
+                    <Trash2 className="mr-1 h-3 w-3" /> Delete
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ))}
