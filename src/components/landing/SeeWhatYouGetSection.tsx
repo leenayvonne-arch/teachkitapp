@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
-import { FileText, BookOpen, HelpCircle, ClipboardCheck } from "lucide-react";
+import { FileText, BookOpen, HelpCircle, ClipboardCheck, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const WorksheetPreview = () => (
   <div className="rounded-lg border border-border bg-white p-5 font-serif text-[11px] leading-relaxed text-gray-800 shadow-sm">
@@ -198,6 +200,21 @@ const SeeWhatYouGetSection = () => {
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: 0.4 }}
+          className="mt-14 text-center"
+        >
+          <Button asChild size="lg" className="h-14 rounded-2xl px-8 text-lg font-semibold shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30">
+            <Link to="/signup">
+              Try It Free
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
+          </Button>
+        </motion.div>
       </div>
     </section>
   );
