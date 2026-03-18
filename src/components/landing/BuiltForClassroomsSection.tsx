@@ -26,19 +26,19 @@ const benefits = [
 
 const BuiltForClassroomsSection = () => {
   return (
-    <section className="bg-background py-20 md:py-28">
+    <section className="bg-muted/30 py-24 md:py-32">
       <div className="container mx-auto px-4">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="mb-14 text-center text-3xl font-extrabold tracking-tight text-foreground md:text-4xl"
+          className="mb-16 text-center text-3xl font-extrabold tracking-tight text-foreground md:text-5xl"
         >
           Built for Real Classroom Needs
         </motion.h2>
 
-        <div className="mx-auto grid max-w-4xl gap-8 sm:grid-cols-2">
+        <div className="mx-auto grid max-w-4xl gap-10 sm:grid-cols-2">
           {benefits.map((benefit, index) => (
             <motion.div
               key={benefit.title}
@@ -46,14 +46,14 @@ const BuiltForClassroomsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
-              className="flex items-start gap-4"
+              className="flex items-start gap-5 rounded-2xl border border-border bg-card p-6 shadow-md shadow-foreground/[0.03] transition-all hover:shadow-lg hover:-translate-y-0.5"
             >
-              <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-primary/10">
-                <benefit.icon className="h-5 w-5 text-primary" />
+              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-primary/10">
+                <benefit.icon className="h-6 w-6 text-primary" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-foreground">{benefit.title}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{benefit.description}</p>
+                <h3 className="text-lg font-bold text-foreground">{benefit.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{benefit.description}</p>
               </div>
             </motion.div>
           ))}
