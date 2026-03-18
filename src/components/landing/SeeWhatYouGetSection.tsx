@@ -2,151 +2,10 @@ import { motion } from "framer-motion";
 import { FileText, BookOpen, HelpCircle, ClipboardCheck, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-
-const WorksheetPreview = () => (
-  <div className="rounded-lg border border-border bg-white p-5 font-serif text-[11px] leading-relaxed text-gray-800 shadow-sm">
-    <div className="mb-3 rounded bg-gradient-to-r from-primary/80 to-primary px-3 py-2 text-center">
-      <p className="text-[10px] font-bold uppercase tracking-wider text-primary-foreground">TeachKit Worksheet</p>
-      <p className="text-xs font-bold text-primary-foreground">Fractions &amp; Decimals</p>
-    </div>
-    <div className="mb-3 flex justify-between border-b border-dashed border-gray-300 pb-2 text-[10px] text-gray-500">
-      <span>Name: _______________</span>
-      <span>Date: ________</span>
-    </div>
-    <div className="space-y-3">
-      <div className="rounded border border-gray-200 bg-gray-50/60 p-2.5">
-        <p className="mb-1.5 font-bold text-gray-700">
-          <span className="mr-1.5 inline-flex h-4 w-4 items-center justify-center rounded-full bg-primary/15 text-[9px] font-bold text-primary">1</span>
-          Convert 3/4 to a decimal.
-        </p>
-        <div className="mt-2 space-y-1.5">
-          <div className="h-px w-full border-b border-dotted border-gray-300" />
-          <div className="h-px w-full border-b border-dotted border-gray-300" />
-        </div>
-      </div>
-      <div className="rounded border border-gray-200 bg-gray-50/60 p-2.5">
-        <p className="mb-1.5 font-bold text-gray-700">
-          <span className="mr-1.5 inline-flex h-4 w-4 items-center justify-center rounded-full bg-primary/15 text-[9px] font-bold text-primary">2</span>
-          Which is greater: 0.6 or 5/8?
-        </p>
-        <div className="mt-2 space-y-1.5">
-          <div className="h-px w-full border-b border-dotted border-gray-300" />
-          <div className="h-px w-full border-b border-dotted border-gray-300" />
-        </div>
-      </div>
-    </div>
-    <div className="mt-3 border-t border-gray-200 pt-2 text-center text-[9px] text-gray-400">
-      Page 1 of 2
-    </div>
-  </div>
-);
-
-const LessonPlanPreview = () => (
-  <div className="rounded-lg border border-border bg-white p-5 font-serif text-[11px] leading-relaxed text-gray-800 shadow-sm">
-    <div className="mb-3 rounded bg-gradient-to-r from-primary/80 to-primary px-3 py-2 text-center">
-      <p className="text-[10px] font-bold uppercase tracking-wider text-primary-foreground">TeachKit Lesson Plan</p>
-      <p className="text-xs font-bold text-primary-foreground">Introduction to Photosynthesis</p>
-    </div>
-    <div className="mb-3 flex gap-3 text-[10px] text-gray-500">
-      <span className="rounded bg-gray-100 px-1.5 py-0.5">Grade 5</span>
-      <span className="rounded bg-gray-100 px-1.5 py-0.5">Science</span>
-      <span className="rounded bg-gray-100 px-1.5 py-0.5">45 min</span>
-    </div>
-    <div className="space-y-2.5">
-      <div>
-        <p className="mb-1 font-bold text-primary">Objective</p>
-        <p className="text-gray-600">Students will explain how plants convert sunlight into energy through photosynthesis.</p>
-      </div>
-      <div>
-        <p className="mb-1 font-bold text-primary">Hook (5 min)</p>
-        <p className="text-gray-600">Show a wilting plant vs. a healthy plant. Ask: "What does this plant need to survive?"</p>
-      </div>
-      <div>
-        <p className="mb-1 font-bold text-primary">Direct Instruction (15 min)</p>
-        <p className="text-gray-600">Introduce the photosynthesis equation using a labeled diagram...</p>
-      </div>
-      <div>
-        <p className="mb-1 font-bold text-primary">Vocabulary</p>
-        <p className="text-gray-600">Chlorophyll, glucose, carbon dioxide, oxygen</p>
-      </div>
-    </div>
-  </div>
-);
-
-const QuizPreview = () => (
-  <div className="rounded-lg border border-border bg-white p-5 font-serif text-[11px] leading-relaxed text-gray-800 shadow-sm">
-    <div className="mb-3 rounded bg-gradient-to-r from-primary/80 to-primary px-3 py-2 text-center">
-      <p className="text-[10px] font-bold uppercase tracking-wider text-primary-foreground">TeachKit Quiz</p>
-      <p className="text-xs font-bold text-primary-foreground">American Revolution</p>
-    </div>
-    <div className="mb-3 flex justify-between border-b border-dashed border-gray-300 pb-2 text-[10px] text-gray-500">
-      <span>Name: _______________</span>
-      <span>Score: ____ / 10</span>
-    </div>
-    <div className="space-y-3">
-      <div>
-        <p className="mb-1 font-bold text-gray-700">1. Multiple Choice</p>
-        <p className="mb-1.5 text-gray-600">What year did the Declaration of Independence get signed?</p>
-        <div className="grid grid-cols-2 gap-1 text-gray-500">
-          <p>○ A) 1774</p>
-          <p>○ B) 1776</p>
-          <p>○ C) 1781</p>
-          <p>○ D) 1783</p>
-        </div>
-      </div>
-      <div>
-        <p className="mb-1 font-bold text-gray-700">2. True or False</p>
-        <p className="mb-1 text-gray-600">The Boston Tea Party occurred in 1773.</p>
-        <p className="text-gray-500">○ True &nbsp;&nbsp; ○ False</p>
-      </div>
-      <div>
-        <p className="mb-1 font-bold text-gray-700">3. Short Answer</p>
-        <p className="mb-1.5 text-gray-600">Name two causes of the American Revolution.</p>
-        <div className="h-px w-full border-b border-dotted border-gray-300" />
-      </div>
-    </div>
-  </div>
-);
-
-const ExitTicketPreview = () => (
-  <div className="rounded-lg border border-border bg-white p-5 font-serif text-[11px] leading-relaxed text-gray-800 shadow-sm">
-    <div className="mb-3 rounded bg-gradient-to-r from-primary/80 to-primary px-3 py-2 text-center">
-      <p className="text-[10px] font-bold uppercase tracking-wider text-primary-foreground">TeachKit Exit Ticket</p>
-      <p className="text-xs font-bold text-primary-foreground">Equivalent Fractions</p>
-    </div>
-    <div className="mb-3 flex justify-between border-b border-dashed border-gray-300 pb-2 text-[10px] text-gray-500">
-      <span>Name: _______________</span>
-      <span>Date: ________</span>
-    </div>
-    <div className="space-y-3">
-      <div className="rounded border border-gray-200 bg-gray-50/60 p-2.5">
-        <p className="mb-1.5 font-bold text-gray-700">
-          <span className="mr-1.5 inline-flex h-4 w-4 items-center justify-center rounded-full bg-primary/15 text-[9px] font-bold text-primary">1</span>
-          Are 2/4 and 3/6 equivalent? Explain.
-        </p>
-        <div className="mt-2 space-y-1.5">
-          <div className="h-px w-full border-b border-dotted border-gray-300" />
-          <div className="h-px w-full border-b border-dotted border-gray-300" />
-        </div>
-      </div>
-      <div className="rounded border border-gray-200 bg-gray-50/60 p-2.5">
-        <p className="mb-1.5 font-bold text-gray-700">
-          <span className="mr-1.5 inline-flex h-4 w-4 items-center justify-center rounded-full bg-primary/15 text-[9px] font-bold text-primary">2</span>
-          Write a fraction equivalent to 1/3.
-        </p>
-        <div className="mt-2 space-y-1.5">
-          <div className="h-px w-full border-b border-dotted border-gray-300" />
-        </div>
-      </div>
-      <div className="rounded border border-gray-200 bg-gray-50/60 p-2.5">
-        <p className="mb-1.5 font-bold text-gray-700">
-          <span className="mr-1.5 inline-flex h-4 w-4 items-center justify-center rounded-full bg-primary/15 text-[9px] font-bold text-primary">3</span>
-          Rate your understanding: 😊 😐 😕
-        </p>
-      </div>
-    </div>
-  </div>
-);
+import WorksheetPreview from "@/components/landing/previews/WorksheetPreview";
+import LessonPlanPreview from "@/components/landing/previews/LessonPlanPreview";
+import QuizPreview from "@/components/landing/previews/QuizPreview";
+import ExitTicketPreview from "@/components/landing/previews/ExitTicketPreview";
 
 const previews = [
   { label: "Lesson Plan", component: LessonPlanPreview, icon: BookOpen },
@@ -157,9 +16,9 @@ const previews = [
 
 const SeeWhatYouGetSection = () => {
   return (
-    <section className="relative overflow-hidden bg-muted/40 py-20 md:py-28">
+    <section className="relative overflow-hidden bg-background py-24 md:py-36">
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-60 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-primary/5 blur-3xl" />
+        <div className="absolute -top-60 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-primary/5 blur-[100px]" />
       </div>
 
       <div className="container relative mx-auto px-4">
@@ -178,7 +37,7 @@ const SeeWhatYouGetSection = () => {
           </p>
         </motion.div>
 
-        <div className="mx-auto mt-14 grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mx-auto mt-16 grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {previews.map((preview, index) => (
             <motion.div
               key={preview.label}
@@ -194,7 +53,7 @@ const SeeWhatYouGetSection = () => {
                   {preview.label}
                 </span>
               </div>
-              <div className="transform transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg rounded-xl">
+              <div className="transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl rounded-2xl shadow-md shadow-foreground/[0.03]">
                 <preview.component />
               </div>
             </motion.div>
@@ -206,15 +65,15 @@ const SeeWhatYouGetSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.4 }}
-          className="mt-14 text-center"
+          className="mt-16 text-center"
         >
-          <Button asChild size="lg" className="h-14 rounded-2xl px-8 text-lg font-semibold shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30">
+          <Button asChild size="lg" className="h-16 rounded-2xl px-10 text-lg font-bold shadow-xl shadow-primary/25 transition-all hover:shadow-2xl hover:shadow-primary/30 hover:-translate-y-0.5">
             <Link to="/signup">
               Try It Free
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </Button>
-          <p className="mt-3 text-sm text-muted-foreground">No credit card required. Start creating in seconds.</p>
+          <p className="mt-4 text-sm text-muted-foreground">No credit card required. Start creating in seconds.</p>
         </motion.div>
       </div>
     </section>
