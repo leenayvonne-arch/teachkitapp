@@ -115,7 +115,10 @@ const AdminContactSubmissions = () => {
       ) : (
         <div className="grid gap-4">
           {submissions.map((s) => (
-            <Card key={s.id}>
+            <Card
+              key={s.id}
+              className={s.read ? "opacity-75" : "ring-2 ring-primary/20"}
+            >
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -126,6 +129,9 @@ const AdminContactSubmissions = () => {
                     >
                       {s.email}
                     </a>
+                    {!s.read && (
+                      <Badge className="bg-primary text-primary-foreground text-[11px]">New</Badge>
+                    )}
                   </div>
                   <span className="text-xs text-muted-foreground">
                     {new Date(s.created_at).toLocaleDateString()}
@@ -134,7 +140,16 @@ const AdminContactSubmissions = () => {
               </CardHeader>
               <CardContent>
                 <p className="mb-4 text-sm text-foreground">{s.message}</p>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      checked={s.read}
+                      onCheckedChange={() => toggleRead(s.id, s.read)}
+                    />
+                    <span className="text-xs text-muted-foreground">
+                      {s.read ? "Read" : "Unread"}
+                    </span>
+                  </div>
                   <Button
                     variant="outline"
                     size="sm"
