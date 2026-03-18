@@ -277,7 +277,7 @@ export const shopProducts: ShopProduct[] = [
     fullDescription:
       "Everything you need to run engaging social studies research projects. This pack includes step-by-step project guides, customizable rubrics, and graphic organizers that help students organize their research and present their findings.",
     gradeLevel: "Grades 5–8",
-    price: "$6.00",
+    price: "$5.99",
     category: "Social Studies",
     includes: [
       "Research project guides",
