@@ -6,15 +6,25 @@ export interface PreviewPage {
   responseLines: number; // how many blank lines to show
 }
 
+export interface ProductFAQ {
+  question: string;
+  answer: string;
+}
+
 export interface ShopProduct {
   slug: string;
   title: string;
+  subtitle: string;
   description: string;
   fullDescription: string;
   gradeLevel: string;
   price: string;
+  originalPrice?: string;
   category: string;
   includes: string[];
+  useCases: string[];
+  testimonials: string[];
+  faqs: ProductFAQ[];
   previewPages: PreviewPage[];
 }
 
