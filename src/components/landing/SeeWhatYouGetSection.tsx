@@ -214,6 +214,7 @@ const SeeWhatYouGetSection = () => {
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </Button>
+          <p className="mt-3 text-sm text-muted-foreground">No credit card required. Start creating in seconds.</p>
         </motion.div>
       </div>
     </section>
