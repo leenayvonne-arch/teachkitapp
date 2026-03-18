@@ -142,6 +142,8 @@ const ResourceShop = () => {
           );
         })}
       </div>
+
+      <TeacherTestimonials />
     </div>
   );
 };
