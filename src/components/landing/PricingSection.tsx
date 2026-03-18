@@ -239,6 +239,27 @@ const PricingSection = () => {
             </div>
           </div>
         </motion.div>
+
+        {/* Trust & Guarantee */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.15 }}
+          className="mx-auto mt-20 max-w-2xl text-center"
+        >
+          <div className="rounded-2xl border border-border bg-card/60 px-8 py-10 shadow-sm">
+            <h3 className="mb-3 text-xl font-extrabold text-foreground md:text-2xl">
+              Try It Risk-Free
+            </h3>
+            <p className="text-muted-foreground leading-relaxed">
+              Start with the free plan or explore ready-made resources with no commitment. Built to save you time — or you don't use it.
+            </p>
+            <p className="mt-4 text-sm font-medium text-muted-foreground/70">
+              No contracts. Cancel anytime.
+            </p>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
