@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { FileText, BookOpen, HelpCircle } from "lucide-react";
+import { FileText, BookOpen, HelpCircle, ClipboardCheck } from "lucide-react";
 
 const WorksheetPreview = () => (
   <div className="rounded-lg border border-border bg-white p-5 font-serif text-[11px] leading-relaxed text-gray-800 shadow-sm">
@@ -106,10 +106,51 @@ const QuizPreview = () => (
   </div>
 );
 
+const ExitTicketPreview = () => (
+  <div className="rounded-lg border border-border bg-white p-5 font-serif text-[11px] leading-relaxed text-gray-800 shadow-sm">
+    <div className="mb-3 rounded bg-gradient-to-r from-primary/80 to-primary px-3 py-2 text-center">
+      <p className="text-[10px] font-bold uppercase tracking-wider text-primary-foreground">TeachKit Exit Ticket</p>
+      <p className="text-xs font-bold text-primary-foreground">Equivalent Fractions</p>
+    </div>
+    <div className="mb-3 flex justify-between border-b border-dashed border-gray-300 pb-2 text-[10px] text-gray-500">
+      <span>Name: _______________</span>
+      <span>Date: ________</span>
+    </div>
+    <div className="space-y-3">
+      <div className="rounded border border-gray-200 bg-gray-50/60 p-2.5">
+        <p className="mb-1.5 font-bold text-gray-700">
+          <span className="mr-1.5 inline-flex h-4 w-4 items-center justify-center rounded-full bg-primary/15 text-[9px] font-bold text-primary">1</span>
+          Are 2/4 and 3/6 equivalent? Explain.
+        </p>
+        <div className="mt-2 space-y-1.5">
+          <div className="h-px w-full border-b border-dotted border-gray-300" />
+          <div className="h-px w-full border-b border-dotted border-gray-300" />
+        </div>
+      </div>
+      <div className="rounded border border-gray-200 bg-gray-50/60 p-2.5">
+        <p className="mb-1.5 font-bold text-gray-700">
+          <span className="mr-1.5 inline-flex h-4 w-4 items-center justify-center rounded-full bg-primary/15 text-[9px] font-bold text-primary">2</span>
+          Write a fraction equivalent to 1/3.
+        </p>
+        <div className="mt-2 space-y-1.5">
+          <div className="h-px w-full border-b border-dotted border-gray-300" />
+        </div>
+      </div>
+      <div className="rounded border border-gray-200 bg-gray-50/60 p-2.5">
+        <p className="mb-1.5 font-bold text-gray-700">
+          <span className="mr-1.5 inline-flex h-4 w-4 items-center justify-center rounded-full bg-primary/15 text-[9px] font-bold text-primary">3</span>
+          Rate your understanding: 😊 😐 😕
+        </p>
+      </div>
+    </div>
+  </div>
+);
+
 const previews = [
   { label: "Lesson Plan", component: LessonPlanPreview, icon: BookOpen },
   { label: "Worksheet", component: WorksheetPreview, icon: FileText },
   { label: "Quiz", component: QuizPreview, icon: HelpCircle },
+  { label: "Exit Ticket", component: ExitTicketPreview, icon: ClipboardCheck },
 ];
 
 const SeeWhatYouGetSection = () => {
@@ -135,7 +176,7 @@ const SeeWhatYouGetSection = () => {
           </p>
         </motion.div>
 
-        <div className="mx-auto mt-14 grid max-w-6xl gap-8 md:grid-cols-3">
+        <div className="mx-auto mt-14 grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {previews.map((preview, index) => (
             <motion.div
               key={preview.label}
