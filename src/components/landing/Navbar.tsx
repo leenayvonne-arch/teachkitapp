@@ -1,10 +1,23 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Menu } from "lucide-react";
+import { useState } from "react";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+
+const navLinks = [
+  { label: "About", href: "#about" },
+  { label: "Pricing", href: "#pricing" },
+  { label: "Resource Shop", href: "/dashboard/shop" },
+  { label: "Contact", href: "#contact" },
+  { label: "Terms", href: "#terms" },
+  { label: "Privacy", href: "#privacy" },
+];
 
 const Navbar = () => {
+  const [open, setOpen] = useState(false);
+
   return (
-    <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-md shadow-sm">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link to="/" className="flex items-center gap-2">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
@@ -13,18 +26,77 @@ const Navbar = () => {
           <span className="text-xl font-bold font-display text-foreground">TeachKit</span>
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
-          <a href="#features" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Features</a>
-          <a href="#pricing" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Pricing</a>
+        <nav className="hidden items-center gap-6 lg:flex">
+          {navLinks.map((link) =>
+            link.href.startsWith("/") ? (
+              <Link
+                key={link.label}
+                to={link.href}
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <a
+                key={link.label}
+                href={link.href}
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {link.label}
+              </a>
+            )
+          )}
         </nav>
 
         <div className="flex items-center gap-3">
-          <Button asChild variant="ghost" size="sm" className="font-medium">
+          <Button asChild variant="ghost" size="sm" className="hidden font-medium sm:inline-flex">
             <Link to="/login">Log In</Link>
           </Button>
           <Button asChild size="sm" className="rounded-xl font-medium shadow-md shadow-primary/20">
             <Link to="/signup">Start Free</Link>
           </Button>
+
+          {/* Mobile menu */}
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="lg:hidden">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-64">
+              <SheetTitle className="sr-only">Navigation</SheetTitle>
+              <nav className="mt-8 flex flex-col gap-4">
+                {navLinks.map((link) =>
+                  link.href.startsWith("/") ? (
+                    <Link
+                      key={link.label}
+                      to={link.href}
+                      onClick={() => setOpen(false)}
+                      className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      onClick={() => setOpen(false)}
+                      className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {link.label}
+                    </a>
+                  )
+                )}
+                <Link
+                  to="/login"
+                  onClick={() => setOpen(false)}
+                  className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Log In
+                </Link>
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </header>
