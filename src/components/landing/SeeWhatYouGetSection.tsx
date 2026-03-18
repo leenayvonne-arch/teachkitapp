@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
-import { FileText, BookOpen, HelpCircle, ClipboardCheck } from "lucide-react";
+import { FileText, BookOpen, HelpCircle, ClipboardCheck, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const WorksheetPreview = () => (
   <div className="rounded-lg border border-border bg-white p-5 font-serif text-[11px] leading-relaxed text-gray-800 shadow-sm">
