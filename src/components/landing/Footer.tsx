@@ -4,40 +4,6 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <footer className="border-t bg-background">
-      {/* Contact Section */}
-      <div id="contact" className="border-b py-12">
-        <div className="container mx-auto px-4 text-center">
-          <div className="mx-auto max-w-lg">
-            <Mail className="mx-auto mb-4 h-8 w-8 text-primary" />
-            <h3 className="mb-2 text-2xl font-bold text-foreground">Get in Touch</h3>
-            <p className="text-muted-foreground">
-              Have questions or feedback? Reach out at{" "}
-              <a href="mailto:support@teachkit.app" className="font-medium text-primary hover:underline">
-                support@teachkit.app
-              </a>
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Terms & Privacy */}
-      <div className="border-b py-10">
-        <div className="container mx-auto grid gap-8 px-4 md:grid-cols-2">
-          <div id="terms">
-            <h4 className="mb-2 text-lg font-bold text-foreground">Terms of Service</h4>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              By using TeachKit, you agree to our terms of service. All generated content is yours to use in your classroom. We reserve the right to update these terms with notice. For full details, contact us.
-            </p>
-          </div>
-          <div id="privacy">
-            <h4 className="mb-2 text-lg font-bold text-foreground">Privacy Policy</h4>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              We take your privacy seriously. TeachKit collects only the data needed to provide our service. We never sell your personal information. Your generated resources remain private and secure.
-            </p>
-          </div>
-        </div>
-      </div>
-
       {/* Bottom bar */}
       <div className="py-8">
         <div className="container mx-auto flex flex-col items-center justify-between gap-6 px-4 md:flex-row">
