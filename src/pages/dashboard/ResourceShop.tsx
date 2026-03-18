@@ -120,28 +120,40 @@ const ResourceShop = () => {
                     )}
                   </div>
                   <h3 className={`font-semibold leading-snug text-foreground ${isBundle ? "text-lg" : "text-base"}`}>{product.title}</h3>
+                  {isBundle && (
+                    <p className="text-xs text-muted-foreground italic mt-1">Most teachers choose the bundle</p>
+                  )}
                 </CardHeader>
                 <CardContent className="flex-1 pb-4">
                   <p className="text-sm text-muted-foreground">{product.description}</p>
+                  {isBundle && (
+                    <p className="mt-2 text-sm font-medium text-foreground">
+                      ✅ Everything you need for a full month of math instruction
+                    </p>
+                  )}
                 </CardContent>
-                <CardFooter className="flex items-center justify-between border-t pt-4">
-                  <div>
-                    {isBundle && (
-                      <span className="mr-2 text-sm text-muted-foreground line-through">$25.97</span>
-                    )}
-                    <span className={`font-bold text-foreground ${isBundle ? "text-xl" : "text-lg"}`}>{product.price}</span>
-                    {isBundle && (
-                      <span className="ml-2 text-xs font-medium text-primary">Save 50%</span>
-                    )}
-                    {isBundle && (
-                      <div className="mt-1">
-                        <span className="text-[11px] font-medium text-accent italic">⏳ Limited Time Launch Price</span>
+                <CardFooter className="flex flex-col items-start border-t pt-4 gap-3">
+                  <div className="flex w-full items-center justify-between">
+                    <div>
+                      {isBundle && (
+                        <p className="text-xs text-muted-foreground mb-1">If purchased separately: <span className="line-through">$25.97</span></p>
+                      )}
+                      <div className="flex items-center gap-2">
+                        <span className={`font-bold text-foreground ${isBundle ? "text-xl" : "text-lg"}`}>
+                          {isBundle ? "" : ""}{product.price}
+                        </span>
+                        {isBundle && (
+                          <Badge variant="outline" className="text-secondary border-secondary/30 text-[11px] font-semibold">Save over 50%</Badge>
+                        )}
                       </div>
-                    )}
+                      {isBundle && (
+                        <span className="text-[11px] font-medium text-accent italic">⏳ Limited Time Launch Price</span>
+                      )}
+                    </div>
+                    <Button size={isBundle ? "default" : "sm"} asChild>
+                      <Link to={`/dashboard/shop/${product.slug}`}>View Details</Link>
+                    </Button>
                   </div>
-                  <Button size={isBundle ? "default" : "sm"} asChild>
-                    <Link to={`/dashboard/shop/${product.slug}`}>View Details</Link>
-                  </Button>
                 </CardFooter>
               </Card>
             </motion.div>

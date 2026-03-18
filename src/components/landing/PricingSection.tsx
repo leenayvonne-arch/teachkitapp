@@ -185,7 +185,7 @@ const PricingSection = () => {
             </p>
           </div>
 
-          <div className="relative overflow-hidden rounded-2xl border-2 border-accent/40 bg-card p-8 shadow-xl shadow-accent/10">
+          <div className="relative overflow-hidden rounded-2xl border-2 border-accent/40 bg-accent/[0.04] p-8 shadow-xl shadow-accent/10">
             {/* Gradient accent bar */}
             <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-accent via-primary to-secondary" />
 
@@ -204,22 +204,29 @@ const PricingSection = () => {
                   </Badge>
                 </div>
 
+                <p className="mb-3 text-sm text-muted-foreground italic">
+                  Most teachers choose the bundle
+                </p>
+
                 <div className="mb-4 flex flex-wrap items-center justify-center gap-3 text-sm text-muted-foreground md:justify-start">
                   <span className="rounded-full bg-muted px-3 py-1 font-medium">📄 50 Worksheets</span>
                   <span className="rounded-full bg-muted px-3 py-1 font-medium">🎫 30 Exit Tickets</span>
                   <span className="rounded-full bg-muted px-3 py-1 font-medium">❓ 20 Quizzes</span>
                 </div>
 
-                <div className="flex flex-wrap items-center justify-center gap-4 md:justify-start">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-sm text-muted-foreground line-through">$25.97</span>
-                    <span className="text-3xl font-extrabold text-foreground">$12.99</span>
-                  </div>
-                  <Badge variant="outline" className="text-secondary border-secondary/30 font-semibold">
-                    Save 50%
-                  </Badge>
+                <p className="mb-4 text-sm font-medium text-foreground">
+                  ✅ Everything you need for a full month of math instruction
+                </p>
+
+                <div className="mb-2 space-y-1 text-sm text-muted-foreground">
+                  <p>If purchased separately: <span className="line-through">$25.97</span></p>
+                  <p className="text-lg font-extrabold text-foreground">Bundle price: $12.99</p>
                 </div>
-                <p className="mt-2 text-xs font-medium text-accent italic">
+                <Badge variant="outline" className="text-secondary border-secondary/30 font-semibold">
+                  Save over 50%
+                </Badge>
+
+                <p className="mt-3 text-xs font-medium text-accent italic">
                   ⏳ Limited Time Launch Price
                 </p>
                 <p className="text-[11px] text-muted-foreground/60">
