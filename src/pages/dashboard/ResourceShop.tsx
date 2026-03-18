@@ -145,6 +145,10 @@ const ResourceShop = () => {
       </div>
 
       <TeacherTestimonials />
+
+      <div className="mt-4">
+        <FeedbackForm />
+      </div>
     </div>
   );
 };
