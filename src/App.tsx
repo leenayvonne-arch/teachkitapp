@@ -22,6 +22,7 @@ import PlaceholderPage from "./pages/dashboard/PlaceholderPage";
 import ProfilePage from "./pages/dashboard/ProfilePage";
 import ResourceShop from "./pages/dashboard/ResourceShop";
 import ProductDetail from "./pages/dashboard/ProductDetail";
+import AdminFeedback from "./pages/dashboard/AdminFeedback";
 
 const queryClient = new QueryClient();
 
