@@ -25,12 +25,12 @@ const HeroSection = () => {
           </div>
 
           <h1 className="mb-6 text-4xl font-extrabold leading-tight tracking-tight text-foreground md:text-6xl">
-            Create Lesson Plans and Classroom Materials{" "}
-            <span className="text-primary">in Seconds</span>
+            Create Lesson Plans, Worksheets, and Quizzes in Seconds —{" "}
+            <span className="text-primary">Built for Real Classrooms</span>
           </h1>
 
           <p className="mb-10 text-lg text-muted-foreground md:text-xl">
-            Generate professional lesson plans, worksheets, quizzes, and exit tickets
+            Generate standards-aligned lessons, worksheets, quizzes, and exit tickets
             instantly — so you can spend more time teaching and less time planning.
           </p>
 
