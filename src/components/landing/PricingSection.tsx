@@ -88,6 +88,9 @@ const PricingSection = () => {
           <p className="text-lg text-muted-foreground">
             Start free and upgrade when you're ready.
           </p>
+          <p className="mt-3 text-sm text-muted-foreground/70 italic">
+            Pricing may increase as new features are added.
+          </p>
         </motion.div>
 
         {/* Pricing Cards */}
