@@ -133,6 +133,11 @@ const ResourceShop = () => {
                     {isBundle && (
                       <span className="ml-2 text-xs font-medium text-primary">Save 50%</span>
                     )}
+                    {isBundle && (
+                      <div className="mt-1">
+                        <span className="text-[11px] font-medium text-accent italic">⏳ Limited Time Launch Price</span>
+                      </div>
+                    )}
                   </div>
                   <Button size={isBundle ? "default" : "sm"} asChild>
                     <Link to={`/dashboard/shop/${product.slug}`}>View Details</Link>
