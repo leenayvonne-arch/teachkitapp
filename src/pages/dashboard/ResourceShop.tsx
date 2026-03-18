@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Search, ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
 import TeacherTestimonials from "@/components/TeacherTestimonials";
+import FeedbackForm from "@/components/FeedbackForm";
 import { shopProducts } from "@/data/shopProducts";
 
 const categories = ["All", ...Array.from(new Set(shopProducts.map((p) => p.category)))];
