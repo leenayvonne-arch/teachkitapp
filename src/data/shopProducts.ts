@@ -26,7 +26,7 @@ export const shopProducts: ShopProduct[] = [
     fullDescription:
       "Everything you need for a full math workflow in one bundle. Perfect for daily practice, assessment, homework, and test prep. Includes 50 Math Worksheets, 30 Exit Tickets, and 20 Quizzes — all with answer keys included. Covers key topics like fractions, geometry, measurement, and word problems. Save hours of planning time with ready-to-use classroom resources.",
     gradeLevel: "Grades 3–5",
-    price: "$13.00",
+    price: "$12.99",
     category: "Bundles",
     includes: [
       "50 printable math worksheets",
@@ -67,7 +67,7 @@ export const shopProducts: ShopProduct[] = [
     fullDescription:
       "This comprehensive pack includes 100 carefully crafted exit tickets designed for upper elementary classrooms. Each ticket targets key concepts across five core subject areas — Math, ELA, Science, Social Studies, and History — and includes a mix of comprehension checks, short response prompts, and critical thinking questions. Perfect for daily formative assessment routines.",
     gradeLevel: "Grades 3–5",
-    price: "$20.00",
+    price: "$19.99",
     category: "Exit Tickets",
     includes: [
       "100 ready-to-print exit tickets",
@@ -108,7 +108,7 @@ export const shopProducts: ShopProduct[] = [
     fullDescription:
       "Elevate your formative assessment with 100 middle-school-level exit tickets that go beyond simple recall. These tickets feature analytical prompts, deeper critical thinking questions, and short written responses across Math, ELA, Science, Social Studies, and History. Ideal for building a daily exit ticket routine in grades 6–8.",
     gradeLevel: "Grades 6–8",
-    price: "$20.00",
+    price: "$19.99",
     category: "Exit Tickets",
     includes: [
       "100 ready-to-print exit tickets",
@@ -149,7 +149,7 @@ export const shopProducts: ShopProduct[] = [
     fullDescription:
       "Save hours of planning with this bundle of differentiated lesson plans. Each lesson comes in five versions — Standard, Simplified, Advanced, ELL Support, and IEP Accommodations — so every student in your classroom is supported. Covers key topics across multiple subjects.",
     gradeLevel: "Grades 3–8",
-    price: "$10.00",
+    price: "$9.99",
     category: "Lesson Plans",
     includes: [
       "Multiple fully differentiated lesson plans",
@@ -181,7 +181,7 @@ export const shopProducts: ShopProduct[] = [
     fullDescription:
       "A robust collection of 50 math worksheets covering essential upper-elementary topics including fractions, geometry, measurement, and multi-step word problems. Each worksheet includes clear instructions and an answer key.",
     gradeLevel: "Grades 3–5",
-    price: "$7.00",
+    price: "$6.99",
     category: "Worksheets",
     includes: [
       "50 printable math worksheets",
@@ -213,7 +213,7 @@ export const shopProducts: ShopProduct[] = [
     fullDescription:
       "Build stronger readers with this toolkit of fiction and nonfiction passages paired with text-dependent questions. Designed for middle school ELA classrooms, each passage includes vocabulary support and a variety of question types.",
     gradeLevel: "Grades 6–8",
-    price: "$8.00",
+    price: "$7.99",
     category: "ELA",
     includes: [
       "Fiction & nonfiction reading passages",
@@ -245,7 +245,7 @@ export const shopProducts: ShopProduct[] = [
     fullDescription:
       "Help students write clear, organized lab reports with these scaffolded templates. Each template guides students through hypothesis, materials, procedure, data collection, and conclusion sections with sentence starters and vocabulary support.",
     gradeLevel: "Grades 4–8",
-    price: "$4.00",
+    price: "$3.99",
     category: "Science",
     includes: [
       "Scaffolded lab report templates",
@@ -277,7 +277,7 @@ export const shopProducts: ShopProduct[] = [
     fullDescription:
       "Everything you need to run engaging social studies research projects. This pack includes step-by-step project guides, customizable rubrics, and graphic organizers that help students organize their research and present their findings.",
     gradeLevel: "Grades 5–8",
-    price: "$6.00",
+    price: "$5.99",
     category: "Social Studies",
     includes: [
       "Research project guides",
@@ -309,7 +309,7 @@ export const shopProducts: ShopProduct[] = [
     fullDescription:
       "Quickly build quizzes with this collection of 100 pre-written questions spanning Math, ELA, Science, Social Studies, and History. Each question comes with an answer key and can be mixed and matched to create custom assessments for your classroom.",
     gradeLevel: "Grades 3–8",
-    price: "$5.00",
+    price: "$4.99",
     category: "Quizzes",
     includes: [
       "100 quiz questions across 5 subjects",
@@ -341,7 +341,7 @@ export const shopProducts: ShopProduct[] = [
     fullDescription:
       "30 ready-to-use math exit tickets designed for quick daily assessment in Grades 3–5. Perfect for checking understanding, end-of-lesson assessment, and small group instruction. Includes 30 exit tickets covering mixed math topics in a printable format with student answer space. Great for quick, no-prep classroom use.",
     gradeLevel: "Grades 3–5",
-    price: "$5.00",
+    price: "$4.99",
     category: "Exit Tickets",
     includes: [
       "30 ready-to-use exit tickets",
@@ -381,7 +381,7 @@ export const shopProducts: ShopProduct[] = [
     fullDescription:
       "20 ready-to-use math quizzes for Grades 3–5 designed to assess student understanding. Perfect for weekly assessments, review, and test prep. Includes 20 quizzes with multiple question types, answer keys included, in a printable format. Save time with ready-to-use assessments.",
     gradeLevel: "Grades 3–5",
-    price: "$6.00",
+    price: "$5.99",
     category: "Quizzes",
     includes: [
       "20 ready-to-use quizzes",
