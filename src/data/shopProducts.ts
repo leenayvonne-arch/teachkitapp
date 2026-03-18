@@ -108,7 +108,7 @@ export const shopProducts: ShopProduct[] = [
     fullDescription:
       "Elevate your formative assessment with 100 middle-school-level exit tickets that go beyond simple recall. These tickets feature analytical prompts, deeper critical thinking questions, and short written responses across Math, ELA, Science, Social Studies, and History. Ideal for building a daily exit ticket routine in grades 6–8.",
     gradeLevel: "Grades 6–8",
-    price: "$20.00",
+    price: "$19.99",
     category: "Exit Tickets",
     includes: [
       "100 ready-to-print exit tickets",
