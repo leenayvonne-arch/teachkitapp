@@ -65,6 +65,12 @@ const ProductDetail = () => {
             </div>
             <h1 className="text-2xl font-bold text-foreground">{product.title}</h1>
             <p className="mt-2 text-muted-foreground">{product.fullDescription}</p>
+            {slug === "math-classroom-bundle-3-5" && (
+              <div className="mt-3 rounded-lg border border-accent/30 bg-accent/5 px-3 py-2">
+                <p className="text-sm font-medium text-accent">⏳ Limited Time Launch Price</p>
+                <p className="text-xs text-muted-foreground">Early users get this price before it increases.</p>
+              </div>
+            )}
           </div>
 
           {/* What's included */}

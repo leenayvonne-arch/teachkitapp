@@ -88,6 +88,9 @@ const PricingSection = () => {
           <p className="text-lg text-muted-foreground">
             Start free and upgrade when you're ready.
           </p>
+          <p className="mt-3 text-sm text-muted-foreground/70 italic">
+            Pricing may increase as new features are added.
+          </p>
         </motion.div>
 
         {/* Pricing Cards */}
@@ -216,6 +219,12 @@ const PricingSection = () => {
                     Save 50%
                   </Badge>
                 </div>
+                <p className="mt-2 text-xs font-medium text-accent italic">
+                  ⏳ Limited Time Launch Price
+                </p>
+                <p className="text-[11px] text-muted-foreground/60">
+                  Early users get this price before it increases.
+                </p>
               </div>
 
               <div className="flex flex-shrink-0 items-center">
