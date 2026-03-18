@@ -149,7 +149,7 @@ export const shopProducts: ShopProduct[] = [
     fullDescription:
       "Save hours of planning with this bundle of differentiated lesson plans. Each lesson comes in five versions — Standard, Simplified, Advanced, ELL Support, and IEP Accommodations — so every student in your classroom is supported. Covers key topics across multiple subjects.",
     gradeLevel: "Grades 3–8",
-    price: "$10.00",
+    price: "$9.99",
     category: "Lesson Plans",
     includes: [
       "Multiple fully differentiated lesson plans",
