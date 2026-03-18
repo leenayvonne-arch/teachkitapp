@@ -13,6 +13,7 @@ interface ContactRow {
   name: string;
   email: string;
   message: string;
+  read: boolean;
   created_at: string;
 }
 
