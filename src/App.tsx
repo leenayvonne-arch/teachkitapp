@@ -47,8 +47,6 @@ const App = () => (
             <Route path="worksheets" element={<WorksheetGenerator />} />
             <Route path="quizzes" element={<QuizGenerator />} />
             <Route path="exit-tickets" element={<ExitTicketGenerator />} />
-            <Route path="exit-ticket-mega-pack" element={<ExitTicketMegaPack />} />
-            <Route path="exit-ticket-mega-pack-68" element={<ExitTicketMegaPack68 />} />
             <Route path="math-worksheet-mega-pack" element={<MathWorksheetMegaPack />} />
             <Route path="library" element={<LessonLibrary />} />
             <Route path="pricing" element={<PlaceholderPage title="Pricing" description="Manage your TeachKit subscription." />} />
