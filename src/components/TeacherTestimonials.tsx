@@ -65,7 +65,7 @@ const TeacherTestimonials = () => {
   }, []);
 
   return (
-    <section className="bg-background py-24 md:py-36">
+    <section className="bg-background py-16 md:py-24">
       <div className="mx-auto max-w-6xl px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
