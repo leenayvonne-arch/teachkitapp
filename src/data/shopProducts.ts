@@ -245,7 +245,7 @@ export const shopProducts: ShopProduct[] = [
     fullDescription:
       "Help students write clear, organized lab reports with these scaffolded templates. Each template guides students through hypothesis, materials, procedure, data collection, and conclusion sections with sentence starters and vocabulary support.",
     gradeLevel: "Grades 4–8",
-    price: "$4.00",
+    price: "$3.99",
     category: "Science",
     includes: [
       "Scaffolded lab report templates",
