@@ -309,7 +309,7 @@ export const shopProducts: ShopProduct[] = [
     fullDescription:
       "Quickly build quizzes with this collection of 100 pre-written questions spanning Math, ELA, Science, Social Studies, and History. Each question comes with an answer key and can be mixed and matched to create custom assessments for your classroom.",
     gradeLevel: "Grades 3–8",
-    price: "$5.00",
+    price: "$4.99",
     category: "Quizzes",
     includes: [
       "100 quiz questions across 5 subjects",
