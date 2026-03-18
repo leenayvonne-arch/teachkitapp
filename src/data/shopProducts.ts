@@ -213,7 +213,7 @@ export const shopProducts: ShopProduct[] = [
     fullDescription:
       "Build stronger readers with this toolkit of fiction and nonfiction passages paired with text-dependent questions. Designed for middle school ELA classrooms, each passage includes vocabulary support and a variety of question types.",
     gradeLevel: "Grades 6–8",
-    price: "$8.00",
+    price: "$7.99",
     category: "ELA",
     includes: [
       "Fiction & nonfiction reading passages",
