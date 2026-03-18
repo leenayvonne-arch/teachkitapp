@@ -42,6 +42,22 @@ const AdminContactSubmissions = () => {
     if (isAdmin) fetchSubmissions();
   }, [isAdmin]);
 
+  const toggleRead = async (id: string, current: boolean) => {
+    const { error } = await supabase
+      .from("contact_submissions")
+      .update({ read: !current } as any)
+      .eq("id", id);
+
+    if (error) {
+      toast({ title: "Update failed", description: error.message, variant: "destructive" });
+    } else {
+      setSubmissions((prev) =>
+        prev.map((s) => (s.id === id ? { ...s, read: !current } : s))
+      );
+      toast({ title: !current ? "Marked as read" : "Marked as unread" });
+    }
+  };
+
   const deleteSubmission = async (id: string) => {
     const { error } = await supabase.from("contact_submissions").delete().eq("id", id);
     if (error) {
