@@ -42,24 +42,21 @@ const features = [
 
 const WhatYouCanCreateSection = () => {
   return (
-    <section className="bg-muted/30 py-24 md:py-32">
+    <section className="bg-background py-20 md:py-28">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="mb-16 text-center"
+          className="mb-14 text-center"
         >
-          <h2 className="text-3xl font-extrabold tracking-tight text-foreground md:text-5xl">
+          <h2 className="text-3xl font-extrabold tracking-tight text-foreground md:text-4xl">
             What You Can Create with TeachKit
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground">
-            Four powerful tools, one platform.
-          </p>
         </motion.div>
 
-        <div className="mx-auto grid max-w-5xl gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
@@ -67,19 +64,19 @@ const WhatYouCanCreateSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
-              className="rounded-2xl border border-border bg-card p-7 shadow-md shadow-foreground/[0.03] transition-all hover:shadow-lg hover:-translate-y-1"
+              className="rounded-2xl border border-border bg-card p-6 shadow-sm transition-shadow hover:shadow-md"
             >
-              <div className="mb-5 inline-flex h-13 w-13 items-center justify-center rounded-xl bg-primary/10">
+              <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
                 <feature.icon className="h-6 w-6 text-primary" />
               </div>
               <h3 className="mb-3 text-lg font-bold text-card-foreground">
                 {feature.title}
               </h3>
-              <ul className="space-y-2.5">
+              <ul className="space-y-2">
                 {feature.bullets.map((bullet) => (
                   <li
                     key={bullet}
-                    className="flex items-start gap-2 text-sm text-muted-foreground leading-relaxed"
+                    className="flex items-start gap-2 text-sm text-muted-foreground"
                   >
                     <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary/60" />
                     {bullet}

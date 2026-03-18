@@ -38,7 +38,7 @@ const plans = [
 
 const PricingSection = () => {
   return (
-    <section id="pricing" className="bg-muted/30 py-24 md:py-32">
+    <section id="pricing" className="bg-muted/30 py-20 md:py-28">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -46,10 +46,10 @@ const PricingSection = () => {
           viewport={{ once: true }}
           className="mx-auto mb-16 max-w-2xl text-center"
         >
-          <h2 className="mb-5 text-3xl font-extrabold text-foreground md:text-5xl">
+          <h2 className="mb-4 text-3xl font-bold text-foreground md:text-4xl">
             Simple, Teacher-Friendly Pricing
           </h2>
-          <p className="text-lg text-muted-foreground leading-relaxed">
+          <p className="text-lg text-muted-foreground">
             Start for free. Upgrade when you're ready.
           </p>
         </motion.div>
@@ -62,10 +62,10 @@ const PricingSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.15 }}
-              className={`relative rounded-2xl border p-8 transition-all hover:-translate-y-0.5 ${
+              className={`relative rounded-2xl border p-8 ${
                 plan.featured
                   ? "border-primary bg-card shadow-xl shadow-primary/10 ring-2 ring-primary/20"
-                  : "bg-card shadow-md shadow-foreground/[0.03] hover:shadow-lg"
+                  : "bg-card shadow-sm"
               }`}
             >
               {plan.featured && (
@@ -73,13 +73,13 @@ const PricingSection = () => {
                   MOST POPULAR
                 </div>
               )}
-              <h3 className="mb-2 text-xl font-bold text-foreground">{plan.name}</h3>
-              <p className="mb-5 text-sm text-muted-foreground">{plan.description}</p>
-              <div className="mb-8">
-                <span className="text-5xl font-extrabold text-foreground">{plan.price}</span>
+              <h3 className="mb-1 text-xl font-bold text-foreground">{plan.name}</h3>
+              <p className="mb-4 text-sm text-muted-foreground">{plan.description}</p>
+              <div className="mb-6">
+                <span className="text-4xl font-extrabold text-foreground">{plan.price}</span>
                 <span className="ml-1 text-muted-foreground">/{plan.period}</span>
               </div>
-              <ul className="mb-8 space-y-3.5">
+              <ul className="mb-8 space-y-3">
                 {plan.features.map((f) => (
                   <li key={f} className="flex items-center gap-3 text-sm text-foreground">
                     <Check className="h-4 w-4 flex-shrink-0 text-secondary" />
@@ -89,9 +89,9 @@ const PricingSection = () => {
               </ul>
               <Button
                 asChild
-                className={`w-full rounded-xl h-12 font-bold transition-all hover:-translate-y-0.5 ${
+                className={`w-full rounded-xl ${
                   plan.featured
-                    ? "shadow-lg shadow-primary/20"
+                    ? "shadow-md shadow-primary/20"
                     : ""
                 }`}
                 variant={plan.featured ? "default" : "outline"}

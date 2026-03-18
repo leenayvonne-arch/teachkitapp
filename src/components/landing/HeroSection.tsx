@@ -5,12 +5,11 @@ import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   return (
-    <section className="relative overflow-hidden bg-background py-28 md:py-40">
+    <section className="relative overflow-hidden bg-background py-20 md:py-28">
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-primary/5 blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 h-[500px] w-[500px] rounded-full bg-secondary/5 blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-accent/3 blur-3xl" />
+        <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-primary/5 blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-secondary/5 blur-3xl" />
       </div>
 
       <div className="container relative mx-auto px-4">
@@ -18,46 +17,36 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mx-auto max-w-4xl text-center"
+          className="mx-auto max-w-3xl text-center"
         >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4 }}
-            className="mb-8 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-5 py-2.5 text-sm font-medium text-primary"
-          >
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-medium text-primary">
             <Sparkles className="h-4 w-4" />
             AI-Powered Teaching Tools
-          </motion.div>
+          </div>
 
-          <h1 className="mb-8 text-5xl font-extrabold leading-[1.1] tracking-tight text-foreground md:text-7xl">
+          <h1 className="mb-6 text-4xl font-extrabold leading-tight tracking-tight text-foreground md:text-6xl">
             Create Lesson Plans, Worksheets, and Quizzes in Seconds —{" "}
-            <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-              Built for Real Classrooms
-            </span>
+            <span className="text-primary">Built for Real Classrooms</span>
           </h1>
 
-          <p className="mx-auto mb-12 max-w-2xl text-lg text-muted-foreground md:text-xl leading-relaxed">
+          <p className="mb-10 text-lg text-muted-foreground md:text-xl">
             Generate standards-aligned lessons, worksheets, quizzes, and exit tickets
             instantly — so you can spend more time teaching and less time planning.
           </p>
 
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Button asChild size="lg" className="h-16 rounded-2xl px-10 text-lg font-bold shadow-xl shadow-primary/25 transition-all hover:shadow-2xl hover:shadow-primary/30 hover:-translate-y-0.5">
+            <Button asChild size="lg" className="h-14 rounded-2xl px-8 text-lg font-semibold shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30">
               <Link to="/signup">
                 Start Free
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="h-16 rounded-2xl px-10 text-lg font-semibold border-2 hover:-translate-y-0.5 transition-all">
+            <Button asChild variant="outline" size="lg" className="h-14 rounded-2xl px-8 text-lg font-semibold">
               <a href="#features">See How It Works</a>
             </Button>
           </div>
-
-          <p className="mt-6 text-sm text-muted-foreground">
-            No credit card required · Free forever plan available
-          </p>
         </motion.div>
+
       </div>
     </section>
   );
