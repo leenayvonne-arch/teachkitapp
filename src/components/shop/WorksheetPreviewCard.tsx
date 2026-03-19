@@ -15,7 +15,7 @@ const WorksheetPreviewCard = ({ page, compact = false, onClick }: WorksheetPrevi
     <button
       type="button"
       onClick={onClick}
-      className="group block w-full cursor-pointer rounded-lg border border-border/60 bg-white text-left shadow-sm transition-all hover:shadow-lg hover:border-primary/30 dark:bg-card"
+      className="group block w-full cursor-pointer rounded-lg border border-border/60 bg-card text-left shadow-sm transition-all hover:shadow-lg hover:border-primary/30"
     >
       <div className={compact ? "px-5 py-4" : "px-7 py-5"} style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}>
         {/* Premium Header */}

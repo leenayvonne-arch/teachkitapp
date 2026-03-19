@@ -175,7 +175,7 @@ const WorksheetGenerator = () => {
             />
           </div>
 
-          <div id="worksheet-output" className="rounded-2xl border bg-white shadow-lg print:shadow-none print:border-0" style={{ maxWidth: 816, margin: "0 auto", fontFamily: "'Georgia', 'Times New Roman', serif" }}>
+          <div id="worksheet-output" className="rounded-2xl border bg-card shadow-lg print:shadow-none print:border-0 print:bg-white" style={{ maxWidth: 816, margin: "0 auto", fontFamily: "'Georgia', 'Times New Roman', serif" }}>
             {/* Page 1 */}
             <div className="px-[0.75in] py-[0.6in]">
               {/* Premium Header Bar */}
