@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Menu } from "lucide-react";
+import { Sparkles, Menu, Sun, Moon } from "lucide-react";
 import { useState } from "react";
+import { useTheme } from "next-themes";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 
 const navLinks = [
