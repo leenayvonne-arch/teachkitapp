@@ -10,6 +10,8 @@ import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import WorksheetPreviewCard from "@/components/shop/WorksheetPreviewCard";
+import { stripePriceMap } from "@/data/stripePrices";
+import { supabase } from "@/integrations/supabase/client";
 
 const ProductDetail = () => {
   const { slug } = useParams<{ slug: string }>();
