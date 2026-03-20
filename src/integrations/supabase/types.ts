@@ -71,6 +71,72 @@ export type Database = {
         }
         Relationships: []
       }
+      products: {
+        Row: {
+          active: boolean
+          category: string
+          created_at: string
+          description: string
+          faqs: Json
+          full_description: string
+          grade_level: string
+          id: string
+          includes: Json
+          original_price: string | null
+          preview_pages: Json
+          price: string
+          slug: string
+          stripe_price_id: string | null
+          subtitle: string
+          testimonials: Json
+          title: string
+          updated_at: string
+          use_cases: Json
+        }
+        Insert: {
+          active?: boolean
+          category?: string
+          created_at?: string
+          description?: string
+          faqs?: Json
+          full_description?: string
+          grade_level?: string
+          id?: string
+          includes?: Json
+          original_price?: string | null
+          preview_pages?: Json
+          price?: string
+          slug: string
+          stripe_price_id?: string | null
+          subtitle?: string
+          testimonials?: Json
+          title: string
+          updated_at?: string
+          use_cases?: Json
+        }
+        Update: {
+          active?: boolean
+          category?: string
+          created_at?: string
+          description?: string
+          faqs?: Json
+          full_description?: string
+          grade_level?: string
+          id?: string
+          includes?: Json
+          original_price?: string | null
+          preview_pages?: Json
+          price?: string
+          slug?: string
+          stripe_price_id?: string | null
+          subtitle?: string
+          testimonials?: Json
+          title?: string
+          updated_at?: string
+          use_cases?: Json
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null

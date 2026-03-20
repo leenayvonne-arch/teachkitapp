@@ -11,17 +11,15 @@ import { Search, ShoppingBag, ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
 import TeacherTestimonials from "@/components/TeacherTestimonials";
 import FeedbackForm from "@/components/FeedbackForm";
-import { shopProducts } from "@/data/shopProducts";
-import { stripePriceMap } from "@/data/stripePrices";
+import { useProducts, Product } from "@/hooks/useProducts";
 import { supabase } from "@/integrations/supabase/client";
-
-const categories = ["All", ...Array.from(new Set(shopProducts.map((p) => p.category)))];
 
 type SortOption = "default" | "price-low" | "price-high" | "name";
 
 const parsePrice = (price: string) => parseFloat(price.replace(/[^0-9.]/g, ""));
 
 const ResourceShop = () => {
+  const { products, loading: productsLoading } = useProducts();
   const [category, setCategory] = useState("All");
   const [buyingSlug, setBuyingSlug] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -36,13 +34,15 @@ const ResourceShop = () => {
       setSearchParams({}, { replace: true });
     }
   }, [searchParams, setSearchParams]);
-  const [sort, setSort] = useState<SortOption>("default");
 
+  const [sort, setSort] = useState<SortOption>("default");
   const [search, setSearch] = useState("");
+
+  const categories = useMemo(() => ["All", ...Array.from(new Set(products.map((p) => p.category)))], [products]);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
-    let list = shopProducts.filter((p) => {
+    let list = products.filter((p) => {
       const matchesCategory = category === "All" || p.category === category;
       const matchesSearch = !q || p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q) || p.category.toLowerCase().includes(q);
       return matchesCategory && matchesSearch;
@@ -51,11 +51,10 @@ const ResourceShop = () => {
     else if (sort === "price-high") list = [...list].sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
     else if (sort === "name") list = [...list].sort((a, b) => a.title.localeCompare(b.title));
     return list;
-  }, [category, sort, search]);
+  }, [category, sort, search, products]);
 
-  const handleBuy = async (product: typeof shopProducts[0]) => {
-    const priceId = stripePriceMap[product.slug];
-    if (!priceId) {
+  const handleBuy = async (product: Product) => {
+    if (!product.stripe_price_id) {
       toast({ title: "Error", description: "Product not available for purchase yet.", variant: "destructive" });
       return;
     }
@@ -63,7 +62,7 @@ const ResourceShop = () => {
     try {
       const { data, error } = await supabase.functions.invoke("create-checkout", {
         body: {
-          priceId,
+          priceId: product.stripe_price_id,
           productSlug: product.slug,
           productName: product.title,
           productDescription: product.description,
@@ -97,28 +96,16 @@ const ResourceShop = () => {
       <div className="mb-6 flex flex-wrap items-center gap-3">
         <div className="relative w-full sm:w-[240px]">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            placeholder="Search products…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-9"
-          />
+          <Input placeholder="Search products…" value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
         </div>
         <Select value={category} onValueChange={setCategory}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Category" />
-          </SelectTrigger>
+          <SelectTrigger className="w-[180px]"><SelectValue placeholder="Category" /></SelectTrigger>
           <SelectContent>
-            {categories.map((c) => (
-              <SelectItem key={c} value={c}>{c}</SelectItem>
-            ))}
+            {categories.map((c) => (<SelectItem key={c} value={c}>{c}</SelectItem>))}
           </SelectContent>
         </Select>
-
         <Select value={sort} onValueChange={(v) => setSort(v as SortOption)}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Sort by" />
-          </SelectTrigger>
+          <SelectTrigger className="w-[180px]"><SelectValue placeholder="Sort by" /></SelectTrigger>
           <SelectContent>
             <SelectItem value="default">Featured</SelectItem>
             <SelectItem value="price-low">Price: Low → High</SelectItem>
@@ -126,11 +113,8 @@ const ResourceShop = () => {
             <SelectItem value="name">Name: A → Z</SelectItem>
           </SelectContent>
         </Select>
-
         {category !== "All" && (
-          <Button variant="ghost" size="sm" onClick={() => setCategory("All")}>
-            Clear filter
-          </Button>
+          <Button variant="ghost" size="sm" onClick={() => setCategory("All")}>Clear filter</Button>
         )}
       </div>
 
@@ -139,89 +123,62 @@ const ResourceShop = () => {
         <span className="ml-2 text-sm font-normal text-muted-foreground">({filtered.length})</span>
       </h2>
 
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {filtered.map((product, i) => {
-          const isBundle = product.slug === "math-classroom-bundle-3-5";
-          return (
-            <motion.div
-              key={product.slug}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }}
-              className={isBundle ? "sm:col-span-2 lg:col-span-2" : ""}
-            >
-              <Card className={`flex h-full flex-col transition-shadow hover:shadow-md ${isBundle ? "ring-2 ring-primary shadow-lg bg-primary/[0.03] relative overflow-hidden" : ""}`}>
-                {isBundle && (
-                  <div className="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-primary to-primary/60" />
-                )}
-                <CardHeader className={isBundle ? "pb-3 pt-5" : "pb-3"}>
-                  <div className="mb-2 flex flex-wrap items-center gap-2">
-                    <Badge variant="secondary" className="text-[11px]">{product.category}</Badge>
-                    <Badge variant="outline" className="text-[11px]">{product.gradeLevel}</Badge>
-                    {isBundle && (
-                      <>
-                        <Badge className="bg-primary text-primary-foreground text-[11px] font-semibold">🏆 Best Value</Badge>
-                        <Badge className="bg-accent text-accent-foreground text-[11px] font-semibold">🔥 Most Popular</Badge>
-                      </>
-                    )}
-                  </div>
-                  <h3 className={`font-semibold leading-snug text-foreground ${isBundle ? "text-lg" : "text-base"}`}>{product.title}</h3>
-                  {isBundle && (
-                    <p className="text-xs text-muted-foreground italic mt-1">Most teachers choose the bundle</p>
-                  )}
-                </CardHeader>
-                <CardContent className="flex-1 pb-4">
-                  <p className="text-sm text-muted-foreground">{product.description}</p>
-                  {isBundle && (
-                    <p className="mt-2 text-sm font-medium text-foreground">
-                      ✅ Everything you need for a full month of math instruction
-                    </p>
-                  )}
-                </CardContent>
-                <CardFooter className="flex flex-col items-start border-t pt-4 gap-3">
-                  <div className="flex w-full items-center justify-between">
-                    <div>
+      {productsLoading ? (
+        <div className="py-12 text-center text-muted-foreground">Loading products…</div>
+      ) : (
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {filtered.map((product, i) => {
+            const isBundle = product.slug === "math-classroom-bundle-3-5";
+            return (
+              <motion.div key={product.slug} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className={isBundle ? "sm:col-span-2 lg:col-span-2" : ""}>
+                <Card className={`flex h-full flex-col transition-shadow hover:shadow-md ${isBundle ? "ring-2 ring-primary shadow-lg bg-primary/[0.03] relative overflow-hidden" : ""}`}>
+                  {isBundle && <div className="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-primary to-primary/60" />}
+                  <CardHeader className={isBundle ? "pb-3 pt-5" : "pb-3"}>
+                    <div className="mb-2 flex flex-wrap items-center gap-2">
+                      <Badge variant="secondary" className="text-[11px]">{product.category}</Badge>
+                      <Badge variant="outline" className="text-[11px]">{product.grade_level}</Badge>
                       {isBundle && (
-                        <p className="text-xs text-muted-foreground mb-1">If purchased separately: <span className="line-through">$25.97</span></p>
-                      )}
-                      <div className="flex items-center gap-2">
-                        <span className={`font-bold text-foreground ${isBundle ? "text-xl" : "text-lg"}`}>
-                          {product.price}
-                        </span>
-                        {isBundle && (
-                          <Badge variant="outline" className="text-secondary border-secondary/30 text-[11px] font-semibold">Save over 50%</Badge>
-                        )}
-                      </div>
-                      {isBundle && (
-                        <span className="text-[11px] font-medium text-accent italic">⏳ Limited Time Launch Price</span>
+                        <>
+                          <Badge className="bg-primary text-primary-foreground text-[11px] font-semibold">🏆 Best Value</Badge>
+                          <Badge className="bg-accent text-accent-foreground text-[11px] font-semibold">🔥 Most Popular</Badge>
+                        </>
                       )}
                     </div>
-                    <Button size={isBundle ? "default" : "sm"} asChild>
-                      <Link to={`/dashboard/shop/${product.slug}`}>View Details</Link>
+                    <h3 className={`font-semibold leading-snug text-foreground ${isBundle ? "text-lg" : "text-base"}`}>{product.title}</h3>
+                    {isBundle && <p className="text-xs text-muted-foreground italic mt-1">Most teachers choose the bundle</p>}
+                  </CardHeader>
+                  <CardContent className="flex-1 pb-4">
+                    <p className="text-sm text-muted-foreground">{product.description}</p>
+                    {isBundle && <p className="mt-2 text-sm font-medium text-foreground">✅ Everything you need for a full month of math instruction</p>}
+                  </CardContent>
+                  <CardFooter className="flex flex-col items-start border-t pt-4 gap-3">
+                    <div className="flex w-full items-center justify-between">
+                      <div>
+                        {isBundle && <p className="text-xs text-muted-foreground mb-1">If purchased separately: <span className="line-through">{product.original_price}</span></p>}
+                        <div className="flex items-center gap-2">
+                          <span className={`font-bold text-foreground ${isBundle ? "text-xl" : "text-lg"}`}>{product.price}</span>
+                          {isBundle && <Badge variant="outline" className="text-secondary border-secondary/30 text-[11px] font-semibold">Save over 50%</Badge>}
+                        </div>
+                        {isBundle && <span className="text-[11px] font-medium text-accent italic">⏳ Limited Time Launch Price</span>}
+                      </div>
+                      <Button size={isBundle ? "default" : "sm"} asChild>
+                        <Link to={`/dashboard/shop/${product.slug}`}>View Details</Link>
+                      </Button>
+                    </div>
+                    <Button size={isBundle ? "default" : "sm"} variant="secondary" className="w-full" disabled={buyingSlug === product.slug} onClick={() => handleBuy(product)}>
+                      <ShoppingCart className="mr-2 h-4 w-4" />
+                      {buyingSlug === product.slug ? "Processing…" : "Buy Now"}
                     </Button>
-                  </div>
-                  <Button
-                    size={isBundle ? "default" : "sm"}
-                    variant="secondary"
-                    className="w-full"
-                    disabled={buyingSlug === product.slug}
-                    onClick={() => handleBuy(product)}
-                  >
-                    <ShoppingCart className="mr-2 h-4 w-4" />
-                    {buyingSlug === product.slug ? "Processing…" : "Buy Now"}
-                  </Button>
-                </CardFooter>
-              </Card>
-            </motion.div>
-          );
-        })}
-      </div>
+                  </CardFooter>
+                </Card>
+              </motion.div>
+            );
+          })}
+        </div>
+      )}
 
       <TeacherTestimonials />
-
-      <div className="mt-4">
-        <FeedbackForm />
-      </div>
+      <div className="mt-4"><FeedbackForm /></div>
     </div>
   );
 };

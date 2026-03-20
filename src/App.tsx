@@ -25,6 +25,7 @@ import ProductDetail from "./pages/dashboard/ProductDetail";
 import AdminFeedback from "./pages/dashboard/AdminFeedback";
 import AdminContactSubmissions from "./pages/dashboard/AdminContactSubmissions";
 import AdminPurchases from "./pages/dashboard/AdminPurchases";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 import AboutPage from "./pages/AboutPage";
 import PricingPage from "./pages/PricingPage";
 import ContactPage from "./pages/ContactPage";
@@ -72,6 +73,14 @@ const App = () => (
             <Route path="admin/contact" element={<AdminContactSubmissions />} />
             <Route path="admin/purchases" element={<AdminPurchases />} />
           </Route>
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
