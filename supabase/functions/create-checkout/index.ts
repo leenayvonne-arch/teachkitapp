@@ -52,7 +52,7 @@ serve(async (req) => {
       line_items: [{ price: priceId, quantity: 1 }],
       mode: "payment",
       billing_address_collection: "auto",
-      success_url: `${origin}/dashboard/shop?payment=success`,
+      success_url: `${origin}/dashboard/purchase-success`,
       cancel_url: `${origin}/dashboard/shop?payment=canceled`,
       metadata: {
         user_id: user.id,
