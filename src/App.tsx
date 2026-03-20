@@ -22,6 +22,7 @@ import PlaceholderPage from "./pages/dashboard/PlaceholderPage";
 import ProfilePage from "./pages/dashboard/ProfilePage";
 import ResourceShop from "./pages/dashboard/ResourceShop";
 import ProductDetail from "./pages/dashboard/ProductDetail";
+import PurchaseSuccess from "./pages/dashboard/PurchaseSuccess";
 import AdminFeedback from "./pages/dashboard/AdminFeedback";
 import AdminContactSubmissions from "./pages/dashboard/AdminContactSubmissions";
 import AdminPurchases from "./pages/dashboard/AdminPurchases";
