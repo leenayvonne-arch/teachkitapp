@@ -53,6 +53,35 @@ const ResourceShop = () => {
     return list;
   }, [category, sort, search]);
 
+  const handleBuy = async (product: typeof shopProducts[0]) => {
+    const priceId = stripePriceMap[product.slug];
+    if (!priceId) {
+      toast({ title: "Error", description: "Product not available for purchase yet.", variant: "destructive" });
+      return;
+    }
+    setBuyingSlug(product.slug);
+    try {
+      const { data, error } = await supabase.functions.invoke("create-checkout", {
+        body: {
+          priceId,
+          productSlug: product.slug,
+          productName: product.title,
+          productDescription: product.description,
+        },
+      });
+      if (error) throw error;
+      if (data?.url) {
+        window.open(data.url, "_blank");
+      } else {
+        throw new Error("No checkout URL returned");
+      }
+    } catch (err: any) {
+      toast({ title: "Checkout failed", description: err.message || "Please try again.", variant: "destructive" });
+    } finally {
+      setBuyingSlug(null);
+    }
+  };
+
   return (
     <div>
       <div className="mb-8 flex items-center gap-3">
