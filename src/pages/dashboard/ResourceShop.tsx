@@ -7,11 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Search, ShoppingBag } from "lucide-react";
+import { Search, ShoppingBag, ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
 import TeacherTestimonials from "@/components/TeacherTestimonials";
 import FeedbackForm from "@/components/FeedbackForm";
 import { shopProducts } from "@/data/shopProducts";
+import { stripePriceMap } from "@/data/stripePrices";
+import { supabase } from "@/integrations/supabase/client";
 
 const categories = ["All", ...Array.from(new Set(shopProducts.map((p) => p.category)))];
 
