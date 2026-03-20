@@ -1,4 +1,4 @@
-import { BookOpen, FileText, HelpCircle, LogOut, LayoutDashboard, Library, User, Sparkles, ShoppingBag, MessageSquare, Mail, CreditCard } from "lucide-react";
+import { BookOpen, FileText, HelpCircle, LogOut, LayoutDashboard, Library, User, Sparkles, ShoppingBag, MessageSquare, Mail, CreditCard, ShieldCheck } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -84,6 +84,23 @@ const DashboardSidebar = () => {
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
+
+        {isAdmin && (
+          <SidebarGroup>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild>
+                    <NavLink to="/admin" className="hover:bg-sidebar-accent/50" activeClassName="bg-sidebar-accent text-sidebar-accent-foreground font-medium">
+                      <ShieldCheck className="mr-2 h-4 w-4 flex-shrink-0" />
+                      {!collapsed && <span>Admin Dashboard</span>}
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
