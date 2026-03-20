@@ -48,6 +48,23 @@ serve(async (req) => {
     const productDescription = session.metadata?.product_description;
     const userId = session.metadata?.user_id;
 
+    // Extract customer email and name from the session / Stripe customer
+    let customerEmail = session.customer_details?.email || session.customer_email || null;
+    let customerName = session.customer_details?.name || null;
+
+    // If we have a customer ID, fetch full customer record for reliable data
+    if (session.customer && (!customerEmail || !customerName)) {
+      try {
+        const customer = await stripe.customers.retrieve(session.customer as string);
+        if (customer && !customer.deleted) {
+          customerEmail = customerEmail || customer.email || null;
+          customerName = customerName || customer.name || null;
+        }
+      } catch (e) {
+        console.error("Error fetching Stripe customer:", e);
+      }
+    }
+
     if (userId && productSlug) {
       const { error } = await supabaseAdmin.from("purchases").insert({
         user_id: userId,
@@ -57,6 +74,8 @@ serve(async (req) => {
         price_paid: session.amount_total || 0,
         currency: session.currency || "usd",
         stripe_session_id: session.id,
+        customer_email: customerEmail,
+        customer_name: customerName,
       });
 
       if (error) {

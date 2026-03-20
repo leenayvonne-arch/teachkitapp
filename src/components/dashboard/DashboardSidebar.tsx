@@ -1,4 +1,4 @@
-import { BookOpen, FileText, HelpCircle, LogOut, LayoutDashboard, Library, User, Sparkles, ShoppingBag, MessageSquare, Mail } from "lucide-react";
+import { BookOpen, FileText, HelpCircle, LogOut, LayoutDashboard, Library, User, Sparkles, ShoppingBag, MessageSquare, Mail, CreditCard } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -30,6 +30,7 @@ const navItems = [
 const adminItems = [
   { title: "Feedback Review", url: "/dashboard/admin/feedback", icon: MessageSquare },
   { title: "Contact Submissions", url: "/dashboard/admin/contact", icon: Mail },
+  { title: "Purchases", url: "/dashboard/admin/purchases", icon: CreditCard },
 ];
 
 const DashboardSidebar = () => {
