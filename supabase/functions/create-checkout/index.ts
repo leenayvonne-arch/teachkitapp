@@ -25,7 +25,7 @@ serve(async (req) => {
     const user = data.user;
     if (!user?.email) throw new Error("User not authenticated or email not available");
 
-    const { priceId } = await req.json();
+    const { priceId, productSlug, productName, productDescription } = await req.json();
     if (!priceId) throw new Error("Missing priceId");
 
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
@@ -47,6 +47,12 @@ serve(async (req) => {
       mode: "payment",
       success_url: `${origin}/dashboard/shop?payment=success`,
       cancel_url: `${origin}/dashboard/shop?payment=canceled`,
+      metadata: {
+        user_id: user.id,
+        product_slug: productSlug || "",
+        product_name: productName || "",
+        product_description: productDescription || "",
+      },
     });
 
     return new Response(JSON.stringify({ url: session.url }), {

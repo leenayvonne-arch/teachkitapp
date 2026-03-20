@@ -101,6 +101,42 @@ export type Database = {
         }
         Relationships: []
       }
+      purchases: {
+        Row: {
+          created_at: string
+          currency: string
+          id: string
+          price_paid: number
+          product_description: string | null
+          product_name: string
+          product_slug: string
+          stripe_session_id: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          id?: string
+          price_paid?: number
+          product_description?: string | null
+          product_name: string
+          product_slug: string
+          stripe_session_id?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          id?: string
+          price_paid?: number
+          product_description?: string | null
+          product_name?: string
+          product_slug?: string
+          stripe_session_id?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       saved_resources: {
         Row: {
           content: Json

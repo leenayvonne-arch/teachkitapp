@@ -6,14 +6,27 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Camera, Loader2, Save, User } from "lucide-react";
+import { Camera, Download, Loader2, Package, Save, ShoppingBag, User } from "lucide-react";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
+
+interface Purchase {
+  id: string;
+  product_slug: string;
+  product_name: string;
+  product_description: string | null;
+  price_paid: number;
+  currency: string;
+  created_at: string;
+}
 
 const ProfilePage = () => {
   const { user } = useAuth();
   const [fullName, setFullName] = useState("");
   const [school, setSchool] = useState("");
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [purchases, setPurchases] = useState<Purchase[]>([]);
+  const [loadingPurchases, setLoadingPurchases] = useState(true);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -43,6 +56,23 @@ const ProfilePage = () => {
     };
 
     fetchProfile();
+
+    const fetchPurchases = async () => {
+      const { data, error } = await supabase
+        .from("purchases" as any)
+        .select("id, product_slug, product_name, product_description, price_paid, currency, created_at")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Error fetching purchases:", error);
+      } else {
+        setPurchases((data as any) || []);
+      }
+      setLoadingPurchases(false);
+    };
+
+    fetchPurchases();
   }, [user]);
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -224,6 +254,75 @@ const ProfilePage = () => {
             {saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
             Save Changes
           </Button>
+        </CardContent>
+      </Card>
+
+      {/* My Purchases Section */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-xl">
+            <Package className="h-5 w-5" />
+            My Purchases
+          </CardTitle>
+          <CardDescription>View and download your purchased resources.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {loadingPurchases ? (
+            <div className="flex items-center justify-center py-8">
+              <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+            </div>
+          ) : purchases.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-10 text-center">
+              <ShoppingBag className="mb-3 h-12 w-12 text-muted-foreground/40" />
+              <p className="mb-1 text-sm font-medium text-foreground">
+                You haven't purchased any resources yet.
+              </p>
+              <p className="mb-4 text-sm text-muted-foreground">
+                Browse our shop to find ready-to-use classroom materials.
+              </p>
+              <Button asChild>
+                <Link to="/dashboard/shop">Browse Resource Shop</Link>
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {purchases.map((purchase) => (
+                <div
+                  key={purchase.id}
+                  className="flex items-center justify-between rounded-lg border border-border bg-card p-4"
+                >
+                  <div className="min-w-0 flex-1">
+                    <h4 className="truncate text-sm font-semibold text-foreground">
+                      {purchase.product_name}
+                    </h4>
+                    {purchase.product_description && (
+                      <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                        {purchase.product_description}
+                      </p>
+                    )}
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      Purchased {new Date(purchase.created_at).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    asChild
+                    className="ml-4 shrink-0"
+                  >
+                    <Link to={`/dashboard/shop/${purchase.product_slug}`}>
+                      <Download className="mr-1.5 h-3.5 w-3.5" />
+                      Download
+                    </Link>
+                  </Button>
+                </div>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
