@@ -47,6 +47,12 @@ serve(async (req) => {
       mode: "payment",
       success_url: `${origin}/dashboard/shop?payment=success`,
       cancel_url: `${origin}/dashboard/shop?payment=canceled`,
+      metadata: {
+        user_id: user.id,
+        product_slug: productSlug || "",
+        product_name: productName || "",
+        product_description: productDescription || "",
+      },
     });
 
     return new Response(JSON.stringify({ url: session.url }), {

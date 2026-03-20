@@ -44,7 +44,12 @@ const ProductDetail = () => {
     setBuying(true);
     try {
       const { data, error } = await supabase.functions.invoke("create-checkout", {
-        body: { priceId },
+        body: {
+          priceId,
+          productSlug: slug,
+          productName: product.title,
+          productDescription: product.description,
+        },
       });
       if (error) throw error;
       if (data?.url) {
