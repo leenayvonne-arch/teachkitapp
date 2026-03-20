@@ -31,15 +31,20 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="border-b bg-card">
-        <div className="mx-auto max-w-7xl px-6 py-5 flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
-            <Sparkles className="h-5 w-5 text-primary" />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold text-foreground">TeachKit Admin</h1>
-            <p className="text-sm text-muted-foreground">Manage products, orders, and feedback</p>
-          </div>
-        </div>
+         <div className="mx-auto max-w-7xl px-6 py-5 flex items-center justify-between">
+38:           <div className="flex items-center gap-3">
+39:             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+40:               <Sparkles className="h-5 w-5 text-primary" />
+41:             </div>
+42:             <div>
+43:               <h1 className="text-xl font-bold text-foreground">TeachKit Admin</h1>
+44:               <p className="text-sm text-muted-foreground">Manage products, orders, and feedback</p>
+45:             </div>
+46:           </div>
+47:           <Link to="/dashboard" className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+48:             <ArrowLeft className="h-4 w-4" />
+49:             Back to Dashboard
+50:           </Link>
       </div>
 
       <div className="mx-auto max-w-7xl px-6 py-6">
