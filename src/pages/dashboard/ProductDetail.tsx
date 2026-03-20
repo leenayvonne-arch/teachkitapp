@@ -35,15 +35,28 @@ const ProductDetail = () => {
 
   const isBundle = slug === "math-classroom-bundle-3-5";
 
-  const handleBuy = () => {
+  const handleBuy = async () => {
+    const priceId = stripePriceMap[slug || ""];
+    if (!priceId) {
+      toast({ title: "Error", description: "Product not available for purchase yet.", variant: "destructive" });
+      return;
+    }
     setBuying(true);
-    setTimeout(() => {
-      setBuying(false);
-      toast({
-        title: "Thank you for your purchase!",
-        description: "Download will be available soon.",
+    try {
+      const { data, error } = await supabase.functions.invoke("create-checkout", {
+        body: { priceId },
       });
-    }, 1200);
+      if (error) throw error;
+      if (data?.url) {
+        window.open(data.url, "_blank");
+      } else {
+        throw new Error("No checkout URL returned");
+      }
+    } catch (err: any) {
+      toast({ title: "Checkout failed", description: err.message || "Please try again.", variant: "destructive" });
+    } finally {
+      setBuying(false);
+    }
   };
 
   return (
