@@ -56,6 +56,23 @@ const ProfilePage = () => {
     };
 
     fetchProfile();
+
+    const fetchPurchases = async () => {
+      const { data, error } = await supabase
+        .from("purchases" as any)
+        .select("id, product_slug, product_name, product_description, price_paid, currency, created_at")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Error fetching purchases:", error);
+      } else {
+        setPurchases((data as any) || []);
+      }
+      setLoadingPurchases(false);
+    };
+
+    fetchPurchases();
   }, [user]);
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
