@@ -25,6 +25,8 @@ const ProfilePage = () => {
   const [fullName, setFullName] = useState("");
   const [school, setSchool] = useState("");
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [purchases, setPurchases] = useState<Purchase[]>([]);
+  const [loadingPurchases, setLoadingPurchases] = useState(true);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
