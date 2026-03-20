@@ -256,6 +256,75 @@ const ProfilePage = () => {
           </Button>
         </CardContent>
       </Card>
+
+      {/* My Purchases Section */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-xl">
+            <Package className="h-5 w-5" />
+            My Purchases
+          </CardTitle>
+          <CardDescription>View and download your purchased resources.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {loadingPurchases ? (
+            <div className="flex items-center justify-center py-8">
+              <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+            </div>
+          ) : purchases.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-10 text-center">
+              <ShoppingBag className="mb-3 h-12 w-12 text-muted-foreground/40" />
+              <p className="mb-1 text-sm font-medium text-foreground">
+                You haven't purchased any resources yet.
+              </p>
+              <p className="mb-4 text-sm text-muted-foreground">
+                Browse our shop to find ready-to-use classroom materials.
+              </p>
+              <Button asChild>
+                <Link to="/dashboard/shop">Browse Resource Shop</Link>
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {purchases.map((purchase) => (
+                <div
+                  key={purchase.id}
+                  className="flex items-center justify-between rounded-lg border border-border bg-card p-4"
+                >
+                  <div className="min-w-0 flex-1">
+                    <h4 className="truncate text-sm font-semibold text-foreground">
+                      {purchase.product_name}
+                    </h4>
+                    {purchase.product_description && (
+                      <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                        {purchase.product_description}
+                      </p>
+                    )}
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      Purchased {new Date(purchase.created_at).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    asChild
+                    className="ml-4 shrink-0"
+                  >
+                    <Link to={`/dashboard/shop/${purchase.product_slug}`}>
+                      <Download className="mr-1.5 h-3.5 w-3.5" />
+                      Download
+                    </Link>
+                  </Button>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 };
