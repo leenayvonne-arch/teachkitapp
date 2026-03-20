@@ -6,8 +6,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Camera, Loader2, Save, User } from "lucide-react";
+import { Camera, Download, Loader2, Package, Save, ShoppingBag, User } from "lucide-react";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
+
+interface Purchase {
+  id: string;
+  product_slug: string;
+  product_name: string;
+  product_description: string | null;
+  price_paid: number;
+  currency: string;
+  created_at: string;
+}
 
 const ProfilePage = () => {
   const { user } = useAuth();
