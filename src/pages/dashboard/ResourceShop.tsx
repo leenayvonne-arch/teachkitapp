@@ -1,5 +1,7 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useSearchParams } from "react-router-dom";
+import { toast } from "@/hooks/use-toast";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -19,6 +21,18 @@ const parsePrice = (price: string) => parseFloat(price.replace(/[^0-9.]/g, ""));
 
 const ResourceShop = () => {
   const [category, setCategory] = useState("All");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    const payment = searchParams.get("payment");
+    if (payment === "success") {
+      toast({ title: "Payment successful! 🎉", description: "Thank you for your purchase. Your download will be available soon." });
+      setSearchParams({}, { replace: true });
+    } else if (payment === "canceled") {
+      toast({ title: "Payment canceled", description: "Your payment was not completed." });
+      setSearchParams({}, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
   const [sort, setSort] = useState<SortOption>("default");
 
   const [search, setSearch] = useState("");

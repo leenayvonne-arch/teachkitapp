@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.generate-exit-ticket]
 verify_jwt = false
+
+[functions.create-checkout]
+verify_jwt = false
