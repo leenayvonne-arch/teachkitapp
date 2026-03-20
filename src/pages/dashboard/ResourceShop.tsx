@@ -186,7 +186,7 @@ const ResourceShop = () => {
                       )}
                       <div className="flex items-center gap-2">
                         <span className={`font-bold text-foreground ${isBundle ? "text-xl" : "text-lg"}`}>
-                          {isBundle ? "" : ""}{product.price}
+                          {product.price}
                         </span>
                         {isBundle && (
                           <Badge variant="outline" className="text-secondary border-secondary/30 text-[11px] font-semibold">Save over 50%</Badge>
@@ -200,6 +200,16 @@ const ResourceShop = () => {
                       <Link to={`/dashboard/shop/${product.slug}`}>View Details</Link>
                     </Button>
                   </div>
+                  <Button
+                    size={isBundle ? "default" : "sm"}
+                    variant="secondary"
+                    className="w-full"
+                    disabled={buyingSlug === product.slug}
+                    onClick={() => handleBuy(product)}
+                  >
+                    <ShoppingCart className="mr-2 h-4 w-4" />
+                    {buyingSlug === product.slug ? "Processing…" : "Buy Now"}
+                  </Button>
                 </CardFooter>
               </Card>
             </motion.div>
