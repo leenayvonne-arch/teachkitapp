@@ -73,6 +73,14 @@ const App = () => (
             <Route path="admin/contact" element={<AdminContactSubmissions />} />
             <Route path="admin/purchases" element={<AdminPurchases />} />
           </Route>
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
