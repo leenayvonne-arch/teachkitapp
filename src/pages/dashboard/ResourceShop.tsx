@@ -7,11 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Search, ShoppingBag } from "lucide-react";
+import { Search, ShoppingBag, ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
 import TeacherTestimonials from "@/components/TeacherTestimonials";
 import FeedbackForm from "@/components/FeedbackForm";
 import { shopProducts } from "@/data/shopProducts";
+import { stripePriceMap } from "@/data/stripePrices";
+import { supabase } from "@/integrations/supabase/client";
 
 const categories = ["All", ...Array.from(new Set(shopProducts.map((p) => p.category)))];
 
@@ -21,6 +23,7 @@ const parsePrice = (price: string) => parseFloat(price.replace(/[^0-9.]/g, ""));
 
 const ResourceShop = () => {
   const [category, setCategory] = useState("All");
+  const [buyingSlug, setBuyingSlug] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
@@ -49,6 +52,35 @@ const ResourceShop = () => {
     else if (sort === "name") list = [...list].sort((a, b) => a.title.localeCompare(b.title));
     return list;
   }, [category, sort, search]);
+
+  const handleBuy = async (product: typeof shopProducts[0]) => {
+    const priceId = stripePriceMap[product.slug];
+    if (!priceId) {
+      toast({ title: "Error", description: "Product not available for purchase yet.", variant: "destructive" });
+      return;
+    }
+    setBuyingSlug(product.slug);
+    try {
+      const { data, error } = await supabase.functions.invoke("create-checkout", {
+        body: {
+          priceId,
+          productSlug: product.slug,
+          productName: product.title,
+          productDescription: product.description,
+        },
+      });
+      if (error) throw error;
+      if (data?.url) {
+        window.open(data.url, "_blank");
+      } else {
+        throw new Error("No checkout URL returned");
+      }
+    } catch (err: any) {
+      toast({ title: "Checkout failed", description: err.message || "Please try again.", variant: "destructive" });
+    } finally {
+      setBuyingSlug(null);
+    }
+  };
 
   return (
     <div>
@@ -154,7 +186,7 @@ const ResourceShop = () => {
                       )}
                       <div className="flex items-center gap-2">
                         <span className={`font-bold text-foreground ${isBundle ? "text-xl" : "text-lg"}`}>
-                          {isBundle ? "" : ""}{product.price}
+                          {product.price}
                         </span>
                         {isBundle && (
                           <Badge variant="outline" className="text-secondary border-secondary/30 text-[11px] font-semibold">Save over 50%</Badge>
@@ -168,6 +200,16 @@ const ResourceShop = () => {
                       <Link to={`/dashboard/shop/${product.slug}`}>View Details</Link>
                     </Button>
                   </div>
+                  <Button
+                    size={isBundle ? "default" : "sm"}
+                    variant="secondary"
+                    className="w-full"
+                    disabled={buyingSlug === product.slug}
+                    onClick={() => handleBuy(product)}
+                  >
+                    <ShoppingCart className="mr-2 h-4 w-4" />
+                    {buyingSlug === product.slug ? "Processing…" : "Buy Now"}
+                  </Button>
                 </CardFooter>
               </Card>
             </motion.div>
