@@ -78,6 +78,7 @@ export type Database = {
           created_at: string
           description: string
           faqs: Json
+          file_path: string | null
           full_description: string
           grade_level: string
           id: string
@@ -99,6 +100,7 @@ export type Database = {
           created_at?: string
           description?: string
           faqs?: Json
+          file_path?: string | null
           full_description?: string
           grade_level?: string
           id?: string
@@ -120,6 +122,7 @@ export type Database = {
           created_at?: string
           description?: string
           faqs?: Json
+          file_path?: string | null
           full_description?: string
           grade_level?: string
           id?: string
