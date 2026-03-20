@@ -23,6 +23,7 @@ const parsePrice = (price: string) => parseFloat(price.replace(/[^0-9.]/g, ""));
 
 const ResourceShop = () => {
   const [category, setCategory] = useState("All");
+  const [buyingSlug, setBuyingSlug] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
