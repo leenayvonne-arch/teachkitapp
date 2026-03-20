@@ -22,6 +22,7 @@ import PlaceholderPage from "./pages/dashboard/PlaceholderPage";
 import ProfilePage from "./pages/dashboard/ProfilePage";
 import ResourceShop from "./pages/dashboard/ResourceShop";
 import ProductDetail from "./pages/dashboard/ProductDetail";
+import PurchaseSuccess from "./pages/dashboard/PurchaseSuccess";
 import AdminFeedback from "./pages/dashboard/AdminFeedback";
 import AdminContactSubmissions from "./pages/dashboard/AdminContactSubmissions";
 import AdminPurchases from "./pages/dashboard/AdminPurchases";
@@ -69,6 +70,7 @@ const App = () => (
             <Route path="account" element={<ProfilePage />} />
             <Route path="shop" element={<ResourceShop />} />
             <Route path="shop/:slug" element={<ProductDetail />} />
+            <Route path="purchase-success" element={<PurchaseSuccess />} />
             <Route path="admin/feedback" element={<AdminFeedback />} />
             <Route path="admin/contact" element={<AdminContactSubmissions />} />
             <Route path="admin/purchases" element={<AdminPurchases />} />

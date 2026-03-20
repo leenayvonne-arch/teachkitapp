@@ -30,6 +30,7 @@ const ProfilePage = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [downloading, setDownloading] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -311,13 +312,33 @@ const ProfilePage = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    asChild
                     className="ml-4 shrink-0"
+                    disabled={downloading === purchase.product_slug}
+                    onClick={async () => {
+                      setDownloading(purchase.product_slug);
+                      try {
+                        const { data, error } = await supabase.functions.invoke("secure-download", {
+                          body: { productSlug: purchase.product_slug },
+                        });
+                        if (error) throw error;
+                        if (data?.url) {
+                          window.open(data.url, "_blank");
+                        } else if (data?.error) {
+                          toast.error(data.error);
+                        }
+                      } catch (err: any) {
+                        toast.error(err.message || "Download failed");
+                      } finally {
+                        setDownloading(null);
+                      }
+                    }}
                   >
-                    <Link to={`/dashboard/shop/${purchase.product_slug}`}>
+                    {downloading === purchase.product_slug ? (
+                      <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+                    ) : (
                       <Download className="mr-1.5 h-3.5 w-3.5" />
-                      Download
-                    </Link>
+                    )}
+                    Download
                   </Button>
                 </div>
               ))}
