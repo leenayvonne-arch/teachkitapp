@@ -25,23 +25,31 @@ const PurchaseSuccess = () => {
   useEffect(() => {
     if (!user) return;
 
+    let attempts = 0;
+    const maxAttempts = 5;
+
     const fetchRecentPurchases = async () => {
-      // Fetch purchases from the last 10 minutes (to capture the just-completed one)
       const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000).toISOString();
       const { data, error } = await supabase
-        .from("purchases" as any)
+        .from("purchases")
         .select("id, product_slug, product_name, product_description, created_at")
         .eq("user_id", user.id)
         .gte("created_at", tenMinutesAgo)
         .order("created_at", { ascending: false });
 
-      if (!error && data) {
+      if (!error && data && data.length > 0) {
         setPurchases(data as any);
+        setLoading(false);
+      } else if (attempts < maxAttempts) {
+        // Webhook may not have processed yet — retry
+        attempts++;
+        setTimeout(fetchRecentPurchases, 2000);
+      } else {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
-    // Small delay to allow webhook to process
+    // Initial delay to allow webhook processing
     const timer = setTimeout(fetchRecentPurchases, 1500);
     return () => clearTimeout(timer);
   }, [user]);
