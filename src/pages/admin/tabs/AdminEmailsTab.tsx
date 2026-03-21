@@ -10,6 +10,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { Mail, CheckCircle, XCircle, ShieldOff, ChevronLeft, ChevronRight } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from "recharts";
 
 interface EmailLog {
   id: string;
@@ -105,6 +106,20 @@ const AdminEmailsTab = () => {
     return s;
   }, [filtered]);
 
+  // Chart data: group filtered emails by date
+  const chartData = useMemo(() => {
+    const buckets = new Map<string, { date: string; sent: number; failed: number; suppressed: number }>();
+    for (const l of filtered) {
+      const date = new Date(l.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+      if (!buckets.has(date)) buckets.set(date, { date, sent: 0, failed: 0, suppressed: 0 });
+      const b = buckets.get(date)!;
+      if (l.status === "sent") b.sent++;
+      else if (l.status === "failed" || l.status === "dlq") b.failed++;
+      else if (l.status === "suppressed") b.suppressed++;
+    }
+    return Array.from(buckets.values()).reverse();
+  }, [filtered]);
+
   const paged = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
 
@@ -143,6 +158,32 @@ const AdminEmailsTab = () => {
           <CardContent><p className="text-2xl font-bold">{stats.suppressed}</p></CardContent>
         </Card>
       </div>
+
+      {/* Volume chart */}
+      {chartData.length > 0 && (
+        <Card>
+          <CardHeader><CardTitle className="text-base">Send Volume Over Time</CardTitle></CardHeader>
+          <CardContent>
+            <div className="h-[280px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={chartData}>
+                  <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+                  <XAxis dataKey="date" tick={{ fontSize: 12 }} className="fill-muted-foreground" />
+                  <YAxis allowDecimals={false} tick={{ fontSize: 12 }} className="fill-muted-foreground" />
+                  <Tooltip
+                    contentStyle={{ borderRadius: 8, border: "1px solid hsl(var(--border))", background: "hsl(var(--card))" }}
+                    labelStyle={{ fontWeight: 600 }}
+                  />
+                  <Legend />
+                  <Bar dataKey="sent" name="Sent" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="failed" name="Failed" fill="hsl(var(--destructive))" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="suppressed" name="Suppressed" fill="hsl(var(--muted-foreground))" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Filters */}
       <div className="flex flex-wrap gap-3">
