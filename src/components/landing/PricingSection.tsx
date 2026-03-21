@@ -240,7 +240,7 @@ const PricingSection = () => {
                   size="lg"
                   className="rounded-xl h-12 px-8 font-bold shadow-md shadow-accent/20 bg-accent text-accent-foreground hover:bg-accent/90"
                 >
-                  <Link to="/dashboard/shop">Buy Bundle</Link>
+                  <Link to="/shop/math-classroom-bundle-3-5">Buy Bundle</Link>
                 </Button>
               </div>
             </div>
