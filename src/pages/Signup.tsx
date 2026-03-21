@@ -1,17 +1,17 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Sparkles } from "lucide-react";
+import { Sparkles, MailCheck } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const [emailSent, setEmailSent] = useState(false);
   const { toast } = useToast();
 
   const handleSignup = async (e: React.FormEvent) => {
@@ -20,16 +20,49 @@ const Signup = () => {
     const { error } = await supabase.auth.signUp({
       email,
       password,
-      options: { emailRedirectTo: window.location.origin },
+      options: { emailRedirectTo: `${window.location.origin}/dashboard` },
     });
     setLoading(false);
     if (error) {
       toast({ variant: "destructive", title: "Sign up failed", description: error.message });
     } else {
-      toast({ title: "Account created!", description: "You can now log in." });
-      navigate("/dashboard");
+      setEmailSent(true);
     }
   };
+
+  if (emailSent) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-muted/30 px-4">
+        <div className="w-full max-w-md">
+          <div className="mb-8 text-center">
+            <Link to="/" className="inline-flex items-center gap-2">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+                <Sparkles className="h-5 w-5" />
+              </div>
+              <span className="text-2xl font-bold font-display text-foreground">TeachKit</span>
+            </Link>
+          </div>
+          <div className="rounded-2xl border bg-card p-8 shadow-lg text-center">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+              <MailCheck className="h-8 w-8 text-primary" />
+            </div>
+            <h1 className="mb-2 text-2xl font-bold text-foreground">Check your email</h1>
+            <p className="mb-4 text-muted-foreground">
+              We've sent a verification link to{" "}
+              <span className="font-medium text-foreground">{email}</span>
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Please verify your email to activate your account. Once verified, you'll be redirected to your dashboard.
+            </p>
+            <p className="mt-6 text-sm text-muted-foreground">
+              Already verified?{" "}
+              <Link to="/login" className="font-medium text-primary hover:underline">Log in</Link>
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/30 px-4">
