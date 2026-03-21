@@ -83,28 +83,20 @@ serve(async (req) => {
         return new Response(JSON.stringify({ error: error.message }), { status: 500 });
       }
 
-      // Trigger purchase confirmation email
+      // Trigger purchase confirmation email via transactional email system
       if (customerEmail) {
         try {
-          const emailResponse = await fetch(
-            `${Deno.env.get("SUPABASE_URL")}/functions/v1/send-purchase-email`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${Deno.env.get("SUPABASE_ANON_KEY")}`,
-              },
-              body: JSON.stringify({
-                customerEmail,
-                customerName,
+          await supabaseAdmin.functions.invoke("send-transactional-email", {
+            body: {
+              templateName: "purchase-confirmation",
+              recipientEmail: customerEmail,
+              idempotencyKey: `purchase-confirm-${session.id}`,
+              templateData: {
+                customerName: customerName || undefined,
                 productName: productName || productSlug,
-                productSlug,
-              }),
-            }
-          );
-          if (!emailResponse.ok) {
-            console.error("Email send failed:", await emailResponse.text());
-          }
+              },
+            },
+          });
         } catch (emailErr) {
           console.error("Error sending purchase email:", emailErr);
         }
