@@ -200,7 +200,13 @@ const ResourceShop = () => {
         </div>
       )}
       <TeacherTestimonials />
-      <div className="mt-4"><FeedbackForm /></div>
+      {!isPublicRoute && <div className="mt-4"><FeedbackForm /></div>}
+      {isPublicRoute && (
+        <div className="mt-8 text-center text-sm text-muted-foreground">
+          Can't find what you need?{" "}
+          <Link to="/contact" className="text-primary underline underline-offset-4">Request a resource</Link>
+        </div>
+      )}
     </div>
   );
 
