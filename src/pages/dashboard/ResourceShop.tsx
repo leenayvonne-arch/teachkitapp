@@ -139,6 +139,15 @@ const ResourceShop = () => {
 
       {productsLoading ? (
         <div className="py-12 text-center text-muted-foreground">Loading products…</div>
+      ) : filtered.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-16 text-center">
+          <ShoppingBag className="h-12 w-12 text-muted-foreground/40 mb-4" />
+          <h3 className="text-lg font-semibold text-foreground">No products found</h3>
+          <p className="text-sm text-muted-foreground mt-1 mb-4">Try a different search or category</p>
+          <Button variant="outline" size="sm" onClick={() => { setSearch(""); setCategory("All"); }}>
+            Clear filters
+          </Button>
+        </div>
       ) : (
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filtered.map((product, i) => {
@@ -190,7 +199,6 @@ const ResourceShop = () => {
           })}
         </div>
       )}
-
       <TeacherTestimonials />
       <div className="mt-4"><FeedbackForm /></div>
     </div>
