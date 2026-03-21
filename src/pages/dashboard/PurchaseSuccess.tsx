@@ -118,7 +118,7 @@ const PurchaseSuccess = () => {
                   </Link>
                 </Button>
                 <Button asChild>
-                  <Link to="/dashboard/shop">
+                  <Link to="/shop">
                     <ShoppingBag className="mr-2 h-4 w-4" />
                     Continue Shopping
                   </Link>
@@ -179,7 +179,7 @@ const PurchaseSuccess = () => {
               </Link>
             </Button>
             <Button variant="ghost" asChild>
-              <Link to="/dashboard/shop">
+              <Link to="/shop">
                 <ShoppingBag className="mr-2 h-4 w-4" />
                 Continue Shopping
               </Link>
