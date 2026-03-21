@@ -31,6 +31,7 @@ export interface Product {
   faqs: ProductFAQ[];
   preview_pages: PreviewPage[];
   stripe_price_id: string | null;
+  is_bundle: boolean;
   active: boolean;
   created_at: string;
   updated_at: string;

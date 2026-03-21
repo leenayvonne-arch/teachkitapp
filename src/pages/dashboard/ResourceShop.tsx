@@ -142,7 +142,7 @@ const ResourceShop = () => {
       ) : (
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filtered.map((product, i) => {
-            const isBundle = product.slug === "math-classroom-bundle-3-5";
+            const isBundle = product.is_bundle === true;
             return (
               <motion.div key={product.slug} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className={isBundle ? "sm:col-span-2 lg:col-span-2" : ""}>
                 <Card className={`flex h-full flex-col transition-shadow hover:shadow-md ${isBundle ? "ring-2 ring-primary shadow-lg bg-primary/[0.03] relative overflow-hidden" : ""}`}>

@@ -170,6 +170,7 @@ export type Database = {
           grade_level: string
           id: string
           includes: Json
+          is_bundle: boolean
           original_price: string | null
           preview_pages: Json
           price: string
@@ -192,6 +193,7 @@ export type Database = {
           grade_level?: string
           id?: string
           includes?: Json
+          is_bundle?: boolean
           original_price?: string | null
           preview_pages?: Json
           price?: string
@@ -214,6 +216,7 @@ export type Database = {
           grade_level?: string
           id?: string
           includes?: Json
+          is_bundle?: boolean
           original_price?: string | null
           preview_pages?: Json
           price?: string
