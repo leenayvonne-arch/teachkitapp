@@ -13,6 +13,8 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const { toast } = useToast();
+  const location = useLocation();
+  const from = (location.state as any)?.from || "/dashboard";
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
