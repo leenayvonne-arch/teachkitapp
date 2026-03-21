@@ -64,12 +64,16 @@ const AdminDashboard = () => {
             <TabsTrigger value="analytics" className="gap-1.5">
               <BarChart3 className="h-4 w-4" /> Analytics
             </TabsTrigger>
+            <TabsTrigger value="emails" className="gap-1.5">
+              <Mail className="h-4 w-4" /> Emails
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="products"><AdminProductsTab /></TabsContent>
           <TabsContent value="orders"><AdminOrdersTab /></TabsContent>
           <TabsContent value="feedback"><AdminFeedbackTab /></TabsContent>
           <TabsContent value="analytics"><AdminAnalyticsTab /></TabsContent>
+          <TabsContent value="emails"><AdminEmailsTab /></TabsContent>
         </Tabs>
       </div>
     </div>
