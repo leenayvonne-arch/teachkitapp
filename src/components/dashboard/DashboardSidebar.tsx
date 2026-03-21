@@ -41,7 +41,7 @@ const DashboardSidebar = () => {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    navigate("/");
+    navigate("/", { replace: true });
   };
 
   return (

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,7 +12,11 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
+
+  // Redirect back to where the user was trying to go
+  const from = (location.state as any)?.from || "/dashboard";
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,9 +24,13 @@ const Login = () => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
     if (error) {
-      toast({ variant: "destructive", title: "Login failed", description: error.message });
+      if (error.message.includes("Email not confirmed")) {
+        toast({ variant: "destructive", title: "Email not verified", description: "Please check your email and click the verification link before logging in." });
+      } else {
+        toast({ variant: "destructive", title: "Login failed", description: error.message });
+      }
     } else {
-      navigate("/dashboard");
+      navigate(from, { replace: true });
     }
   };
 
