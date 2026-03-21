@@ -31,15 +31,15 @@ const HeroSection = () => {
           </motion.div>
 
           <h1 className="mb-8 text-5xl font-extrabold leading-[1.1] tracking-tight text-foreground md:text-6xl lg:text-7xl">
-            Create Lesson Plans, Worksheets, and Quizzes in Seconds —{" "}
+            AI Lesson Tools & Ready-Made{" "}
             <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-              Built for Real Classrooms
+              Teacher Resources
             </span>
           </h1>
 
           <p className="mx-auto mb-12 max-w-2xl text-lg text-muted-foreground md:text-xl leading-relaxed">
-            Generate standards-aligned lessons, worksheets, quizzes, and exit tickets
-            instantly — so you can spend more time teaching and less time planning.
+            Generate standards-aligned lesson plans, worksheets, quizzes, and exit tickets
+            in seconds — or browse our teacher-made resource shop.
           </p>
 
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
@@ -50,9 +50,13 @@ const HeroSection = () => {
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="h-16 rounded-2xl px-10 text-lg font-semibold border-2 hover:-translate-y-0.5 transition-all">
-              <a href="#features">See How It Works</a>
+              <Link to="/shop">Browse Resources</Link>
             </Button>
           </div>
+
+          <p className="mt-6 text-sm text-muted-foreground">
+            ✓ Free to start &nbsp;&nbsp; ✓ No credit card required &nbsp;&nbsp; ✓ Built for K-12 teachers
+          </p>
         </motion.div>
       </div>
     </section>
