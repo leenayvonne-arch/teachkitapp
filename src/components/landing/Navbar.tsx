@@ -122,6 +122,11 @@ const Navbar = () => {
                 >
                   Log In
                 </Link>
+                <Button asChild size="sm" className="rounded-xl font-medium shadow-md shadow-primary/20 w-full">
+                  <Link to="/signup" onClick={() => setOpen(false)}>
+                    Start Free
+                  </Link>
+                </Button>
               </nav>
             </SheetContent>
           </Sheet>
