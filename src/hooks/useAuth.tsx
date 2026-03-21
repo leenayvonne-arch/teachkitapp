@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { User } from "@supabase/supabase-js";
 
@@ -6,11 +6,28 @@ export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const welcomeSentRef = useRef<Set<string>>(new Set());
+  const initializedRef = useRef(false);
+
+  const signOut = useCallback(async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+  }, []);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    // Get initial session first, then set up listener
+    const initialize = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
       setUser(session?.user ?? null);
       setLoading(false);
+      initializedRef.current = true;
+    };
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      // Only update after initialization to avoid race conditions
+      if (initializedRef.current) {
+        setUser(session?.user ?? null);
+        setLoading(false);
+      }
 
       // Send welcome email when user confirms their email
       if (event === "SIGNED_IN" && session?.user) {
@@ -20,12 +37,10 @@ export function useAuth() {
         if (emailConfirmed && !welcomeSentRef.current.has(userId)) {
           welcomeSentRef.current.add(userId);
           
-          // Check if this is a first-time verification (account created recently)
           const createdAt = new Date(session.user.created_at).getTime();
           const confirmedAt = new Date(emailConfirmed).getTime();
           const timeDiff = confirmedAt - createdAt;
           
-          // Only send welcome email if verified within 24 hours of account creation
           if (timeDiff < 24 * 60 * 60 * 1000) {
             try {
               await supabase.functions.invoke("send-transactional-email", {
@@ -41,15 +56,16 @@ export function useAuth() {
           }
         }
       }
+
+      if (event === "SIGNED_OUT") {
+        setUser(null);
+      }
     });
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
+    initialize();
 
     return () => subscription.unsubscribe();
   }, []);
 
-  return { user, loading };
+  return { user, loading, signOut };
 }
