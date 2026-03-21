@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,8 @@ import TeacherTestimonials from "@/components/TeacherTestimonials";
 import FeedbackForm from "@/components/FeedbackForm";
 import { useProducts, Product } from "@/hooks/useProducts";
 import { supabase } from "@/integrations/supabase/client";
+import Navbar from "@/components/landing/Navbar";
+import { Footer } from "@/components/landing/Footer";
 
 type SortOption = "default" | "price-low" | "price-high" | "name";
 
@@ -23,6 +25,10 @@ const ResourceShop = () => {
   const [category, setCategory] = useState("All");
   const [buyingSlug, setBuyingSlug] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const isPublicRoute = location.pathname.startsWith("/shop");
 
   useEffect(() => {
     const payment = searchParams.get("payment");
@@ -54,6 +60,12 @@ const ResourceShop = () => {
   }, [category, sort, search, products]);
 
   const handleBuy = async (product: Product) => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      navigate("/login", { state: { from: location.pathname } });
+      return;
+    }
+
     if (!product.stripe_price_id) {
       toast({ title: "Error", description: "Product not available for purchase yet.", variant: "destructive" });
       return;
@@ -81,7 +93,9 @@ const ResourceShop = () => {
     }
   };
 
-  return (
+  const shopBasePath = isPublicRoute ? "/shop" : "/dashboard/shop";
+
+  const content = (
     <div>
       <div className="mb-8 flex items-center gap-3">
         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
@@ -162,7 +176,7 @@ const ResourceShop = () => {
                         {isBundle && <span className="text-[11px] font-medium text-accent italic">⏳ Limited Time Launch Price</span>}
                       </div>
                       <Button size={isBundle ? "default" : "sm"} asChild>
-                        <Link to={`/dashboard/shop/${product.slug}`}>View Details</Link>
+                        <Link to={`${shopBasePath}/${product.slug}`}>View Details</Link>
                       </Button>
                     </div>
                     <Button size={isBundle ? "default" : "sm"} variant="secondary" className="w-full" disabled={buyingSlug === product.slug} onClick={() => handleBuy(product)}>
@@ -181,6 +195,20 @@ const ResourceShop = () => {
       <div className="mt-4"><FeedbackForm /></div>
     </div>
   );
+
+  if (isPublicRoute) {
+    return (
+      <div className="min-h-screen flex flex-col bg-background">
+        <Navbar />
+        <main className="flex-1 container mx-auto px-4 py-8">
+          {content}
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  return content;
 };
 
 export default ResourceShop;
