@@ -2,11 +2,12 @@ import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAdminRole } from "@/hooks/useAdminRole";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Package, CreditCard, MessageSquare, BarChart3, Sparkles } from "lucide-react";
+import { ArrowLeft, Package, CreditCard, MessageSquare, BarChart3, Mail, Sparkles } from "lucide-react";
 import AdminProductsTab from "./tabs/AdminProductsTab";
 import AdminOrdersTab from "./tabs/AdminOrdersTab";
 import AdminFeedbackTab from "./tabs/AdminFeedbackTab";
 import AdminAnalyticsTab from "./tabs/AdminAnalyticsTab";
+import AdminEmailsTab from "./tabs/AdminEmailsTab";
 
 const AdminDashboard = () => {
   const { isAdmin, loading } = useAdminRole();
