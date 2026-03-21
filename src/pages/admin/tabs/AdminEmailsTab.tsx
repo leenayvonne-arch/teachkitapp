@@ -106,6 +106,20 @@ const AdminEmailsTab = () => {
     return s;
   }, [filtered]);
 
+  // Chart data: group filtered emails by date
+  const chartData = useMemo(() => {
+    const buckets = new Map<string, { date: string; sent: number; failed: number; suppressed: number }>();
+    for (const l of filtered) {
+      const date = new Date(l.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+      if (!buckets.has(date)) buckets.set(date, { date, sent: 0, failed: 0, suppressed: 0 });
+      const b = buckets.get(date)!;
+      if (l.status === "sent") b.sent++;
+      else if (l.status === "failed" || l.status === "dlq") b.failed++;
+      else if (l.status === "suppressed") b.suppressed++;
+    }
+    return Array.from(buckets.values()).reverse();
+  }, [filtered]);
+
   const paged = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
 
