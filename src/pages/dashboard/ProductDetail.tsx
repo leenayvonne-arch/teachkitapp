@@ -45,7 +45,7 @@ const ProductDetail = () => {
     );
   }
 
-  const isBundle = slug === "math-classroom-bundle-3-5";
+  const isBundle = product.is_bundle === true;
   const previewPages = product.preview_pages || [];
   const includes = product.includes || [];
   const useCases = product.use_cases || [];
