@@ -262,6 +262,12 @@ const PricingSection = () => {
             <p className="text-muted-foreground leading-relaxed">
               Start with the free plan or explore ready-made resources with no commitment. Built to save you time — or you don't use it.
             </p>
+            <a
+              href="/signup"
+              className="mt-6 inline-block rounded-lg bg-primary px-8 py-3 text-sm font-bold text-primary-foreground shadow-md transition-all hover:brightness-110 hover:shadow-lg"
+            >
+              Get Started Free
+            </a>
             <p className="mt-4 text-sm font-medium text-muted-foreground/70">
               No contracts. Cancel anytime.
             </p>
