@@ -15,9 +15,6 @@ const navLinks = [
   { label: "About", href: "/about" },
   { label: "Pricing", href: "/pricing" },
   { label: "Resource Shop", href: "/shop" },
-  { label: "Contact", href: "/contact" },
-  { label: "Terms", href: "/terms" },
-  { label: "Privacy", href: "/privacy" },
 ];
 
 const Navbar = () => {
