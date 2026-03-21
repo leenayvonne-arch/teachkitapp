@@ -14,7 +14,7 @@ import FeedbackForm from "@/components/FeedbackForm";
 import { useProducts, Product } from "@/hooks/useProducts";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/landing/Navbar";
-import { Footer } from "@/components/landing/Footer";
+import Footer from "@/components/landing/Footer";
 
 type SortOption = "default" | "price-low" | "price-high" | "name";
 
