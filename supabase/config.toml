@@ -1,25 +1,21 @@
 project_id = "qhtknboxfljlozuisniv"
 
-[functions.generate-worksheet]
-verify_jwt = false
-
-[functions.generate-quiz]
-verify_jwt = false
-
-[functions.generate-exit-ticket]
-verify_jwt = false
-
-[functions.create-checkout]
-verify_jwt = false
-
-[functions.stripe-webhook]
-verify_jwt = false
-
-[functions.secure-download]
-verify_jwt = false
-
-[functions.send-purchase-email]
-verify_jwt = false
-
-[functions.process-email-queue]
-verify_jwt = true
+[functions]
+  [functions.auth-email-hook]
+    verify_jwt = false
+  [functions.create-checkout]
+    verify_jwt = false
+  [functions.generate-exit-ticket]
+    verify_jwt = false
+  [functions.generate-quiz]
+    verify_jwt = false
+  [functions.generate-worksheet]
+    verify_jwt = false
+  [functions.process-email-queue]
+    verify_jwt = true
+  [functions.secure-download]
+    verify_jwt = false
+  [functions.send-purchase-email]
+    verify_jwt = false
+  [functions.stripe-webhook]
+    verify_jwt = false
