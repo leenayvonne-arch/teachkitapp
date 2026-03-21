@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation, useNavigate } from "react-router-dom";
 import { useProductBySlug } from "@/hooks/useProducts";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,12 +11,19 @@ import { toast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import WorksheetPreviewCard from "@/components/shop/WorksheetPreviewCard";
 import { supabase } from "@/integrations/supabase/client";
+import Navbar from "@/components/landing/Navbar";
+import Footer from "@/components/landing/Footer";
 
 const ProductDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const { product, loading } = useProductBySlug(slug || "");
   const [buying, setBuying] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const isPublicRoute = location.pathname.startsWith("/shop");
+  const shopBasePath = isPublicRoute ? "/shop" : "/dashboard/shop";
 
   if (loading) {
     return (
@@ -32,7 +39,7 @@ const ProductDetail = () => {
         <h1 className="mb-2 text-xl font-bold text-foreground">Product not found</h1>
         <p className="mb-6 text-sm text-muted-foreground">The product you're looking for doesn't exist.</p>
         <Button asChild variant="outline">
-          <Link to="/dashboard/shop"><ArrowLeft className="mr-2 h-4 w-4" /> Back to Shop</Link>
+          <Link to={shopBasePath}><ArrowLeft className="mr-2 h-4 w-4" /> Back to Shop</Link>
         </Button>
       </div>
     );
@@ -46,6 +53,12 @@ const ProductDetail = () => {
   const faqs = product.faqs || [];
 
   const handleBuy = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      navigate("/login", { state: { from: location.pathname } });
+      return;
+    }
+
     if (!product.stripe_price_id) {
       toast({ title: "Error", description: "Product not available for purchase yet.", variant: "destructive" });
       return;
@@ -62,7 +75,7 @@ const ProductDetail = () => {
       });
       if (error) throw error;
       if (data?.url) {
-        window.open(data.url, "_blank");
+        window.location.href = data.url;
       } else {
         throw new Error("No checkout URL returned");
       }
@@ -73,10 +86,10 @@ const ProductDetail = () => {
     }
   };
 
-  return (
+  const detail = (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-4xl pb-16">
       <Button asChild variant="ghost" size="sm" className="mb-6 text-muted-foreground">
-        <Link to="/dashboard/shop"><ArrowLeft className="mr-2 h-4 w-4" /> Back to Shop</Link>
+        <Link to={shopBasePath}><ArrowLeft className="mr-2 h-4 w-4" /> Back to Shop</Link>
       </Button>
 
       <div className="grid gap-8 lg:grid-cols-[1fr_300px]">
@@ -237,6 +250,20 @@ const ProductDetail = () => {
       </Dialog>
     </motion.div>
   );
+
+  if (isPublicRoute) {
+    return (
+      <div className="min-h-screen flex flex-col bg-background">
+        <Navbar />
+        <main className="flex-1 container mx-auto px-4 py-8">
+          {detail}
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  return detail;
 };
 
 export default ProductDetail;
