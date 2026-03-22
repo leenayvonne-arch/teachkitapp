@@ -23,11 +23,8 @@ const Navbar = () => {
   return (
     <header className="sticky top-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-md shadow-sm">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-            <Sparkles className="h-5 w-5" />
-          </div>
-          <span className="text-xl font-bold font-display text-foreground">TeachKit</span>
+        <Link to="/" className="flex items-center">
+          <img src="/teachkit-logo.png" alt="TeachKit" className="h-10 w-auto" />
         </Link>
 
         <nav className="hidden items-center gap-6 lg:flex">
