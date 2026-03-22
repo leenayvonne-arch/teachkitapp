@@ -17,7 +17,6 @@ import Footer from "@/components/landing/Footer";
 const ProductDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const { product, loading } = useProductBySlug(slug || "");
-  const [buying, setBuying] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
