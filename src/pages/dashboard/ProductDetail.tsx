@@ -170,6 +170,7 @@ const ProductDetail = () => {
                 )}
                 <span className="text-4xl font-extrabold text-foreground">{product.price}</span>
                 <p className="mt-1.5 text-xs text-muted-foreground">{isBundle ? "Bundle price · Save over 50%" : "One-time purchase · Instant download"}</p>
+                <p className="text-xs text-muted-foreground mt-1">Launching soon · Be the first to know</p>
               </div>
               {isBundle && (
                 <div className="rounded-lg bg-primary/5 px-3 py-2 text-center">
@@ -177,8 +178,8 @@ const ProductDetail = () => {
                   <p className="text-[11px] text-muted-foreground">Most teachers choose the bundle</p>
                 </div>
               )}
-              <Button className="w-full" size="lg" onClick={handleBuy} disabled={buying}>
-                <ShoppingCart className="mr-2 h-4 w-4" />{buying ? "Processing…" : "Buy Now"}
+              <Button className="w-full" size="lg" asChild>
+                <Link to="/contact">Coming Soon — Notify Me</Link>
               </Button>
               <p className="text-center text-[11px] text-muted-foreground">Instant digital download · PDF format</p>
               {isBundle && (
