@@ -1,7 +1,8 @@
-import { BookOpen, FileText, HelpCircle, LogOut } from "lucide-react";
+import { BookOpen, FileText, HelpCircle, LogOut, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import FeedbackForm from "@/components/FeedbackForm";
+import { useGenerationLimit } from "@/hooks/useGenerationLimit";
 
 const quickActions = [
   {
