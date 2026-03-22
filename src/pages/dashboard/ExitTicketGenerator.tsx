@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useGenerationLimit } from "@/hooks/useGenerationLimit";
+import GenerationLimitDialog from "@/components/GenerationLimitDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
