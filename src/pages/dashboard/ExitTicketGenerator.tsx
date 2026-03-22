@@ -41,6 +41,8 @@ const typeBg: Record<string, string> = {
 };
 
 const ExitTicketGenerator = () => {
+  const { hasReachedLimit, incrementUsage } = useGenerationLimit();
+  const [showLimitDialog, setShowLimitDialog] = useState(false);
   const [gradeLevel, setGradeLevel] = useState("");
   const [subject, setSubject] = useState("");
   const [topic, setTopic] = useState("");
