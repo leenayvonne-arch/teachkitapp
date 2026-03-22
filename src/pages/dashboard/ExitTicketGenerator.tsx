@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useGenerationLimit } from "@/hooks/useGenerationLimit";
+import GenerationLimitDialog from "@/components/GenerationLimitDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -39,6 +41,8 @@ const typeBg: Record<string, string> = {
 };
 
 const ExitTicketGenerator = () => {
+  const { hasReachedLimit, incrementUsage } = useGenerationLimit();
+  const [showLimitDialog, setShowLimitDialog] = useState(false);
   const [gradeLevel, setGradeLevel] = useState("");
   const [subject, setSubject] = useState("");
   const [topic, setTopic] = useState("");
@@ -48,6 +52,7 @@ const ExitTicketGenerator = () => {
   const [regenAction, setRegenAction] = useState<RegenerateAction | null>(null);
 
   const handleGenerate = async (regenerateAction?: RegenerateAction) => {
+    if (hasReachedLimit) { setShowLimitDialog(true); return; }
     if (!gradeLevel || !subject || !topic) {
       toast({ title: "Missing fields", description: "Please fill in Grade Level, Subject, and Topic.", variant: "destructive" });
       return;
@@ -66,6 +71,7 @@ const ExitTicketGenerator = () => {
       if (data?.error) throw new Error(data.error);
 
       setExitTicket(data.exitTicket);
+      await incrementUsage();
       toast({ title: isRegen ? "Exit ticket regenerated!" : "Exit ticket generated!" });
     } catch (e: any) {
       console.error(e);
@@ -93,6 +99,7 @@ const ExitTicketGenerator = () => {
 
   return (
     <div className="mx-auto max-w-3xl">
+      <GenerationLimitDialog open={showLimitDialog} onOpenChange={setShowLimitDialog} />
       <h1 className="mb-1 font-display text-2xl font-bold text-foreground">Exit Ticket Generator</h1>
       <p className="mb-8 text-muted-foreground">Create quick end-of-lesson checks for understanding.</p>
 

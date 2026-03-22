@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useGenerationLimit } from "@/hooks/useGenerationLimit";
+import GenerationLimitDialog from "@/components/GenerationLimitDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -31,6 +33,8 @@ const DIFFICULTIES = ["Easy", "Intermediate", "Hard", "Mixed"];
 const QUESTION_COUNTS = ["5", "8", "10", "12", "15", "20"];
 
 const WorksheetGenerator = () => {
+  const { hasReachedLimit, incrementUsage } = useGenerationLimit();
+  const [showLimitDialog, setShowLimitDialog] = useState(false);
   const [gradeLevel, setGradeLevel] = useState("");
   const [subject, setSubject] = useState("");
   const [topic, setTopic] = useState("");
@@ -42,6 +46,7 @@ const WorksheetGenerator = () => {
   const [regenAction, setRegenAction] = useState<RegenerateAction | null>(null);
 
   const handleGenerate = async (regenerateAction?: RegenerateAction) => {
+    if (hasReachedLimit) { setShowLimitDialog(true); return; }
     if (!gradeLevel || !subject || !topic) {
       toast({ title: "Missing fields", description: "Please fill in Grade Level, Subject, and Topic.", variant: "destructive" });
       return;
@@ -60,6 +65,7 @@ const WorksheetGenerator = () => {
       if (data?.error) throw new Error(data.error);
 
       setWorksheet(data.worksheet);
+      await incrementUsage();
       toast({ title: isRegen ? "Worksheet regenerated!" : "Worksheet generated!" });
     } catch (e: any) {
       console.error(e);
@@ -87,6 +93,7 @@ const WorksheetGenerator = () => {
 
   return (
     <div className="mx-auto max-w-4xl">
+      <GenerationLimitDialog open={showLimitDialog} onOpenChange={setShowLimitDialog} />
       <h1 className="mb-1 font-display text-2xl font-bold text-foreground">Worksheet Generator</h1>
       <p className="mb-8 text-muted-foreground">Create printable worksheets with answer keys, powered by AI.</p>
 

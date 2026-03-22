@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useGenerationLimit } from "@/hooks/useGenerationLimit";
+import GenerationLimitDialog from "@/components/GenerationLimitDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -59,6 +61,8 @@ const DIFFICULTY_LEVELS = [
 ];
 
 const QuizGenerator = () => {
+  const { hasReachedLimit, incrementUsage } = useGenerationLimit();
+  const [showLimitDialog, setShowLimitDialog] = useState(false);
   const [gradeLevel, setGradeLevel] = useState("");
   const [subject, setSubject] = useState("");
   const [topic, setTopic] = useState("");
@@ -111,6 +115,7 @@ const QuizGenerator = () => {
   };
 
   const handleGenerate = async (regenerateAction?: RegenerateAction) => {
+    if (hasReachedLimit) { setShowLimitDialog(true); return; }
     if (!gradeLevel || !subject || !topic) {
       toast({ title: "Missing fields", description: "Please fill in Grade Level, Subject, and Topic.", variant: "destructive" });
       return;
@@ -134,6 +139,7 @@ const QuizGenerator = () => {
       if (data?.error) throw new Error(data.error);
 
       setQuiz(normalizeQuiz(data.quiz));
+      await incrementUsage();
       // Clear differentiated versions when generating a new base quiz
       if (!isRegen) setDiffVersions([]);
       toast({ title: isRegen ? "Quiz regenerated!" : "Quiz generated!" });
@@ -201,6 +207,7 @@ const QuizGenerator = () => {
 
   return (
     <div className="mx-auto max-w-4xl">
+      <GenerationLimitDialog open={showLimitDialog} onOpenChange={setShowLimitDialog} />
       <h1 className="mb-1 font-display text-2xl font-bold text-foreground">Quiz Generator</h1>
       <p className="mb-8 text-muted-foreground">Create structured quizzes with multiple choice, true/false, fill in the blank, and short answer sections.</p>
 

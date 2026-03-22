@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useGenerationLimit } from "@/hooks/useGenerationLimit";
+import GenerationLimitDialog from "@/components/GenerationLimitDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -86,6 +88,8 @@ const DIFF_LEVELS = ["Basic", "Intermediate", "Advanced", "Mixed"];
 const STYLES = ["Direct Instruction", "Inquiry-Based", "Project-Based", "Flipped Classroom", "Cooperative Learning", "Socratic Method"];
 
 const LessonPlanGenerator = () => {
+  const { hasReachedLimit, incrementUsage } = useGenerationLimit();
+  const [showLimitDialog, setShowLimitDialog] = useState(false);
   const [gradeLevel, setGradeLevel] = useState("");
   const [subject, setSubject] = useState("");
   const [topic, setTopic] = useState("");
@@ -120,6 +124,7 @@ const LessonPlanGenerator = () => {
   const [activeDiffTab, setActiveDiffTab] = useState<LessonDiffLevel>("simplified");
 
   const handleGenerate = async (regenerateAction?: RegenerateAction) => {
+    if (hasReachedLimit) { setShowLimitDialog(true); return; }
     if (!gradeLevel || !subject || !topic) {
       toast({ title: "Missing fields", description: "Please fill in Grade Level, Subject, and Topic.", variant: "destructive" });
       return;
@@ -139,6 +144,7 @@ const LessonPlanGenerator = () => {
       if (data?.error) throw new Error(data.error);
 
       setLessonPlan(data.lessonPlan);
+      await incrementUsage();
       toast({ title: isRegen ? "Lesson plan regenerated!" : "Lesson plan generated!", description: "Scroll down to view your lesson plan." });
     } catch (e: any) {
       console.error(e);
@@ -262,6 +268,7 @@ const LessonPlanGenerator = () => {
 
   return (
     <div className="mx-auto max-w-4xl">
+      <GenerationLimitDialog open={showLimitDialog} onOpenChange={setShowLimitDialog} />
       <h1 className="mb-1 font-display text-2xl font-bold text-foreground">Lesson Plan Generator</h1>
       <p className="mb-8 text-muted-foreground">Create a complete, standards-aligned lesson plan powered by AI.</p>
 

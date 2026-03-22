@@ -1,7 +1,8 @@
-import { BookOpen, FileText, HelpCircle, LogOut } from "lucide-react";
+import { BookOpen, FileText, HelpCircle, LogOut, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import FeedbackForm from "@/components/FeedbackForm";
+import { useGenerationLimit } from "@/hooks/useGenerationLimit";
 
 const quickActions = [
   {
@@ -35,10 +36,31 @@ const quickActions = [
 ];
 
 const DashboardHome = () => {
+  const { remaining, FREE_LIMIT, loading } = useGenerationLimit();
+
   return (
     <div>
       <h1 className="mb-1 text-2xl font-bold text-foreground">Welcome to TeachKit</h1>
       <p className="mb-8 text-muted-foreground">What would you like to create today?</p>
+
+      {!loading && (
+        <motion.div
+          initial={{ opacity: 0, y: -6 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6 flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 px-4 py-3"
+        >
+          <Sparkles className="h-4 w-4 text-primary" />
+          <p className="text-sm text-foreground">
+            <span className="font-semibold">{remaining} free generation{remaining !== 1 ? "s" : ""}</span>{" "}
+            remaining this month
+          </p>
+          {remaining === 0 && (
+            <Link to="/pricing" className="ml-auto text-sm font-medium text-primary hover:underline">
+              Upgrade →
+            </Link>
+          )}
+        </motion.div>
+      )}
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {quickActions.map((action, i) => (
