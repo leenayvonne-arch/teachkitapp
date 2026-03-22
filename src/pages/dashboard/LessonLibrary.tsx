@@ -9,8 +9,10 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { downloadElementAsPDF } from "@/lib/resourceUtils";
+import { useAuth } from "@/hooks/useAuth";
+import { Link } from "react-router-dom";
 import {
-  Search, BookOpen, FileText, HelpCircle, LogOut, Copy, Download, Pencil, Trash2, Library, Loader2,
+  Search, BookOpen, FileText, HelpCircle, LogOut, Copy, Download, Pencil, Trash2, Library, Loader2, Lock,
 } from "lucide-react";
 
 type ResourceType = "lesson" | "worksheet" | "quiz" | "exit_ticket";
@@ -35,6 +37,8 @@ const TYPE_META: Record<ResourceType, { label: string; icon: React.ReactNode; co
 };
 
 const LessonLibrary = () => {
+  const { user } = useAuth();
+  const [isPro, setIsPro] = useState<boolean | null>(null);
   const [resources, setResources] = useState<SavedResource[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -42,7 +46,19 @@ const LessonLibrary = () => {
   const [editingResource, setEditingResource] = useState<SavedResource | null>(null);
   const [editTitle, setEditTitle] = useState("");
 
+  // Check if user has Pro or higher plan (for now, check user_roles for non-free)
+  useEffect(() => {
+    const checkPlan = async () => {
+      if (!user) { setIsPro(false); return; }
+      // For now, all users are on free plan (no subscription system yet)
+      // When subscriptions are added, check the user's plan here
+      setIsPro(false);
+    };
+    checkPlan();
+  }, [user]);
+
   const fetchResources = useCallback(async () => {
+    if (isPro === false) return;
     setLoading(true);
     let query = supabase
       .from("saved_resources" as any)
@@ -60,11 +76,30 @@ const LessonLibrary = () => {
     }
     setResources((data as SavedResource[]) || []);
     setLoading(false);
-  }, [filterType]);
+  }, [filterType, isPro]);
 
   useEffect(() => {
     fetchResources();
   }, [fetchResources]);
+
+  if (isPro === false) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-center">
+        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+          <Lock className="h-8 w-8 text-primary" />
+        </div>
+        <h2 className="text-xl font-bold text-foreground mb-2">
+          Lesson Library is a Pro feature
+        </h2>
+        <p className="text-sm text-muted-foreground mb-6 max-w-sm">
+          Upgrade to Pro or higher to access the full lesson library and save your generated materials.
+        </p>
+        <Button asChild>
+          <Link to="/pricing">Upgrade to Pro</Link>
+        </Button>
+      </div>
+    );
+  }
 
   const filtered = resources.filter((r) => {
     if (!searchQuery) return true;
