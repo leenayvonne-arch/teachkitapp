@@ -93,6 +93,7 @@ const WorksheetGenerator = () => {
 
   return (
     <div className="mx-auto max-w-4xl">
+      <GenerationLimitDialog open={showLimitDialog} onOpenChange={setShowLimitDialog} />
       <h1 className="mb-1 font-display text-2xl font-bold text-foreground">Worksheet Generator</h1>
       <p className="mb-8 text-muted-foreground">Create printable worksheets with answer keys, powered by AI.</p>
 

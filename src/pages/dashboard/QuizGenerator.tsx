@@ -207,6 +207,7 @@ const QuizGenerator = () => {
 
   return (
     <div className="mx-auto max-w-4xl">
+      <GenerationLimitDialog open={showLimitDialog} onOpenChange={setShowLimitDialog} />
       <h1 className="mb-1 font-display text-2xl font-bold text-foreground">Quiz Generator</h1>
       <p className="mb-8 text-muted-foreground">Create structured quizzes with multiple choice, true/false, fill in the blank, and short answer sections.</p>
 
