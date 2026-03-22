@@ -57,6 +57,31 @@ const LessonLibrary = () => {
     checkPlan();
   }, [user]);
 
+  const fetchResources = useCallback(async () => {
+    if (isPro === false) return;
+    setLoading(true);
+    let query = supabase
+      .from("saved_resources" as any)
+      .select("*")
+      .order("created_at", { ascending: false }) as any;
+
+    if (filterType !== "all") {
+      query = query.eq("resource_type", filterType);
+    }
+
+    const { data, error } = await query;
+    if (error) {
+      console.error(error);
+      toast({ title: "Error loading library", description: error.message, variant: "destructive" });
+    }
+    setResources((data as SavedResource[]) || []);
+    setLoading(false);
+  }, [filterType, isPro]);
+
+  useEffect(() => {
+    fetchResources();
+  }, [fetchResources]);
+
   if (isPro === false) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
@@ -75,30 +100,6 @@ const LessonLibrary = () => {
       </div>
     );
   }
-
-  const fetchResources = useCallback(async () => {
-    setLoading(true);
-    let query = supabase
-      .from("saved_resources" as any)
-      .select("*")
-      .order("created_at", { ascending: false }) as any;
-
-    if (filterType !== "all") {
-      query = query.eq("resource_type", filterType);
-    }
-
-    const { data, error } = await query;
-    if (error) {
-      console.error(error);
-      toast({ title: "Error loading library", description: error.message, variant: "destructive" });
-    }
-    setResources((data as SavedResource[]) || []);
-    setLoading(false);
-  }, [filterType]);
-
-  useEffect(() => {
-    fetchResources();
-  }, [fetchResources]);
 
   const filtered = resources.filter((r) => {
     if (!searchQuery) return true;
