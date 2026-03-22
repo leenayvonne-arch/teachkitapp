@@ -115,6 +115,7 @@ const QuizGenerator = () => {
   };
 
   const handleGenerate = async (regenerateAction?: RegenerateAction) => {
+    if (hasReachedLimit) { setShowLimitDialog(true); return; }
     if (!gradeLevel || !subject || !topic) {
       toast({ title: "Missing fields", description: "Please fill in Grade Level, Subject, and Topic.", variant: "destructive" });
       return;
