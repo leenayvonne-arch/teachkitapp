@@ -361,16 +361,16 @@ export const shopProducts: ShopProduct[] = [
   },
   {
     slug: "math-exit-ticket-pack-3-5",
-    title: "Grades 3–5 Math Exit Ticket Pack (30 Pack)",
-    subtitle: "30 quick daily math exit tickets perfect for checking understanding in minutes.",
-    description: "30 ready-to-use math exit tickets designed for quick daily assessment in Grades 3–5. Perfect for checking understanding, end-of-lesson assessment, and small group instruction.",
+    title: "Grades 3–5 Math Exit Ticket Pack",
+    subtitle: "Quick daily math exit tickets perfect for checking understanding in minutes.",
+    description: "Ready-to-use math exit tickets designed for quick daily assessment in Grades 3–5. Perfect for checking understanding, end-of-lesson assessment, and small group instruction.",
     fullDescription:
-      "30 ready-to-use math exit tickets designed for quick daily assessment in Grades 3–5. Perfect for checking understanding, end-of-lesson assessment, and small group instruction. Includes 30 exit tickets covering mixed math topics in a printable format with student answer space. Great for quick, no-prep classroom use.",
+      "Ready-to-use math exit tickets designed for quick daily assessment in Grades 3–5. Perfect for checking understanding, end-of-lesson assessment, and small group instruction. Covers mixed math topics in a printable format with student answer space. Great for quick, no-prep classroom use.",
     gradeLevel: "Grades 3–5",
     price: "$4.99",
     category: "Exit Tickets",
     includes: [
-      "30 ready-to-use exit tickets",
+      "Ready-to-use exit tickets",
       "Mixed math topics",
       "Printable format",
       "Student answer space",
