@@ -192,15 +192,15 @@ export const shopProducts: ShopProduct[] = [
   {
     slug: "math-worksheet-mega-pack",
     title: "Math Worksheet Mega Pack",
-    subtitle: "50 printable math worksheets covering essential upper-elementary topics with answer keys.",
-    description: "50 printable math worksheets covering fractions, geometry, and word problems.",
+    subtitle: "Printable math worksheets covering essential upper-elementary topics with answer keys.",
+    description: "Printable math worksheets covering fractions, geometry, and word problems.",
     fullDescription:
-      "A robust collection of 50 math worksheets covering essential upper-elementary topics including fractions, geometry, measurement, and multi-step word problems. Each worksheet includes clear instructions and an answer key.",
+      "A robust collection of math worksheets covering essential upper-elementary topics including fractions, geometry, measurement, and multi-step word problems. Each worksheet includes clear instructions and an answer key.",
     gradeLevel: "Grades 3–5",
     price: "$6.99",
     category: "Worksheets",
     includes: [
-      "50 printable math worksheets",
+      "Printable math worksheets",
       "Topics: fractions, geometry, measurement, word problems",
       "Answer keys included",
       "Printable PDF format",

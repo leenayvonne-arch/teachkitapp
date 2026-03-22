@@ -38,7 +38,7 @@ const MathWorksheetMegaPack = () => {
             <Package className="h-4 w-4" /> Mega Pack
           </div>
           <h2 className="font-display text-4xl font-extrabold text-foreground leading-tight md:text-5xl">
-            50 Math Worksheets
+            Math Worksheets
           </h2>
           <p className="mt-3 text-xl text-muted-foreground">for Grades 3–5</p>
           <div className="mx-auto mt-8 grid max-w-md grid-cols-2 gap-3 text-sm">
