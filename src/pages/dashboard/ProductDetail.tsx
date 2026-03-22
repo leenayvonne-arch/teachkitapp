@@ -87,7 +87,7 @@ const ProductDetail = () => {
   };
 
   const detail = (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-4xl pb-16">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-4xl pb-28 lg:pb-16">
       <Button asChild variant="ghost" size="sm" className="mb-6 text-muted-foreground">
         <Link to={shopBasePath}><ArrowLeft className="mr-2 h-4 w-4" /> Back to Shop</Link>
       </Button>
@@ -248,6 +248,16 @@ const ProductDetail = () => {
           )}
         </DialogContent>
       </Dialog>
+      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background/95 backdrop-blur-sm px-4 py-3 flex items-center justify-between lg:hidden">
+        <div>
+          <span className="text-xl font-extrabold text-foreground">{product.price}</span>
+          <p className="text-xs text-muted-foreground">One-time purchase</p>
+        </div>
+        <Button onClick={handleBuy} disabled={buying} className="px-8">
+          <ShoppingCart className="mr-2 h-4 w-4" />
+          {buying ? "Processing…" : "Buy Now"}
+        </Button>
+      </div>
     </motion.div>
   );
 
