@@ -61,6 +61,8 @@ const DIFFICULTY_LEVELS = [
 ];
 
 const QuizGenerator = () => {
+  const { hasReachedLimit, incrementUsage } = useGenerationLimit();
+  const [showLimitDialog, setShowLimitDialog] = useState(false);
   const [gradeLevel, setGradeLevel] = useState("");
   const [subject, setSubject] = useState("");
   const [topic, setTopic] = useState("");
