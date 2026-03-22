@@ -9,8 +9,10 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { downloadElementAsPDF } from "@/lib/resourceUtils";
+import { useAuth } from "@/hooks/useAuth";
+import { Link } from "react-router-dom";
 import {
-  Search, BookOpen, FileText, HelpCircle, LogOut, Copy, Download, Pencil, Trash2, Library, Loader2,
+  Search, BookOpen, FileText, HelpCircle, LogOut, Copy, Download, Pencil, Trash2, Library, Loader2, Lock,
 } from "lucide-react";
 
 type ResourceType = "lesson" | "worksheet" | "quiz" | "exit_ticket";
