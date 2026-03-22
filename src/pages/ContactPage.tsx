@@ -60,6 +60,15 @@ const ContactPage = () => {
             </p>
           </motion.div>
 
+          <div className="mx-auto max-w-lg mb-8 rounded-2xl border border-primary/20 bg-primary/5 px-6 py-5 text-center">
+            <h2 className="text-lg font-bold text-foreground mb-1">
+              🎉 New Resources Coming Soon
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Leave your email below and we'll notify you the moment our teacher resource bundles are available.
+            </p>
+          </div>
+
           <motion.form initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} onSubmit={handleSubmit} className="mx-auto max-w-lg space-y-5 rounded-2xl border bg-card p-8 shadow-sm">
             <div className="space-y-2">
               <Label htmlFor="name">Name</Label>
