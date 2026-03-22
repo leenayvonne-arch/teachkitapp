@@ -209,9 +209,10 @@ const PricingSection = () => {
                 </p>
 
                 <div className="mb-4 flex flex-wrap items-center justify-center gap-3 text-sm text-muted-foreground md:justify-start">
-                  <span className="rounded-full bg-muted px-3 py-1 font-medium">📄 50 Worksheets</span>
-                  <span className="rounded-full bg-muted px-3 py-1 font-medium">🎫 30 Exit Tickets</span>
-                  <span className="rounded-full bg-muted px-3 py-1 font-medium">❓ 20 Quizzes</span>
+                  <span className="rounded-full bg-muted px-3 py-1 font-medium">📄 Worksheets</span>
+                  <span className="rounded-full bg-muted px-3 py-1 font-medium">🎫 Exit Tickets</span>
+                  <span className="rounded-full bg-muted px-3 py-1 font-medium">❓ Quizzes</span>
+                  <span className="rounded-full bg-muted px-3 py-1 font-medium">✅ Answer Keys</span>
                 </div>
 
                 <p className="mb-4 text-sm font-medium text-foreground">
