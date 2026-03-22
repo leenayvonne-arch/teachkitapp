@@ -5,9 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { ArrowLeft, CheckCircle2, ShoppingCart, Target, MessageSquareQuote, Sparkles, Clock } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Target, MessageSquareQuote, Sparkles, Clock } from "lucide-react";
 import { useState } from "react";
-import { toast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import WorksheetPreviewCard from "@/components/shop/WorksheetPreviewCard";
 import { supabase } from "@/integrations/supabase/client";
@@ -17,7 +16,6 @@ import Footer from "@/components/landing/Footer";
 const ProductDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const { product, loading } = useProductBySlug(slug || "");
-  const [buying, setBuying] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
@@ -51,40 +49,6 @@ const ProductDetail = () => {
   const useCases = product.use_cases || [];
   const testimonials = product.testimonials || [];
   const faqs = product.faqs || [];
-
-  const handleBuy = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      navigate("/login", { state: { from: location.pathname } });
-      return;
-    }
-
-    if (!product.stripe_price_id) {
-      toast({ title: "Error", description: "Product not available for purchase yet.", variant: "destructive" });
-      return;
-    }
-    setBuying(true);
-    try {
-      const { data, error } = await supabase.functions.invoke("create-checkout", {
-        body: {
-          priceId: product.stripe_price_id,
-          productSlug: slug,
-          productName: product.title,
-          productDescription: product.description,
-        },
-      });
-      if (error) throw error;
-      if (data?.url) {
-        window.location.href = data.url;
-      } else {
-        throw new Error("No checkout URL returned");
-      }
-    } catch (err: any) {
-      toast({ title: "Checkout failed", description: err.message || "Please try again.", variant: "destructive" });
-    } finally {
-      setBuying(false);
-    }
-  };
 
   const detail = (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-4xl pb-28 lg:pb-16">
@@ -205,6 +169,7 @@ const ProductDetail = () => {
                 )}
                 <span className="text-4xl font-extrabold text-foreground">{product.price}</span>
                 <p className="mt-1.5 text-xs text-muted-foreground">{isBundle ? "Bundle price · Save over 50%" : "One-time purchase · Instant download"}</p>
+                <p className="text-xs text-muted-foreground mt-1">Launching soon · Be the first to know</p>
               </div>
               {isBundle && (
                 <div className="rounded-lg bg-primary/5 px-3 py-2 text-center">
@@ -212,8 +177,8 @@ const ProductDetail = () => {
                   <p className="text-[11px] text-muted-foreground">Most teachers choose the bundle</p>
                 </div>
               )}
-              <Button className="w-full" size="lg" onClick={handleBuy} disabled={buying}>
-                <ShoppingCart className="mr-2 h-4 w-4" />{buying ? "Processing…" : "Buy Now"}
+              <Button className="w-full" size="lg" asChild>
+                <Link to="/contact">Coming Soon — Notify Me</Link>
               </Button>
               <p className="text-center text-[11px] text-muted-foreground">Instant digital download · PDF format</p>
               {isBundle && (
@@ -251,11 +216,10 @@ const ProductDetail = () => {
       <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background/95 backdrop-blur-sm px-4 py-3 flex items-center justify-between lg:hidden">
         <div>
           <span className="text-xl font-extrabold text-foreground">{product.price}</span>
-          <p className="text-xs text-muted-foreground">One-time purchase</p>
+          <p className="text-xs text-muted-foreground">Launching soon</p>
         </div>
-        <Button onClick={handleBuy} disabled={buying} className="px-8">
-          <ShoppingCart className="mr-2 h-4 w-4" />
-          {buying ? "Processing…" : "Buy Now"}
+        <Button className="px-8" asChild>
+          <Link to="/contact">Coming Soon — Notify Me</Link>
         </Button>
       </div>
     </motion.div>
