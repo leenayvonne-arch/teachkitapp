@@ -51,40 +51,6 @@ const ProductDetail = () => {
   const testimonials = product.testimonials || [];
   const faqs = product.faqs || [];
 
-  const handleBuy = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      navigate("/login", { state: { from: location.pathname } });
-      return;
-    }
-
-    if (!product.stripe_price_id) {
-      toast({ title: "Error", description: "Product not available for purchase yet.", variant: "destructive" });
-      return;
-    }
-    setBuying(true);
-    try {
-      const { data, error } = await supabase.functions.invoke("create-checkout", {
-        body: {
-          priceId: product.stripe_price_id,
-          productSlug: slug,
-          productName: product.title,
-          productDescription: product.description,
-        },
-      });
-      if (error) throw error;
-      if (data?.url) {
-        window.location.href = data.url;
-      } else {
-        throw new Error("No checkout URL returned");
-      }
-    } catch (err: any) {
-      toast({ title: "Checkout failed", description: err.message || "Please try again.", variant: "destructive" });
-    } finally {
-      setBuying(false);
-    }
-  };
-
   const detail = (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-4xl pb-28 lg:pb-16">
       <Button asChild variant="ghost" size="sm" className="mb-6 text-muted-foreground">
