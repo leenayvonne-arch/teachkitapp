@@ -18,9 +18,7 @@ serve(async (req) => {
       throw new Error("Missing required fields");
     }
 
-    const siteUrl = Deno.env.get("SUPABASE_URL")?.replace(".supabase.co", "") 
-      ? "https://teachkitapp.lovable.app" 
-      : "https://teachkitapp.lovable.app";
+    const siteUrl = "https://teachkitapp.com";
 
     const downloadUrl = `${siteUrl}/dashboard/account`;
     const greeting = customerName ? `Hi ${customerName}` : "Hi there";
