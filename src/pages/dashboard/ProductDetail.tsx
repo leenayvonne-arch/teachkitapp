@@ -87,7 +87,7 @@ const ProductDetail = () => {
   };
 
   const detail = (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-4xl pb-16">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-4xl pb-28 lg:pb-16">
       <Button asChild variant="ghost" size="sm" className="mb-6 text-muted-foreground">
         <Link to={shopBasePath}><ArrowLeft className="mr-2 h-4 w-4" /> Back to Shop</Link>
       </Button>
