@@ -8,7 +8,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { ArrowLeft, CheckCircle2, Target, MessageSquareQuote, Sparkles, Clock } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { motion } from "framer-motion";
 import WorksheetPreviewCard from "@/components/shop/WorksheetPreviewCard";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/landing/Navbar";
