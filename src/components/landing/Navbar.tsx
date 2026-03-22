@@ -22,7 +22,7 @@ const Navbar = () => {
   const { theme, setTheme } = useTheme();
   return (
     <header className="sticky top-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-md shadow-sm">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
+      <div className="container mx-auto flex h-24 items-center justify-between px-4">
         <Link to="/" className="flex items-center">
           <img src="/teachkit-logo.png" alt="TeachKit" className="h-20 w-auto" />
         </Link>
