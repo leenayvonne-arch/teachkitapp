@@ -144,6 +144,7 @@ const LessonPlanGenerator = () => {
       if (data?.error) throw new Error(data.error);
 
       setLessonPlan(data.lessonPlan);
+      await incrementUsage();
       toast({ title: isRegen ? "Lesson plan regenerated!" : "Lesson plan generated!", description: "Scroll down to view your lesson plan." });
     } catch (e: any) {
       console.error(e);

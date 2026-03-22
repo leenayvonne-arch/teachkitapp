@@ -139,6 +139,7 @@ const QuizGenerator = () => {
       if (data?.error) throw new Error(data.error);
 
       setQuiz(normalizeQuiz(data.quiz));
+      await incrementUsage();
       // Clear differentiated versions when generating a new base quiz
       if (!isRegen) setDiffVersions([]);
       toast({ title: isRegen ? "Quiz regenerated!" : "Quiz generated!" });

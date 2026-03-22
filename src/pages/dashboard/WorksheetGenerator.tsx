@@ -65,6 +65,7 @@ const WorksheetGenerator = () => {
       if (data?.error) throw new Error(data.error);
 
       setWorksheet(data.worksheet);
+      await incrementUsage();
       toast({ title: isRegen ? "Worksheet regenerated!" : "Worksheet generated!" });
     } catch (e: any) {
       console.error(e);

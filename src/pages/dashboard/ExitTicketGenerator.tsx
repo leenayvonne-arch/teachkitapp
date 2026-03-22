@@ -71,6 +71,7 @@ const ExitTicketGenerator = () => {
       if (data?.error) throw new Error(data.error);
 
       setExitTicket(data.exitTicket);
+      await incrementUsage();
       toast({ title: isRegen ? "Exit ticket regenerated!" : "Exit ticket generated!" });
     } catch (e: any) {
       console.error(e);
