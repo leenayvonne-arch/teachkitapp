@@ -45,7 +45,7 @@ serve(async (req) => {
       customerId = newCustomer.id;
     }
 
-    const origin = req.headers.get("origin") || "https://teachkitapp.lovable.app";
+    const origin = req.headers.get("origin") || "https://teachkitapp.com";
 
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
