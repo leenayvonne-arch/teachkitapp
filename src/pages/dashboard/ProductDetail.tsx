@@ -217,11 +217,10 @@ const ProductDetail = () => {
       <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background/95 backdrop-blur-sm px-4 py-3 flex items-center justify-between lg:hidden">
         <div>
           <span className="text-xl font-extrabold text-foreground">{product.price}</span>
-          <p className="text-xs text-muted-foreground">One-time purchase</p>
+          <p className="text-xs text-muted-foreground">Launching soon</p>
         </div>
-        <Button onClick={handleBuy} disabled={buying} className="px-8">
-          <ShoppingCart className="mr-2 h-4 w-4" />
-          {buying ? "Processing…" : "Buy Now"}
+        <Button className="px-8" asChild>
+          <Link to="/contact">Coming Soon — Notify Me</Link>
         </Button>
       </div>
     </motion.div>

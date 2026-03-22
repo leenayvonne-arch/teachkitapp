@@ -188,9 +188,8 @@ const ResourceShop = () => {
                         <Link to={`${shopBasePath}/${product.slug}`}>View Details</Link>
                       </Button>
                     </div>
-                    <Button size={isBundle ? "default" : "sm"} variant="secondary" className="w-full" disabled={buyingSlug === product.slug} onClick={() => handleBuy(product)}>
-                      <ShoppingCart className="mr-2 h-4 w-4" />
-                      {buyingSlug === product.slug ? "Processing…" : "Buy Now"}
+                    <Button size="sm" variant="outline" className="w-full" asChild>
+                      <Link to="/contact">Coming Soon — Notify Me</Link>
                     </Button>
                   </CardFooter>
                 </Card>
