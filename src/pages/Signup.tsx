@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Sparkles, MailCheck } from "lucide-react";
+import { MailCheck } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const Signup = () => {
@@ -37,11 +37,8 @@ const Signup = () => {
       <div className="flex min-h-screen items-center justify-center bg-muted/30 px-4">
         <div className="w-full max-w-md">
           <div className="mb-8 text-center">
-            <Link to="/" className="inline-flex items-center gap-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-                <Sparkles className="h-5 w-5" />
-              </div>
-              <span className="text-2xl font-bold font-display text-foreground">TeachKit</span>
+            <Link to="/" className="inline-flex items-center">
+              <img src="/teachkit-logo.png" alt="TeachKit" className="h-12 w-auto" />
             </Link>
           </div>
           <div className="rounded-2xl border bg-card p-8 shadow-lg text-center">
@@ -70,11 +67,8 @@ const Signup = () => {
     <div className="flex min-h-screen items-center justify-center bg-muted/30 px-4">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <Link to="/" className="inline-flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-              <Sparkles className="h-5 w-5" />
-            </div>
-            <span className="text-2xl font-bold font-display text-foreground">TeachKit</span>
+          <Link to="/" className="inline-flex items-center">
+            <img src="/teachkit-logo.png" alt="TeachKit" className="h-12 w-auto" />
           </Link>
         </div>
         <div className="rounded-2xl border bg-card p-8 shadow-lg">
