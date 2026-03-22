@@ -38,7 +38,7 @@ const Signup = () => {
         <div className="w-full max-w-md">
           <div className="mb-8 text-center">
             <Link to="/" className="inline-flex items-center">
-              <img src="/teachkit-logo.png" alt="TeachKit" className="h-12 w-auto" />
+              <img src="/teachkit-logo.png" alt="TeachKit" className="h-16 w-auto" />
             </Link>
           </div>
           <div className="rounded-2xl border bg-card p-8 shadow-lg text-center">
@@ -68,7 +68,7 @@ const Signup = () => {
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <Link to="/" className="inline-flex items-center">
-            <img src="/teachkit-logo.png" alt="TeachKit" className="h-12 w-auto" />
+            <img src="/teachkit-logo.png" alt="TeachKit" className="h-16 w-auto" />
           </Link>
         </div>
         <div className="rounded-2xl border bg-card p-8 shadow-lg">
