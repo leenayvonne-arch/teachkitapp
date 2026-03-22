@@ -387,16 +387,16 @@ export const shopProducts: ShopProduct[] = [
   },
   {
     slug: "math-quiz-pack-3-5",
-    title: "Grades 3–5 Math Quiz Pack (20 Assessments)",
-    subtitle: "20 ready-to-use math quizzes for weekly assessments, review, and test prep.",
-    description: "20 ready-to-use math quizzes for Grades 3–5 designed to assess student understanding. Perfect for weekly assessments, review, and test prep.",
+    title: "Grades 3–5 Math Quiz Pack",
+    subtitle: "Ready-to-use math quizzes for weekly assessments, review, and test prep.",
+    description: "Ready-to-use math quizzes for Grades 3–5 designed to assess student understanding. Perfect for weekly assessments, review, and test prep.",
     fullDescription:
-      "20 ready-to-use math quizzes for Grades 3–5 designed to assess student understanding. Perfect for weekly assessments, review, and test prep. Includes 20 quizzes with multiple question types, answer keys included, in a printable format. Save time with ready-to-use assessments.",
+      "Ready-to-use math quizzes for Grades 3–5 designed to assess student understanding. Perfect for weekly assessments, review, and test prep. Includes quizzes with multiple question types, answer keys included, in a printable format. Save time with ready-to-use assessments.",
     gradeLevel: "Grades 3–5",
     price: "$5.99",
     category: "Quizzes",
     includes: [
-      "20 ready-to-use quizzes",
+      "Ready-to-use quizzes",
       "Multiple question types",
       "Answer keys included",
       "Printable format",
