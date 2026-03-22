@@ -88,6 +88,8 @@ const DIFF_LEVELS = ["Basic", "Intermediate", "Advanced", "Mixed"];
 const STYLES = ["Direct Instruction", "Inquiry-Based", "Project-Based", "Flipped Classroom", "Cooperative Learning", "Socratic Method"];
 
 const LessonPlanGenerator = () => {
+  const { hasReachedLimit, incrementUsage } = useGenerationLimit();
+  const [showLimitDialog, setShowLimitDialog] = useState(false);
   const [gradeLevel, setGradeLevel] = useState("");
   const [subject, setSubject] = useState("");
   const [topic, setTopic] = useState("");
