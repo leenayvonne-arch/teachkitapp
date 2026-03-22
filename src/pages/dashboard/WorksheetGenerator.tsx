@@ -33,6 +33,8 @@ const DIFFICULTIES = ["Easy", "Intermediate", "Hard", "Mixed"];
 const QUESTION_COUNTS = ["5", "8", "10", "12", "15", "20"];
 
 const WorksheetGenerator = () => {
+  const { hasReachedLimit, incrementUsage } = useGenerationLimit();
+  const [showLimitDialog, setShowLimitDialog] = useState(false);
   const [gradeLevel, setGradeLevel] = useState("");
   const [subject, setSubject] = useState("");
   const [topic, setTopic] = useState("");
