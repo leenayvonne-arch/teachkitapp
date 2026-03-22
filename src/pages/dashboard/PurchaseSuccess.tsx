@@ -185,6 +185,23 @@ const PurchaseSuccess = () => {
               </Link>
             </Button>
           </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="mt-10 rounded-2xl border border-border/60 bg-muted/30 px-6 py-6 text-center"
+          >
+            <p className="text-sm font-semibold text-foreground mb-1">
+              Want to create your own materials too?
+            </p>
+            <p className="text-sm text-muted-foreground mb-4">
+              Generate custom lesson plans, worksheets, and quizzes in seconds with AI.
+            </p>
+            <Button asChild variant="outline" size="sm">
+              <Link to="/dashboard">Try the AI Tools →</Link>
+            </Button>
+          </motion.div>
         </div>
       )}
     </div>
