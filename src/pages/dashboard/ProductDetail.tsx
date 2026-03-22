@@ -7,7 +7,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ArrowLeft, CheckCircle2, Target, MessageSquareQuote, Sparkles, Clock } from "lucide-react";
 import { useState } from "react";
-import { toast } from "@/hooks/use-toast";
+import { motion } from "framer-motion";
 import { motion } from "framer-motion";
 import WorksheetPreviewCard from "@/components/shop/WorksheetPreviewCard";
 import { supabase } from "@/integrations/supabase/client";

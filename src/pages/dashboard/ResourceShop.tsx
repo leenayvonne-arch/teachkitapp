@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Search, ShoppingBag, ShoppingCart } from "lucide-react";
+import { Search, ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
 import TeacherTestimonials from "@/components/TeacherTestimonials";
 import FeedbackForm from "@/components/FeedbackForm";
