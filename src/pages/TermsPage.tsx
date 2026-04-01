@@ -99,7 +99,13 @@ const TermsPage = () => (
           <p className="text-muted-foreground">We reserve the right to update these Terms at any time. When we make material changes, we will update the "Last updated" date at the top of this page and notify active users by email.</p>
           <p className="text-muted-foreground">Continued use of TeachKit after changes are posted constitutes acceptance of the updated Terms. If you do not agree with the revised Terms, you should discontinue use of the service.</p>
 
-          <h2 className="text-xl font-bold text-foreground mt-8">12. Contact</h2>
+          <h2 className="text-xl font-bold text-foreground mt-8">12. Governing Law</h2>
+          <p className="text-muted-foreground">These Terms are governed by and construed in accordance with the laws of the State of Massachusetts, without regard to its conflict of law provisions. Any disputes arising under these Terms shall be subject to the exclusive jurisdiction of the courts located in Massachusetts.</p>
+
+          <h2 className="text-xl font-bold text-foreground mt-8">13. Eligibility</h2>
+          <p className="text-muted-foreground">TeachKit is intended for use by adults aged 18 and older. Users between the ages of 13 and 17 may use the service only with verifiable parental or guardian consent. TeachKit does not knowingly permit children under the age of 13 to create accounts or use the service. If we become aware that a user is under 13, their account will be terminated immediately.</p>
+
+          <h2 className="text-xl font-bold text-foreground mt-8">14. Contact</h2>
           <p className="text-muted-foreground">
             If you have questions about these Terms, please contact us at{" "}
             <a href="mailto:support@teachkitapp.com" className="text-primary hover:underline">support@teachkitapp.com</a>. We aim to respond within 2 business days.
