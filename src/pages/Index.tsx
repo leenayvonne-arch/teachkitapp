@@ -19,7 +19,7 @@ const Index = () => {
       <BuiltForClassroomsSection />
       <FeaturesSection />
       <HowItWorksSection />
-      <TeacherTestimonials />
+      <EarlyAccessSection />
       <PricingSection />
       <Footer />
     </div>
