@@ -33,7 +33,7 @@ const HeroSection = () => {
           <h1 className="mb-8 text-5xl font-extrabold leading-[1.1] tracking-tight text-foreground md:text-6xl lg:text-7xl">
             AI Tools & Ready-Made
             <br />
-            <span className="inline-block bg-gradient-hero bg-clip-text text-transparent">
+            <span className="inline-block bg-clip-text text-transparent" style={{ background: 'var(--gradient-hero)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               Teacher Resources
             </span>
           </h1>
