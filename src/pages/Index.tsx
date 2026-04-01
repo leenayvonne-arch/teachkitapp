@@ -6,7 +6,7 @@ import BuiltForClassroomsSection from "@/components/landing/BuiltForClassroomsSe
 import FeaturesSection from "@/components/landing/FeaturesSection";
 import HowItWorksSection from "@/components/landing/HowItWorksSection";
 import PricingSection from "@/components/landing/PricingSection";
-import TeacherTestimonials from "@/components/TeacherTestimonials";
+import EarlyAccessSection from "@/components/EarlyAccessSection";
 import Footer from "@/components/landing/Footer";
 
 const Index = () => {
