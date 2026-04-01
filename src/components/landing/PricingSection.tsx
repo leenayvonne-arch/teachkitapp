@@ -19,6 +19,9 @@ const plans = [
     cta: "Start Free",
     featured: false,
     icon: Sparkles,
+    iconBg: "bg-muted",
+    iconColor: "text-muted-foreground",
+    checkColor: "text-secondary",
   },
   {
     name: "Essential",
@@ -35,6 +38,9 @@ const plans = [
     cta: "Upgrade Now",
     featured: false,
     icon: Zap,
+    iconBg: "bg-secondary/10",
+    iconColor: "text-secondary",
+    checkColor: "text-secondary",
   },
   {
     name: "Pro",
@@ -52,6 +58,9 @@ const plans = [
     cta: "Upgrade Now",
     featured: true,
     icon: Crown,
+    iconBg: "bg-primary/10",
+    iconColor: "text-primary",
+    checkColor: "text-primary",
   },
   {
     name: "Premium",
@@ -68,13 +77,20 @@ const plans = [
     cta: "Upgrade Now",
     featured: false,
     icon: Star,
+    iconBg: "bg-accent/10",
+    iconColor: "text-accent",
+    checkColor: "text-accent",
   },
 ];
 
 const PricingSection = () => {
   return (
-    <section id="pricing" className="bg-muted/30 py-16 md:py-24">
-      <div className="container mx-auto px-4">
+    <section id="pricing" className="relative bg-muted/30 py-16 md:py-24 overflow-hidden">
+      {/* Decorative blobs */}
+      <div className="blob blob-purple -top-40 -left-40 h-[400px] w-[400px] animate-blob-drift" />
+      <div className="blob blob-coral -bottom-40 -right-40 h-[350px] w-[350px] animate-blob-drift [animation-delay:6s]" />
+
+      <div className="container relative mx-auto px-4">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -104,7 +120,7 @@ const PricingSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className={`relative flex flex-col rounded-2xl border p-6 transition-all hover:-translate-y-1 ${
+                className={`relative flex flex-col rounded-2xl border p-6 card-hover ${
                   plan.featured
                     ? "border-primary bg-card shadow-2xl shadow-primary/15 ring-2 ring-primary/25 lg:scale-105 lg:-my-3 z-10"
                     : "border-border bg-card shadow-md shadow-foreground/[0.03]"
@@ -112,20 +128,14 @@ const PricingSection = () => {
               >
                 {plan.featured && (
                   <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                    <Badge className="bg-accent text-accent-foreground px-4 py-1 text-xs font-bold shadow-lg shadow-accent/25">
+                    <Badge className="bg-gradient-accent text-white px-4 py-1 text-xs font-bold shadow-lg">
                       MOST POPULAR
                     </Badge>
                   </div>
                 )}
 
                 <div className="mb-4 flex items-center gap-3">
-                  <div
-                    className={`flex h-10 w-10 items-center justify-center rounded-xl ${
-                      plan.featured
-                        ? "bg-primary/10 text-primary"
-                        : "bg-muted text-muted-foreground"
-                    }`}
-                  >
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${plan.iconBg} ${plan.iconColor}`}>
                     <Icon className="h-5 w-5" />
                   </div>
                   <h3 className="text-lg font-bold text-foreground">{plan.name}</h3>
@@ -143,11 +153,7 @@ const PricingSection = () => {
                 <ul className="mb-8 flex-1 space-y-3">
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-start gap-2.5 text-sm text-foreground">
-                      <Check
-                        className={`mt-0.5 h-4 w-4 flex-shrink-0 ${
-                          plan.featured ? "text-primary" : "text-secondary"
-                        }`}
-                      />
+                      <Check className={`mt-0.5 h-4 w-4 flex-shrink-0 ${plan.checkColor}`} />
                       {f}
                     </li>
                   ))}
@@ -155,10 +161,8 @@ const PricingSection = () => {
 
                 <Button
                   asChild
-                  className={`w-full rounded-xl h-12 font-bold transition-all hover:-translate-y-0.5 ${
-                    plan.featured ? "shadow-md shadow-primary/20" : ""
-                  }`}
-                  variant={plan.featured ? "default" : "outline"}
+                  className="w-full rounded-xl h-12 font-bold"
+                  variant={plan.featured ? "gradient" : "outline"}
                   size="lg"
                 >
                   <Link to="/signup">{plan.cta}</Link>
@@ -185,9 +189,9 @@ const PricingSection = () => {
             </p>
           </div>
 
-          <div className="relative overflow-hidden rounded-2xl border-2 border-accent/40 bg-accent/[0.04] p-8 shadow-xl shadow-accent/10">
+          <div className="relative overflow-hidden rounded-2xl border-2 border-accent/40 bg-accent/[0.04] p-8 shadow-xl shadow-accent/10 card-hover">
             {/* Gradient accent bar */}
-            <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-accent via-primary to-secondary" />
+            <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-hero" />
 
             <div className="flex flex-col items-center gap-6 md:flex-row md:items-start md:gap-8">
               <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-accent/10">
@@ -199,7 +203,7 @@ const PricingSection = () => {
                   <h4 className="text-xl font-bold text-foreground">
                     Grades 3–5 Math Classroom Resource Bundle
                   </h4>
-                  <Badge className="bg-accent text-accent-foreground font-bold shadow-sm">
+                  <Badge className="bg-gradient-accent text-white font-bold shadow-sm">
                     🏆 Best Value
                   </Badge>
                 </div>
@@ -238,8 +242,9 @@ const PricingSection = () => {
               <div className="flex flex-shrink-0 items-center">
                 <Button
                   asChild
+                  variant="gradient-accent"
                   size="lg"
-                  className="rounded-xl h-12 px-8 font-bold shadow-md shadow-accent/20 bg-accent text-accent-foreground hover:bg-accent/90"
+                  className="rounded-xl h-12 px-8 font-bold"
                 >
                   <Link to="/shop/math-classroom-bundle-3-5">Buy Bundle</Link>
                 </Button>
@@ -263,12 +268,9 @@ const PricingSection = () => {
             <p className="text-muted-foreground leading-relaxed">
               Start free with the AI tools — no credit card required. For shop purchases, if you're not completely satisfied with your resource, contact us within 7 days for a full refund. No questions asked.
             </p>
-            <a
-              href="/signup"
-              className="mt-6 inline-block rounded-lg bg-primary px-8 py-3 text-sm font-bold text-primary-foreground shadow-md transition-all hover:brightness-110 hover:shadow-lg"
-            >
-              Get Started Free
-            </a>
+            <Button asChild variant="gradient" size="lg" className="mt-6 rounded-xl h-12 px-8 font-bold">
+              <Link to="/signup">Get Started Free</Link>
+            </Button>
             <p className="mt-4 text-sm font-medium text-muted-foreground/70">
               No contracts. Cancel anytime.
             </p>
