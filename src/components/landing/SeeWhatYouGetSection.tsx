@@ -8,18 +8,16 @@ import QuizPreview from "@/components/landing/previews/QuizPreview";
 import ExitTicketPreview from "@/components/landing/previews/ExitTicketPreview";
 
 const previews = [
-  { label: "Lesson Plan", component: LessonPlanPreview, icon: BookOpen },
-  { label: "Worksheet", component: WorksheetPreview, icon: FileText },
-  { label: "Quiz", component: QuizPreview, icon: HelpCircle },
-  { label: "Exit Ticket", component: ExitTicketPreview, icon: ClipboardCheck },
+  { label: "Lesson Plan", component: LessonPlanPreview, icon: BookOpen, color: "text-primary" },
+  { label: "Worksheet", component: WorksheetPreview, icon: FileText, color: "text-secondary" },
+  { label: "Quiz", component: QuizPreview, icon: HelpCircle, color: "text-accent" },
+  { label: "Exit Ticket", component: ExitTicketPreview, icon: ClipboardCheck, color: "text-destructive" },
 ];
 
 const SeeWhatYouGetSection = () => {
   return (
     <section className="relative overflow-hidden bg-background py-16 md:py-24">
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-60 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-primary/5 blur-[100px]" />
-      </div>
+      <div className="blob blob-purple -top-60 left-1/2 -translate-x-1/2 h-[500px] w-[500px] animate-blob-drift" />
 
       <div className="container relative mx-auto px-4">
         <motion.div
@@ -48,12 +46,12 @@ const SeeWhatYouGetSection = () => {
               className="flex flex-col"
             >
               <div className="mb-4 flex items-center justify-center gap-2">
-                <preview.icon className="h-5 w-5 text-primary" />
-                <span className="text-sm font-bold uppercase tracking-wider text-primary">
+                <preview.icon className={`h-5 w-5 ${preview.color}`} />
+                <span className={`text-sm font-bold uppercase tracking-wider ${preview.color}`}>
                   {preview.label}
                 </span>
               </div>
-              <div className="transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl rounded-2xl shadow-md shadow-foreground/[0.03]">
+              <div className="rounded-2xl shadow-md shadow-foreground/[0.03] card-hover">
                 <preview.component />
               </div>
             </motion.div>
@@ -67,7 +65,7 @@ const SeeWhatYouGetSection = () => {
           transition={{ duration: 0.4, delay: 0.4 }}
           className="mt-16 text-center"
         >
-          <Button asChild size="lg" className="h-16 rounded-2xl px-10 text-lg font-bold shadow-xl shadow-primary/25 transition-all hover:shadow-2xl hover:shadow-primary/30 hover:-translate-y-0.5">
+          <Button asChild variant="gradient" size="lg" className="h-16 rounded-2xl px-10 text-lg font-bold">
             <Link to="/signup">
               Try It Free
               <ArrowRight className="ml-2 h-5 w-5" />

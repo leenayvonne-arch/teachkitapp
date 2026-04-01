@@ -5,23 +5,28 @@ const steps = [
     number: "01",
     title: "Enter Grade Level & Topic",
     description: "Tell us what you're teaching and we'll handle the rest. Select your grade, subject, and topic.",
+    gradient: "bg-gradient-primary",
   },
   {
     number: "02",
     title: "Generate Materials",
     description: "Our AI creates professional lesson plans, worksheets, quizzes, or exit tickets in seconds.",
+    gradient: "bg-gradient-secondary",
   },
   {
     number: "03",
     title: "Download & Use",
     description: "Review, customize if needed, then download and use your materials in class right away.",
+    gradient: "bg-gradient-accent",
   },
 ];
 
 const HowItWorksSection = () => {
   return (
-    <section id="how-it-works" className="bg-muted/30 py-16 md:py-24">
-      <div className="container mx-auto px-4">
+    <section id="how-it-works" className="relative bg-muted/30 py-16 md:py-24 overflow-hidden">
+      <div className="blob blob-teal -bottom-32 -left-32 h-[350px] w-[350px] animate-blob-drift [animation-delay:3s]" />
+
+      <div className="container relative mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -46,7 +51,7 @@ const HowItWorksSection = () => {
               transition={{ delay: i * 0.15 }}
               className="relative text-center"
             >
-              <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-primary-foreground text-2xl font-bold shadow-lg shadow-primary/20">
+              <div className={`mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl ${step.gradient} text-white text-2xl font-bold shadow-lg`}>
                 {step.number}
               </div>
               {i < steps.length - 1 && (
