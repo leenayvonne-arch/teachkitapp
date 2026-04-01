@@ -9,28 +9,40 @@ const quickActions = [
     title: "Lesson Plan",
     description: "Generate a full lesson plan",
     icon: BookOpen,
-    color: "bg-primary/10 text-primary border-primary/20",
+    iconBg: "bg-primary/10",
+    iconColor: "text-primary",
+    borderColor: "border-primary/20",
+    glowHover: "hover:shadow-[0_0_20px_hsl(262_83%_58%/0.12)]",
     href: "/dashboard/lessons",
   },
   {
     title: "Worksheet",
     description: "Create a student worksheet",
     icon: FileText,
-    color: "bg-secondary/10 text-secondary border-secondary/20",
+    iconBg: "bg-secondary/10",
+    iconColor: "text-secondary",
+    borderColor: "border-secondary/20",
+    glowHover: "hover:shadow-[0_0_20px_hsl(174_72%_40%/0.12)]",
     href: "/dashboard/worksheets",
   },
   {
     title: "Quiz",
     description: "Build a quiz with answer key",
     icon: HelpCircle,
-    color: "bg-accent/10 text-accent border-accent/20",
+    iconBg: "bg-accent/10",
+    iconColor: "text-accent",
+    borderColor: "border-accent/20",
+    glowHover: "hover:shadow-[0_0_20px_hsl(12_90%_62%/0.12)]",
     href: "/dashboard/quizzes",
   },
   {
     title: "Exit Ticket",
     description: "Quick end-of-class check",
     icon: LogOut,
-    color: "bg-destructive/10 text-destructive border-destructive/20",
+    iconBg: "bg-destructive/10",
+    iconColor: "text-destructive",
+    borderColor: "border-destructive/20",
+    glowHover: "hover:shadow-[0_0_20px_hsl(0_84%_60%/0.12)]",
     href: "/dashboard/exit-tickets",
   },
 ];
@@ -72,12 +84,14 @@ const DashboardHome = () => {
           >
             <Link
               to={action.href}
-              className={`group flex flex-col items-center gap-3 rounded-2xl border p-6 text-center transition-all hover:-translate-y-1 hover:shadow-lg ${action.color}`}
+              className={`group flex flex-col items-center gap-3 rounded-2xl border ${action.borderColor} bg-card p-6 text-center card-hover ${action.glowHover}`}
             >
-              <action.icon className="h-10 w-10" />
+              <div className={`inline-flex h-12 w-12 items-center justify-center rounded-xl ${action.iconBg} ${action.iconColor}`}>
+                <action.icon className="h-6 w-6" />
+              </div>
               <div>
-                <h3 className="font-semibold">{action.title}</h3>
-                <p className="mt-1 text-xs opacity-70">{action.description}</p>
+                <h3 className="font-semibold text-foreground">{action.title}</h3>
+                <p className="mt-1 text-xs text-muted-foreground">{action.description}</p>
               </div>
             </Link>
           </motion.div>

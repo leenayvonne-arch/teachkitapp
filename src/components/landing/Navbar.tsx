@@ -77,7 +77,7 @@ const Navbar = () => {
           <Button asChild variant="ghost" size="sm" className="hidden font-medium sm:inline-flex">
             <Link to="/login">Log In</Link>
           </Button>
-          <Button asChild size="sm" className="rounded-xl font-medium shadow-md shadow-primary/20">
+          <Button asChild variant="gradient" size="sm" className="rounded-xl font-medium">
             <Link to="/signup">Start Free</Link>
           </Button>
 
@@ -119,7 +119,7 @@ const Navbar = () => {
                 >
                   Log In
                 </Link>
-                <Button asChild size="sm" className="rounded-xl font-medium shadow-md shadow-primary/20 w-full">
+                <Button asChild variant="gradient" size="sm" className="rounded-xl font-medium w-full">
                   <Link to="/signup" onClick={() => setOpen(false)}>
                     Start Free
                   </Link>
