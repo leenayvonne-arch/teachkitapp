@@ -31,8 +31,9 @@ const HeroSection = () => {
           </motion.div>
 
           <h1 className="mb-8 text-5xl font-extrabold leading-[1.1] tracking-tight text-foreground md:text-6xl lg:text-7xl">
-            AI Tools & Ready-Made{" "}
-            <span className="inline-block bg-gradient-hero bg-clip-text text-transparent whitespace-nowrap">
+            AI Tools & Ready-Made
+            <br />
+            <span className="inline-block bg-gradient-hero bg-clip-text text-transparent">
               Teacher Resources
             </span>
           </h1>
