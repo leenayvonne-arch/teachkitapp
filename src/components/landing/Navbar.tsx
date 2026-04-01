@@ -119,7 +119,7 @@ const Navbar = () => {
                 >
                   Log In
                 </Link>
-                <Button asChild size="sm" className="rounded-xl font-medium shadow-md shadow-primary/20 w-full">
+                <Button asChild variant="gradient" size="sm" className="rounded-xl font-medium w-full">
                   <Link to="/signup" onClick={() => setOpen(false)}>
                     Start Free
                   </Link>
