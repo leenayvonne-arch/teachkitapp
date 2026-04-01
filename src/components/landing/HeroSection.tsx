@@ -6,11 +6,11 @@ import { Link } from "react-router-dom";
 const HeroSection = () => {
   return (
     <section className="relative overflow-hidden bg-background py-20 md:py-28">
-      {/* Background decoration */}
+      {/* Decorative blobs */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-primary/5 blur-[100px]" />
-        <div className="absolute -bottom-40 -left-40 h-[500px] w-[500px] rounded-full bg-secondary/5 blur-[100px]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-accent/3 blur-[120px]" />
+        <div className="blob blob-purple -top-40 -right-40 h-[500px] w-[500px] animate-blob-drift" />
+        <div className="blob blob-teal -bottom-40 -left-40 h-[500px] w-[500px] animate-blob-drift [animation-delay:4s]" />
+        <div className="blob blob-coral top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] animate-blob-drift [animation-delay:8s]" />
       </div>
 
       <div className="container relative mx-auto px-4">
@@ -32,7 +32,7 @@ const HeroSection = () => {
 
           <h1 className="mb-8 text-5xl font-extrabold leading-[1.1] tracking-tight text-foreground md:text-6xl lg:text-7xl">
             AI Tools & Ready-Made{" "}
-            <span className="inline-block bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent whitespace-nowrap">
+            <span className="inline-block bg-gradient-hero bg-clip-text text-transparent whitespace-nowrap">
               Teacher Resources
             </span>
           </h1>
@@ -43,7 +43,7 @@ const HeroSection = () => {
           </p>
 
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Button asChild size="lg" className="h-16 rounded-2xl px-10 text-lg font-bold shadow-xl shadow-primary/25 transition-all hover:shadow-2xl hover:shadow-primary/30 hover:-translate-y-0.5">
+            <Button asChild variant="gradient" size="lg" className="h-16 rounded-2xl px-10 text-lg font-bold">
               <Link to="/signup">
                 Start Free
                 <ArrowRight className="ml-2 h-5 w-5" />
