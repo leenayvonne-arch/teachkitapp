@@ -33,6 +33,7 @@ import ContactPage from "./pages/ContactPage";
 import TermsPage from "./pages/TermsPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import UnsubscribePage from "./pages/UnsubscribePage";
+import CookieConsent from "./components/CookieConsent";
 
 const queryClient = new QueryClient();
 
