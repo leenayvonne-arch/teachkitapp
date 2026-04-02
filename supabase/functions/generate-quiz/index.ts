@@ -21,6 +21,7 @@ serve(async (req) => {
     let tfCount: number;
     let fitbCount: number;
     let saCount: number;
+    let sywCount = 0;
 
     if (mcPercent !== undefined && mcPercent !== null) {
       const tf = tfPercent ?? 0;
@@ -31,21 +32,32 @@ serve(async (req) => {
       saCount = total - mcCount - tfCount - fitbCount;
       if (saCount < 0) { saCount = 0; fitbCount = total - mcCount - tfCount; }
       if (fitbCount < 0) { fitbCount = 0; tfCount = total - mcCount; }
+    } else if (total <= 5) {
+      // Small quizzes: 2 MC, 1 SA, 1 T/F, 1 show-your-work
+      mcCount = Math.max(1, Math.ceil(total * 0.3));
+      tfCount = Math.max(1, Math.ceil(total * 0.2));
+      sywCount = Math.max(1, Math.ceil(total * 0.2));
+      saCount = total - mcCount - tfCount - sywCount;
+      fitbCount = 0;
+      if (saCount < 0) { saCount = 0; sywCount = total - mcCount - tfCount; }
     } else if (total <= 10) {
-      mcCount = Math.ceil(total * 0.4);
+      mcCount = Math.ceil(total * 0.3);
       tfCount = Math.ceil(total * 0.2);
-      fitbCount = Math.ceil(total * 0.2);
-      saCount = total - mcCount - tfCount - fitbCount;
+      sywCount = Math.ceil(total * 0.2);
+      fitbCount = Math.ceil(total * 0.1);
+      saCount = total - mcCount - tfCount - fitbCount - sywCount;
     } else if (total <= 25) {
-      mcCount = Math.ceil(total * 0.4);
-      tfCount = Math.ceil(total * 0.2);
-      fitbCount = Math.ceil(total * 0.15);
-      saCount = total - mcCount - tfCount - fitbCount;
+      mcCount = Math.ceil(total * 0.3);
+      tfCount = Math.ceil(total * 0.15);
+      sywCount = Math.ceil(total * 0.15);
+      fitbCount = Math.ceil(total * 0.1);
+      saCount = total - mcCount - tfCount - fitbCount - sywCount;
     } else {
       saCount = 5;
+      sywCount = Math.ceil(total * 0.1);
       tfCount = Math.ceil(total * 0.15);
-      fitbCount = Math.ceil(total * 0.15);
-      mcCount = total - saCount - tfCount - fitbCount;
+      fitbCount = Math.ceil(total * 0.1);
+      mcCount = total - saCount - tfCount - fitbCount - sywCount;
     }
 
     const systemPrompt = `You are TeachKit, an expert curriculum designer. You create professional, printable quizzes for K-12 teachers.
