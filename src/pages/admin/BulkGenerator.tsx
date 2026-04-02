@@ -420,6 +420,34 @@ const BulkGenerator = () => {
           </div>
         )}
 
+        {/* Generation Summary */}
+        {generatedResources.length > 0 && !isGenerating && (
+          (() => {
+            const succeeded = generatedResources.filter(r => !r.content?.error);
+            const failed = generatedResources.filter(r => r.content?.error);
+            return failed.length > 0 ? (
+              <Card className="border-destructive/50 bg-destructive/5">
+                <CardContent className="pt-4 pb-4 space-y-2">
+                  <p className="font-semibold text-sm">
+                    Generation complete: <span className="text-primary">{succeeded.length} succeeded</span>, <span className="text-destructive">{failed.length} failed</span> out of {generatedResources.length} topics.
+                  </p>
+                  <ul className="text-sm text-muted-foreground list-disc pl-5 space-y-0.5">
+                    {failed.map((r, i) => (
+                      <li key={i}><span className="font-medium text-destructive">{r.topic}</span> — {r.content.error}</li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card className="border-primary/30 bg-primary/5">
+                <CardContent className="pt-4 pb-4">
+                  <p className="font-semibold text-sm text-primary">✓ All {succeeded.length} topics generated successfully.</p>
+                </CardContent>
+              </Card>
+            );
+          })()
+        )}
+
         {/* Preview & Export */}
         {generatedResources.length > 0 && !isGenerating && (
           <div className="space-y-4">
