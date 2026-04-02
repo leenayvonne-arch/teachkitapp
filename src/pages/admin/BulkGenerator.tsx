@@ -441,7 +441,7 @@ const BulkGenerator = () => {
               )}
 
               {/* Teacher Instructions */}
-              <div className="py-6 border-b border-border" style={{ pageBreakAfter: "always" }}>
+              <div className="py-6 border-b border-border">
                 <h3 className="text-lg font-bold font-display mb-3">Teacher Instructions</h3>
                 <div className="text-sm text-muted-foreground space-y-3">
                   <div>
