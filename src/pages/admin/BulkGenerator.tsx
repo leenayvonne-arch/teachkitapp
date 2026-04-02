@@ -371,7 +371,9 @@ const BulkGenerator = () => {
         {isGenerating && (
           <div className="space-y-2">
             <Progress value={(progress / totalTopics) * 100} className="h-3 rounded-full" />
-            <p className="text-center text-sm text-muted-foreground">Generating {progress} of {totalTopics}...</p>
+            <p className="text-center text-sm text-muted-foreground">
+              Generating {progress + 1} of {totalTopics}: <span className="font-medium text-foreground">{currentTopic}</span>
+            </p>
           </div>
         )}
 
