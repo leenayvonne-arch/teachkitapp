@@ -69,7 +69,14 @@ Always respond with a valid JSON object matching this exact structure (no markdo
       "type": "comprehension" | "reflection" | "skill_application",
       "typeLabel": "string — human-readable label like 'Comprehension Check' or 'Reflection' or 'Skill Application'",
       "question": "string",
+      "sampleAnswer": "string — the correct or sample answer for this question",
       "linesForResponse": 3
+    }
+  ],
+  "answerKey": [
+    {
+      "number": 1,
+      "answer": "string — the correct or sample answer"
     }
   ]
 }`;
