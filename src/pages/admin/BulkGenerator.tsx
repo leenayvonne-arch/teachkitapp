@@ -72,19 +72,25 @@ const BulkGenerator = () => {
       return;
     }
 
+    const topicsList = [...topics]; // snapshot the topics at generation time
     setIsGenerating(true);
     setProgress(0);
-    setTotalTopics(topics.length);
+    setTotalTopics(topicsList.length);
     setGeneratedResources([]);
 
     const results: GeneratedResource[] = [];
     const edgeFn = EDGE_FN_MAP[resourceType];
 
-    for (let i = 0; i < topics.length; i++) {
+    for (let i = 0; i < topicsList.length; i++) {
       setProgress(i);
-      setCurrentTopic(topics[i]);
+      setCurrentTopic(topicsList[i]);
       try {
-        const baseBody: Record<string, any> = { gradeLevel, subject, topic: topics[i] };
+        const baseBody: Record<string, any> = {
+          gradeLevel,
+          subject,
+          topic: topicsList[i],
+          includeAnswerKey: true,
+        };
 
         if (resourceType === "Exit Tickets") {
           baseBody.numberOfQuestions = questionsPerResource;
@@ -94,7 +100,6 @@ const BulkGenerator = () => {
           baseBody.mixedTypes = true;
         } else if (resourceType === "Quizzes") {
           baseBody.numberOfQuestions = questionsPerResource;
-          // Let the quiz generator auto-distribute question types
         } else if (resourceType === "Lesson Plans") {
           baseBody.numberOfQuestions = questionsPerResource;
         }
@@ -105,19 +110,23 @@ const BulkGenerator = () => {
         if (error) throw error;
         if (data?.error) throw new Error(data.error);
 
-        // Extract the main content object from the response
         const content = data.exitTicket || data.worksheet || data.quiz || data.lesson || data;
-        results.push({ topic: topics[i], content });
+        results.push({ topic: topicsList[i], content });
       } catch (e: any) {
-        console.error(`Failed to generate for topic: ${topics[i]}`, e);
-        results.push({ topic: topics[i], content: { error: e.message || "Generation failed" } });
+        console.error(`Failed to generate for topic: ${topicsList[i]}`, e);
+        results.push({ topic: topicsList[i], content: { error: e.message || "Generation failed" } });
       }
       setProgress(i + 1);
+
+      // Small delay between requests to avoid rate limiting
+      if (i < topicsList.length - 1) {
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
     }
 
     setGeneratedResources(results);
     setIsGenerating(false);
-    toast({ title: "Bulk generation complete!", description: `Generated ${results.filter(r => !r.content.error).length} of ${topics.length} resources.` });
+    toast({ title: "Bulk generation complete!", description: `Generated ${results.filter(r => !r.content.error).length} of ${topicsList.length} resources.` });
   };
 
   const handleCopyAll = () => {
