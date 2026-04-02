@@ -14,7 +14,8 @@ const QuizOutput = ({ quiz, gradeLevel, subject, topic, elementId = "quiz-output
     quiz.multipleChoice.length +
     (quiz.trueFalse?.length || 0) +
     (quiz.fillInTheBlank?.length || 0) +
-    quiz.shortAnswer.length;
+    quiz.shortAnswer.length +
+    (quiz.showYourWork?.length || 0);
   let sectionNum = 0;
 
   return (
@@ -120,6 +121,27 @@ const QuizOutput = ({ quiz, gradeLevel, subject, topic, elementId = "quiz-output
           </div>
         )}
 
+        {/* Show Your Work */}
+        {quiz.showYourWork && quiz.showYourWork.length > 0 && (
+          <div className="mt-8 space-y-4">
+            <h3 className="rounded-md bg-muted/20 px-4 py-2 font-display text-lg font-semibold text-foreground border-b border-border">
+              Section {++sectionNum}: Show Your Work
+            </h3>
+            <p className="text-sm text-muted-foreground italic px-1">Show all work, steps, or reasoning to receive full credit.</p>
+            {quiz.showYourWork.map((q) => (
+              <div key={q.number} className="rounded-md border border-border/40 px-5 py-4 space-y-2">
+                <p className="text-sm font-medium text-foreground">
+                  <span className="mr-2 font-bold">{q.number})</span>
+                  {q.question}
+                </p>
+                <div className="ml-7 mt-3 border border-dashed border-muted-foreground/30 rounded-md h-32 flex items-center justify-center">
+                  <span className="text-xs text-muted-foreground/40 italic">Work space</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
         {/* Footer */}
         <div className="mt-10 flex items-center justify-between border-t border-foreground/10 pt-3">
           <span className="text-[10px] text-muted-foreground/50">© TeachKit</span>
@@ -176,6 +198,19 @@ const QuizOutput = ({ quiz, gradeLevel, subject, topic, elementId = "quiz-output
             <h4 className="mb-2 text-sm font-semibold text-muted-foreground uppercase tracking-wide">Short Answer</h4>
             <div className="space-y-2">
               {quiz.shortAnswer.map((q) => (
+                <div key={q.number} className="flex gap-2 text-sm">
+                  <span className="font-bold text-primary min-w-[2rem]">{q.number}.</span>
+                  <span className="text-foreground">{q.sampleAnswer}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        {quiz.showYourWork && quiz.showYourWork.length > 0 && (
+          <div>
+            <h4 className="mb-2 text-sm font-semibold text-muted-foreground uppercase tracking-wide">Show Your Work</h4>
+            <div className="space-y-2">
+              {quiz.showYourWork.map((q) => (
                 <div key={q.number} className="flex gap-2 text-sm">
                   <span className="font-bold text-primary min-w-[2rem]">{q.number}.</span>
                   <span className="text-foreground">{q.sampleAnswer}</span>

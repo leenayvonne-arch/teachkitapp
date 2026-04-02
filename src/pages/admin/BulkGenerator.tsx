@@ -82,8 +82,24 @@ const BulkGenerator = () => {
     for (let i = 0; i < topics.length; i++) {
       setProgress(i + 1);
       try {
+        // Build the correct payload for each edge function type
+        const baseBody: Record<string, any> = { gradeLevel, subject, topic: topics[i] };
+
+        if (resourceType === "Exit Tickets") {
+          baseBody.numberOfQuestions = questionsPerResource;
+          baseBody.mixedTypes = true;
+        } else if (resourceType === "Worksheets") {
+          baseBody.numberOfQuestions = questionsPerResource;
+          baseBody.mixedTypes = true;
+        } else if (resourceType === "Quizzes") {
+          baseBody.numberOfQuestions = questionsPerResource;
+          // Let the quiz generator auto-distribute question types
+        } else if (resourceType === "Lesson Plans") {
+          baseBody.numberOfQuestions = questionsPerResource;
+        }
+
         const { data, error } = await supabase.functions.invoke(edgeFn, {
-          body: { gradeLevel, subject, topic: topics[i], questionsPerResource },
+          body: baseBody,
         });
         if (error) throw error;
         if (data?.error) throw new Error(data.error);
@@ -126,6 +142,73 @@ const BulkGenerator = () => {
     const c = resource.content;
     if (c.error) return <p className="text-destructive italic">Error: {c.error}</p>;
 
+    // Quiz-style content with separate sections
+    if (c.multipleChoice || c.trueFalse || c.shortAnswer || c.fillInTheBlank) {
+      return (
+        <div className="space-y-4">
+          {c.multipleChoice?.length > 0 && (
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Multiple Choice</p>
+              {c.multipleChoice.map((q: any, i: number) => (
+                <div key={i} className="mb-2">
+                  <p className="font-medium text-sm">{q.number}. {q.question}</p>
+                  <div className="ml-4 mt-1 grid gap-1 sm:grid-cols-2 text-sm text-muted-foreground">
+                    {(["A", "B", "C", "D"] as const).map(l => q.options?.[l] && <p key={l}>{l}. {q.options[l]}</p>)}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          {c.trueFalse?.length > 0 && (
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">True / False</p>
+              {c.trueFalse.map((q: any, i: number) => (
+                <div key={i} className="mb-2">
+                  <p className="font-medium text-sm">{q.number}. {q.question}</p>
+                </div>
+              ))}
+            </div>
+          )}
+          {c.shortAnswer?.length > 0 && (
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Short Answer</p>
+              {c.shortAnswer.map((q: any, i: number) => (
+                <div key={i} className="mb-2">
+                  <p className="font-medium text-sm">{q.number}. {q.question}</p>
+                  <div className="ml-4 mt-1 space-y-2">
+                    {Array.from({ length: 3 }).map((_, j) => <div key={j} className="border-b border-muted-foreground/25 h-4" />)}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          {c.showYourWork?.length > 0 && (
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Show Your Work</p>
+              {c.showYourWork.map((q: any, i: number) => (
+                <div key={i} className="mb-3">
+                  <p className="font-medium text-sm">{q.number}. {q.question}</p>
+                  <div className="ml-4 mt-2 border border-dashed border-muted-foreground/30 rounded-md h-24 flex items-center justify-center">
+                    <span className="text-xs text-muted-foreground/50 italic">Work space</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          {c.fillInTheBlank?.length > 0 && (
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Fill in the Blank</p>
+              {c.fillInTheBlank.map((q: any, i: number) => (
+                <div key={i} className="mb-2">
+                  <p className="font-medium text-sm">{q.number}. {q.question}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    }
+
     // Generic rendering of questions/content
     if (c.questions && Array.isArray(c.questions)) {
       return (
@@ -137,6 +220,11 @@ const BulkGenerator = () => {
                 <ul className="ml-4 mt-1 space-y-0.5 text-sm text-muted-foreground">
                   {q.options.map((opt: string, j: number) => <li key={j}>{String.fromCharCode(65 + j)}. {opt}</li>)}
                 </ul>
+              )}
+              {q.type === "show_your_work" && (
+                <div className="ml-4 mt-2 border border-dashed border-muted-foreground/30 rounded-md h-24 flex items-center justify-center">
+                  <span className="text-xs text-muted-foreground/50 italic">Work space</span>
+                </div>
               )}
             </div>
           ))}
@@ -380,14 +468,37 @@ const BulkGenerator = () => {
                 <div className="py-6" style={{ pageBreakBefore: "always" }}>
                   <h3 className="text-lg font-bold font-display mb-4">Answer Key</h3>
                   {generatedResources.filter(r => !r.content.error).map((resource, i) => {
-                    const questions = resource.content.questions;
-                    if (!questions || !Array.isArray(questions)) return null;
+                    const c = resource.content;
+                    // Collect all answers from quiz-style or generic questions
+                    const answers: { num: number; section: string; answer: string }[] = [];
+
+                    // Quiz-style sections
+                    c.multipleChoice?.forEach((q: any) => answers.push({ num: q.number, section: "MC", answer: q.correctAnswer }));
+                    c.trueFalse?.forEach((q: any) => answers.push({ num: q.number, section: "T/F", answer: q.correctAnswer }));
+                    c.fillInTheBlank?.forEach((q: any) => answers.push({ num: q.number, section: "FITB", answer: q.correctAnswer }));
+                    c.shortAnswer?.forEach((q: any) => answers.push({ num: q.number, section: "SA", answer: q.sampleAnswer || q.correctAnswer }));
+                    c.showYourWork?.forEach((q: any) => answers.push({ num: q.number, section: "SYW", answer: q.sampleAnswer || q.correctAnswer || "See rubric" }));
+
+                    // Generic questions array
+                    if (answers.length === 0 && c.questions && Array.isArray(c.questions)) {
+                      c.questions.forEach((q: any, j: number) => {
+                        answers.push({ num: q.number || j + 1, section: "", answer: q.answer || q.correctAnswer || q.correct_answer || "See teacher guide" });
+                      });
+                    }
+                    // answerKey array
+                    if (answers.length === 0 && c.answerKey && Array.isArray(c.answerKey)) {
+                      c.answerKey.forEach((a: any) => {
+                        answers.push({ num: a.number, section: a.section || "", answer: a.answer });
+                      });
+                    }
+
+                    if (answers.length === 0) return null;
                     return (
                       <div key={i} className="mb-4">
                         <p className="font-medium text-sm mb-1">{resource.topic}</p>
                         <div className="text-sm text-muted-foreground space-y-0.5">
-                          {questions.map((q: any, j: number) => (
-                            <p key={j}>{q.number || j + 1}. {q.answer || q.correctAnswer || q.correct_answer || "See teacher guide"}</p>
+                          {answers.map((a, j) => (
+                            <p key={j}>{a.section ? `[${a.section}] ` : ""}{a.num}. {a.answer}</p>
                           ))}
                         </div>
                       </div>

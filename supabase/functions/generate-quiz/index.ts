@@ -21,6 +21,7 @@ serve(async (req) => {
     let tfCount: number;
     let fitbCount: number;
     let saCount: number;
+    let sywCount = 0;
 
     if (mcPercent !== undefined && mcPercent !== null) {
       const tf = tfPercent ?? 0;
@@ -31,21 +32,32 @@ serve(async (req) => {
       saCount = total - mcCount - tfCount - fitbCount;
       if (saCount < 0) { saCount = 0; fitbCount = total - mcCount - tfCount; }
       if (fitbCount < 0) { fitbCount = 0; tfCount = total - mcCount; }
+    } else if (total <= 5) {
+      // Small quizzes: 2 MC, 1 SA, 1 T/F, 1 show-your-work
+      mcCount = Math.max(1, Math.ceil(total * 0.3));
+      tfCount = Math.max(1, Math.ceil(total * 0.2));
+      sywCount = Math.max(1, Math.ceil(total * 0.2));
+      saCount = total - mcCount - tfCount - sywCount;
+      fitbCount = 0;
+      if (saCount < 0) { saCount = 0; sywCount = total - mcCount - tfCount; }
     } else if (total <= 10) {
-      mcCount = Math.ceil(total * 0.4);
+      mcCount = Math.ceil(total * 0.3);
       tfCount = Math.ceil(total * 0.2);
-      fitbCount = Math.ceil(total * 0.2);
-      saCount = total - mcCount - tfCount - fitbCount;
+      sywCount = Math.ceil(total * 0.2);
+      fitbCount = Math.ceil(total * 0.1);
+      saCount = total - mcCount - tfCount - fitbCount - sywCount;
     } else if (total <= 25) {
-      mcCount = Math.ceil(total * 0.4);
-      tfCount = Math.ceil(total * 0.2);
-      fitbCount = Math.ceil(total * 0.15);
-      saCount = total - mcCount - tfCount - fitbCount;
+      mcCount = Math.ceil(total * 0.3);
+      tfCount = Math.ceil(total * 0.15);
+      sywCount = Math.ceil(total * 0.15);
+      fitbCount = Math.ceil(total * 0.1);
+      saCount = total - mcCount - tfCount - fitbCount - sywCount;
     } else {
       saCount = 5;
+      sywCount = Math.ceil(total * 0.1);
       tfCount = Math.ceil(total * 0.15);
-      fitbCount = Math.ceil(total * 0.15);
-      mcCount = total - saCount - tfCount - fitbCount;
+      fitbCount = Math.ceil(total * 0.1);
+      mcCount = total - saCount - tfCount - fitbCount - sywCount;
     }
 
     const systemPrompt = `You are TeachKit, an expert curriculum designer. You create professional, printable quizzes for K-12 teachers.
@@ -82,10 +94,17 @@ Always respond with a valid JSON object matching this exact structure (no markdo
       "sampleAnswer": "string"
     }
   ],
+  "showYourWork": [
+    {
+      "number": 1,
+      "question": "string — a problem requiring students to show their reasoning/steps",
+      "sampleAnswer": "string"
+    }
+  ],
   "answerKey": [
     {
       "number": 1,
-      "section": "multiple_choice" | "true_false" | "fill_in_the_blank" | "short_answer",
+      "section": "multiple_choice" | "true_false" | "fill_in_the_blank" | "short_answer" | "show_your_work",
       "answer": "string"
     }
   ]
@@ -103,7 +122,7 @@ Requirements:
 - Include exactly ${tfCount} true/false questions. Each true/false question must have a correctAnswer of either "True" or "False".
 - Include exactly ${fitbCount} fill in the blank questions. Each question must contain _____ where the blank is. Provide the correct word or phrase as correctAnswer.
 - Include exactly ${saCount} short answer questions.
-- Number multiple choice questions 1–${mcCount}, true/false questions 1–${tfCount}, fill in the blank questions 1–${fitbCount}, and short answer questions 1–${saCount}.
+${sywCount > 0 ? `- Include exactly ${sywCount} show-your-work problems. These require students to show their reasoning, steps, or diagrams. Provide a sampleAnswer.\n` : ""}- Number multiple choice questions 1–${mcCount}, true/false questions 1–${tfCount}, fill in the blank questions 1–${fitbCount}, short answer questions 1–${saCount}${sywCount > 0 ? `, and show-your-work questions 1–${sywCount}` : ""}.
 - Questions should be rigorous, engaging, and grade-appropriate.
 - Provide a complete answer key covering all questions.
 ${subject === "Social Studies" ? "- SUBJECT CONTEXT: Social Studies — Focus on general topics such as communities, geography, civics, and basic history concepts appropriate for elementary-level understanding.\n" : ""}${subject === "History" ? "- SUBJECT CONTEXT: History — Focus on specific historical topics such as events, timelines, historical figures, cause/effect relationships, and primary source analysis appropriate for middle and high school level.\n" : ""}
@@ -155,6 +174,7 @@ ${regenerateAction === "simplify" ? "- IMPORTANT: Make questions easier — use 
       quiz = JSON.parse(cleaned);
       if (!quiz.trueFalse) quiz.trueFalse = [];
       if (!quiz.fillInTheBlank) quiz.fillInTheBlank = [];
+      if (!quiz.showYourWork) quiz.showYourWork = [];
     } catch {
       console.error("Failed to parse AI response:", content);
       throw new Error("Failed to parse quiz");
