@@ -178,7 +178,7 @@ ${useMixed ? "- For show-your-work problems, create problems where students must
 
     let exitTicket;
     try {
-      const cleaned = content.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+      const cleaned = finalContent.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
       exitTicket = JSON.parse(cleaned);
       // Ensure arrays exist for mixed type
       if (useMixed) {
