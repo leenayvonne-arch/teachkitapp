@@ -14,7 +14,8 @@ const QuizOutput = ({ quiz, gradeLevel, subject, topic, elementId = "quiz-output
     quiz.multipleChoice.length +
     (quiz.trueFalse?.length || 0) +
     (quiz.fillInTheBlank?.length || 0) +
-    quiz.shortAnswer.length;
+    quiz.shortAnswer.length +
+    (quiz.showYourWork?.length || 0);
   let sectionNum = 0;
 
   return (
