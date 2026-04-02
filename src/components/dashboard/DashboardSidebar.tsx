@@ -1,4 +1,4 @@
-import { BookOpen, FileText, HelpCircle, LogOut, LayoutDashboard, Library, User, Sparkles, ShoppingBag, MessageSquare, Mail, CreditCard, ShieldCheck } from "lucide-react";
+import { BookOpen, FileText, HelpCircle, LogOut, LayoutDashboard, Library, User, Sparkles, ShoppingBag, MessageSquare, Mail, CreditCard, ShieldCheck, Layers } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -31,6 +31,7 @@ const adminItems = [
   { title: "Feedback Review", url: "/dashboard/admin/feedback", icon: MessageSquare },
   { title: "Contact Submissions", url: "/dashboard/admin/contact", icon: Mail },
   { title: "Purchases", url: "/dashboard/admin/purchases", icon: CreditCard },
+  { title: "Bulk Generator", url: "/admin/bulk-generator", icon: Layers },
 ];
 
 const DashboardSidebar = () => {
@@ -50,7 +51,12 @@ const DashboardSidebar = () => {
         <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
           <Sparkles className="h-4 w-4" />
         </div>
-        {!collapsed && <span className="text-lg font-bold font-display text-foreground">TeachKit</span>}
+        {!collapsed && (
+          <div className="flex items-center gap-2">
+            <span className="text-lg font-bold font-display text-foreground">TeachKit</span>
+            {isAdmin && <span className="rounded-md bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-primary">Admin</span>}
+          </div>
+        )}
       </div>
       <SidebarContent>
         <SidebarGroup>

@@ -27,6 +27,7 @@ import AdminFeedback from "./pages/dashboard/AdminFeedback";
 import AdminContactSubmissions from "./pages/dashboard/AdminContactSubmissions";
 import AdminPurchases from "./pages/dashboard/AdminPurchases";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import BulkGenerator from "./pages/admin/BulkGenerator";
 import AboutPage from "./pages/AboutPage";
 import PricingPage from "./pages/PricingPage";
 import ContactPage from "./pages/ContactPage";
@@ -84,6 +85,14 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/bulk-generator"
+            element={
+              <ProtectedRoute>
+                <BulkGenerator />
               </ProtectedRoute>
             }
           />
