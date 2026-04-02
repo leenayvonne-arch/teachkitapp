@@ -112,7 +112,7 @@ const BulkGenerator = () => {
         console.error(`Failed to generate for topic: ${topics[i]}`, e);
         results.push({ topic: topics[i], content: { error: e.message || "Generation failed" } });
       }
-    }
+      setProgress(i + 1);
 
     setGeneratedResources(results);
     setIsGenerating(false);
