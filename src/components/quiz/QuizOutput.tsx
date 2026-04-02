@@ -206,6 +206,19 @@ const QuizOutput = ({ quiz, gradeLevel, subject, topic, elementId = "quiz-output
             </div>
           </div>
         )}
+        {quiz.showYourWork && quiz.showYourWork.length > 0 && (
+          <div>
+            <h4 className="mb-2 text-sm font-semibold text-muted-foreground uppercase tracking-wide">Show Your Work</h4>
+            <div className="space-y-2">
+              {quiz.showYourWork.map((q) => (
+                <div key={q.number} className="flex gap-2 text-sm">
+                  <span className="font-bold text-primary min-w-[2rem]">{q.number}.</span>
+                  <span className="text-foreground">{q.sampleAnswer}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
         <div className="mt-8 flex items-center justify-between border-t border-foreground/10 pt-3">
           <span className="text-[10px] text-muted-foreground/50">© TeachKit</span>
           <span className="text-[10px] text-muted-foreground/50">Answer Key</span>
