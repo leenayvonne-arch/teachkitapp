@@ -149,6 +149,7 @@ const QuizGenerator = () => {
           mcPercent: useCustomSplit ? mcPercent : undefined,
           tfPercent: useCustomSplit ? tfPercent : undefined,
           fitbPercent: useCustomSplit ? fitbPercent : undefined,
+          sywPercent: useCustomSplit ? sywPercent : undefined,
         },
       });
 
