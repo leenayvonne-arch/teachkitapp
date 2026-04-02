@@ -11,12 +11,54 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
 
   try {
-    const { gradeLevel, subject, topic, regenerateAction } = await req.json();
+    const { gradeLevel, subject, topic, numberOfQuestions, mixedTypes, regenerateAction } = await req.json();
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
-    const systemPrompt = `You are TeachKit, an expert curriculum designer. You create professional, printable exit tickets for K-12 teachers.
+    const total = Number(numberOfQuestions || 0);
+    const useMixed = mixedTypes && total >= 4;
+
+    let questionTypeInstruction: string;
+    if (useMixed) {
+      // Distribute: ~30% MC, ~30% SA, ~20% T/F, ~20% show-your-work
+      const mcCount = Math.max(1, Math.round(total * 0.3));
+      const saCount = Math.max(1, Math.round(total * 0.3));
+      const tfCount = Math.max(1, Math.round(total * 0.2));
+      const sywCount = Math.max(1, total - mcCount - saCount - tfCount);
+      questionTypeInstruction = `Include a mix of question types:
+- ${mcCount} multiple choice question(s) with options A, B, C, D
+- ${saCount} short answer question(s)
+- ${tfCount} true/false question(s)
+- ${sywCount} show-your-work problem(s) (students must show their reasoning/steps)`;
+    } else {
+      questionTypeInstruction = `Generate ${total || "3–5"} quick assessment questions.
+- Include at least one comprehension check question, one reflection question, and one skill application question.`;
+    }
+
+    const systemPrompt = useMixed
+      ? `You are TeachKit, an expert curriculum designer. You create professional, printable exit tickets for K-12 teachers.
+
+Always respond with a valid JSON object matching this exact structure (no markdown, no code fences):
+{
+  "title": "string — exit ticket title",
+  "multipleChoice": [
+    { "number": 1, "question": "string", "options": { "A": "string", "B": "string", "C": "string", "D": "string" }, "correctAnswer": "A" }
+  ],
+  "trueFalse": [
+    { "number": 1, "question": "string", "correctAnswer": "True" }
+  ],
+  "shortAnswer": [
+    { "number": 1, "question": "string", "sampleAnswer": "string" }
+  ],
+  "showYourWork": [
+    { "number": 1, "question": "string", "sampleAnswer": "string" }
+  ],
+  "answerKey": [
+    { "number": 1, "section": "multiple_choice" | "true_false" | "short_answer" | "show_your_work", "answer": "string" }
+  ]
+}`
+      : `You are TeachKit, an expert curriculum designer. You create professional, printable exit tickets for K-12 teachers.
 
 Always respond with a valid JSON object matching this exact structure (no markdown, no code fences):
 {
@@ -39,12 +81,11 @@ Subject: ${subject}
 Topic: ${topic}
 
 Requirements:
-- Generate 3–5 quick assessment questions.
-- Include at least one comprehension check question, one reflection question, and one skill application question.
+- ${questionTypeInstruction}
 - Questions should be concise and answerable in 2–5 minutes total.
 - Make questions grade-appropriate, clear, and focused on the topic.
 - Vary the cognitive demand across questions.
-${subject === "Social Studies" ? "- SUBJECT CONTEXT: Social Studies — Focus on general topics such as communities, geography, civics, and basic history concepts appropriate for elementary-level understanding.\n" : ""}${subject === "History" ? "- SUBJECT CONTEXT: History — Focus on specific historical topics such as events, timelines, historical figures, cause/effect relationships, and primary source analysis appropriate for middle and high school level.\n" : ""}${regenerateAction === "simplify" ? "- IMPORTANT: Make questions simpler and more accessible." : ""}${regenerateAction === "challenge" ? "- IMPORTANT: Increase rigor — add analysis and synthesis questions." : ""}${regenerateAction === "shorten" ? "- IMPORTANT: Generate only 3 questions." : ""}${regenerateAction === "expand" ? "- IMPORTANT: Generate 5 questions with more depth." : ""}`;
+${useMixed ? "- For show-your-work problems, create problems where students must demonstrate their reasoning, show steps, draw diagrams, or explain their thinking process.\n- Provide a complete answer key covering all questions.\n" : ""}${subject === "Social Studies" ? "- SUBJECT CONTEXT: Social Studies — Focus on general topics such as communities, geography, civics, and basic history concepts appropriate for elementary-level understanding.\n" : ""}${subject === "History" ? "- SUBJECT CONTEXT: History — Focus on specific historical topics such as events, timelines, historical figures, cause/effect relationships, and primary source analysis appropriate for middle and high school level.\n" : ""}${regenerateAction === "simplify" ? "- IMPORTANT: Make questions simpler and more accessible." : ""}${regenerateAction === "challenge" ? "- IMPORTANT: Increase rigor — add analysis and synthesis questions." : ""}${regenerateAction === "shorten" ? "- IMPORTANT: Generate only 3 questions." : ""}${regenerateAction === "expand" ? "- IMPORTANT: Generate 5 questions with more depth." : ""}`;
 
     const response = await fetch(
       "https://ai.gateway.lovable.dev/v1/chat/completions",
@@ -90,6 +131,13 @@ ${subject === "Social Studies" ? "- SUBJECT CONTEXT: Social Studies — Focus on
     try {
       const cleaned = content.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
       exitTicket = JSON.parse(cleaned);
+      // Ensure arrays exist for mixed type
+      if (useMixed) {
+        if (!exitTicket.multipleChoice) exitTicket.multipleChoice = [];
+        if (!exitTicket.trueFalse) exitTicket.trueFalse = [];
+        if (!exitTicket.shortAnswer) exitTicket.shortAnswer = [];
+        if (!exitTicket.showYourWork) exitTicket.showYourWork = [];
+      }
     } catch {
       console.error("Failed to parse AI response:", content);
       throw new Error("Failed to parse exit ticket");
