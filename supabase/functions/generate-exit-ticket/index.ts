@@ -132,9 +132,49 @@ ${useMixed ? "- For show-your-work problems, create problems where students must
       throw new Error("AI generation failed");
     }
 
-    const data = await response.json();
+    const rawText = await response.text();
+    let data;
+    try {
+      data = JSON.parse(rawText);
+    } catch {
+      console.error("Failed to parse AI gateway response:", rawText.slice(0, 500));
+      throw new Error("Invalid AI gateway response");
+    }
+
     const content = data.choices?.[0]?.message?.content;
-    if (!content) throw new Error("No content in AI response");
+    if (!content) {
+      // Check for refusal or finish_reason issues
+      const finishReason = data.choices?.[0]?.finish_reason;
+      console.error("No content in AI response. finish_reason:", finishReason, "full response:", JSON.stringify(data).slice(0, 1000));
+      
+      // Retry once on empty content
+      const retryResponse = await fetch(
+        "https://ai.gateway.lovable.dev/v1/chat/completions",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${LOVABLE_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: "google/gemini-2.5-flash",
+            max_tokens: 8192,
+            messages: [
+              { role: "system", content: systemPrompt },
+              { role: "user", content: userPrompt },
+            ],
+          }),
+        }
+      );
+      if (!retryResponse.ok) throw new Error("AI retry failed with status " + retryResponse.status);
+      const retryData = await retryResponse.json();
+      const retryContent = retryData.choices?.[0]?.message?.content;
+      if (!retryContent) throw new Error("No content in AI response after retry");
+      // Use retryContent below
+      data.choices[0].message.content = retryContent;
+    }
+
+    const finalContent = data.choices[0].message.content;
 
     let exitTicket;
     try {
