@@ -82,8 +82,24 @@ const BulkGenerator = () => {
     for (let i = 0; i < topics.length; i++) {
       setProgress(i + 1);
       try {
+        // Build the correct payload for each edge function type
+        const baseBody: Record<string, any> = { gradeLevel, subject, topic: topics[i] };
+
+        if (resourceType === "Exit Tickets") {
+          baseBody.numberOfQuestions = questionsPerResource;
+          baseBody.mixedTypes = true;
+        } else if (resourceType === "Worksheets") {
+          baseBody.numberOfQuestions = questionsPerResource;
+          baseBody.mixedTypes = true;
+        } else if (resourceType === "Quizzes") {
+          baseBody.numberOfQuestions = questionsPerResource;
+          // Let the quiz generator auto-distribute question types
+        } else if (resourceType === "Lesson Plans") {
+          baseBody.numberOfQuestions = questionsPerResource;
+        }
+
         const { data, error } = await supabase.functions.invoke(edgeFn, {
-          body: { gradeLevel, subject, topic: topics[i], questionsPerResource },
+          body: baseBody,
         });
         if (error) throw error;
         if (data?.error) throw new Error(data.error);
