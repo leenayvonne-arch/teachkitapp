@@ -76,9 +76,10 @@ const QuizGenerator = () => {
   const [numberOfQuestions, setNumberOfQuestions] = useState("10");
   const [difficulty, setDifficulty] = useState("medium");
   const [useCustomSplit, setUseCustomSplit] = useState(false);
-  const [mcPercent, setMcPercent] = useState(40);
+  const [mcPercent, setMcPercent] = useState(30);
   const [tfPercent, setTfPercent] = useState(20);
-  const [fitbPercent, setFitbPercent] = useState(20);
+  const [fitbPercent, setFitbPercent] = useState(15);
+  const [sywPercent, setSywPercent] = useState(15);
   const [isGenerating, setIsGenerating] = useState(false);
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [isRegenerating, setIsRegenerating] = useState(false);
@@ -90,29 +91,37 @@ const QuizGenerator = () => {
   const [diffGeneratingLevel, setDiffGeneratingLevel] = useState<DiffLevel | null>(null);
   const [activeDiffTab, setActiveDiffTab] = useState<DiffLevel>("simplified");
 
-  const saPercent = Math.max(0, 100 - mcPercent - tfPercent - fitbPercent);
+  const saPercent = Math.max(0, 100 - mcPercent - tfPercent - fitbPercent - sywPercent);
   const total = Number(numberOfQuestions);
 
-  const clampOthers = (mc: number, tf: number, fitb: number) => {
-    const sum = mc + tf + fitb;
+  const clampSliders = (mc: number, tf: number, fitb: number, syw: number) => {
+    let sum = mc + tf + fitb + syw;
     if (sum > 100) {
       const excess = sum - 100;
-      return { mc, tf, fitb: Math.max(0, fitb - excess) };
+      syw = Math.max(0, syw - excess);
+      sum = mc + tf + fitb + syw;
+      if (sum > 100) {
+        fitb = Math.max(0, fitb - (sum - 100));
+      }
     }
-    return { mc, tf, fitb };
+    return { mc, tf, fitb, syw };
   };
 
   const handleMcChange = (v: number) => {
-    const { tf, fitb } = clampOthers(v, tfPercent, fitbPercent);
-    setMcPercent(v); setTfPercent(tf); setFitbPercent(fitb);
+    const r = clampSliders(v, tfPercent, fitbPercent, sywPercent);
+    setMcPercent(v); setTfPercent(r.tf); setFitbPercent(r.fitb); setSywPercent(r.syw);
   };
   const handleTfChange = (v: number) => {
-    const { mc, fitb } = clampOthers(mcPercent, v, fitbPercent);
-    setMcPercent(mc); setTfPercent(v); setFitbPercent(fitb);
+    const r = clampSliders(mcPercent, v, fitbPercent, sywPercent);
+    setMcPercent(r.mc); setTfPercent(v); setFitbPercent(r.fitb); setSywPercent(r.syw);
   };
   const handleFitbChange = (v: number) => {
-    const { mc, tf } = clampOthers(mcPercent, tfPercent, v);
-    setMcPercent(mc); setTfPercent(tf); setFitbPercent(v);
+    const r = clampSliders(mcPercent, tfPercent, v, sywPercent);
+    setMcPercent(r.mc); setTfPercent(r.tf); setFitbPercent(v); setSywPercent(r.syw);
+  };
+  const handleSywChange = (v: number) => {
+    const r = clampSliders(mcPercent, tfPercent, fitbPercent, v);
+    setMcPercent(r.mc); setTfPercent(r.tf); setFitbPercent(r.fitb); setSywPercent(v);
   };
 
   const normalizeQuiz = (q: any): Quiz => {
