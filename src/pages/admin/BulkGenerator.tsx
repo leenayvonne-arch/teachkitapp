@@ -414,7 +414,7 @@ const BulkGenerator = () => {
                    <h2 className="text-2xl font-bold font-display mb-4">{productName}</h2>
                    <div className="text-sm text-muted-foreground space-y-1">
                      <p>{resourceType} • {gradeLevel} Grade • {subject}</p>
-                     <p>{successCount} resource{successCount !== 1 ? "s" : ""} included</p>
+                     <p>{successCount} exit ticket{successCount !== 1 ? "s" : ""} included</p>
                    </div>
                 </div>
               )}
