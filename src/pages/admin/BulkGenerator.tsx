@@ -84,38 +84,57 @@ const BulkGenerator = () => {
     for (let i = 0; i < topicsList.length; i++) {
       setProgress(i);
       setCurrentTopic(topicsList[i]);
-      try {
-        const baseBody: Record<string, any> = {
-          gradeLevel,
-          subject,
-          topic: topicsList[i],
-          includeAnswerKey: true,
-        };
 
-        if (resourceType === "Exit Tickets") {
-          baseBody.numberOfQuestions = questionsPerResource;
-          baseBody.mixedTypes = true;
-        } else if (resourceType === "Worksheets") {
-          baseBody.numberOfQuestions = questionsPerResource;
-          baseBody.mixedTypes = true;
-        } else if (resourceType === "Quizzes") {
-          baseBody.numberOfQuestions = questionsPerResource;
-        } else if (resourceType === "Lesson Plans") {
-          baseBody.numberOfQuestions = questionsPerResource;
+      let success = false;
+      let lastError: any = null;
+
+      for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+          if (attempt > 0) {
+            setCurrentTopic(`${topicsList[i]} (retry ${attempt}/2)`);
+            await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+          }
+
+          const baseBody: Record<string, any> = {
+            gradeLevel,
+            subject,
+            topic: topicsList[i],
+            includeAnswerKey: true,
+          };
+
+          if (resourceType === "Exit Tickets") {
+            baseBody.numberOfQuestions = questionsPerResource;
+            baseBody.mixedTypes = true;
+          } else if (resourceType === "Worksheets") {
+            baseBody.numberOfQuestions = questionsPerResource;
+            baseBody.mixedTypes = true;
+          } else if (resourceType === "Quizzes") {
+            baseBody.numberOfQuestions = questionsPerResource;
+          } else if (resourceType === "Lesson Plans") {
+            baseBody.numberOfQuestions = questionsPerResource;
+          }
+
+          const { data, error } = await supabase.functions.invoke(edgeFn, {
+            body: baseBody,
+          });
+          if (error) throw error;
+          if (data?.error) throw new Error(data.error);
+
+          const content = data.exitTicket || data.worksheet || data.quiz || data.lesson || data;
+          results.push({ topic: topicsList[i], content });
+          success = true;
+          break;
+        } catch (e: any) {
+          lastError = e;
+          console.warn(`Attempt ${attempt + 1}/3 failed for topic: ${topicsList[i]}`, e);
         }
-
-        const { data, error } = await supabase.functions.invoke(edgeFn, {
-          body: baseBody,
-        });
-        if (error) throw error;
-        if (data?.error) throw new Error(data.error);
-
-        const content = data.exitTicket || data.worksheet || data.quiz || data.lesson || data;
-        results.push({ topic: topicsList[i], content });
-      } catch (e: any) {
-        console.error(`Failed to generate for topic: ${topicsList[i]}`, e);
-        results.push({ topic: topicsList[i], content: { error: e.message || "Generation failed" } });
       }
+
+      if (!success) {
+        console.error(`All 3 attempts failed for topic: ${topicsList[i]}`, lastError);
+        results.push({ topic: topicsList[i], content: { error: lastError?.message || "Generation failed after 3 attempts" } });
+      }
+
       setProgress(i + 1);
 
       // Small delay between requests to avoid rate limiting
