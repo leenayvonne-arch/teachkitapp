@@ -127,6 +127,7 @@ const QuizGenerator = () => {
   const normalizeQuiz = (q: any): Quiz => {
     if (!q.trueFalse) q.trueFalse = [];
     if (!q.fillInTheBlank) q.fillInTheBlank = [];
+    if (!q.showYourWork) q.showYourWork = [];
     return q;
   };
 
