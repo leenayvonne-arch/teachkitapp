@@ -478,7 +478,7 @@ const BulkGenerator = () => {
 
               {/* Resources */}
               {generatedResources.filter(r => !r.content.error).map((resource, i) => (
-                <div key={i} className="py-6 border-b border-border" style={{ pageBreakBefore: "always" }}>
+                <div key={i} className="py-6 border-b border-border" style={i > 0 ? { pageBreakBefore: "always" } : undefined}>
                   <div className="flex justify-between items-start mb-4">
                     <h3 className="font-bold font-display">{resource.topic}</h3>
                     <span className="text-xs text-muted-foreground">{resourceType}</span>
