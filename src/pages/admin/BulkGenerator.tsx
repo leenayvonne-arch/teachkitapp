@@ -72,19 +72,25 @@ const BulkGenerator = () => {
       return;
     }
 
+    const topicsList = [...topics]; // snapshot the topics at generation time
     setIsGenerating(true);
     setProgress(0);
-    setTotalTopics(topics.length);
+    setTotalTopics(topicsList.length);
     setGeneratedResources([]);
 
     const results: GeneratedResource[] = [];
     const edgeFn = EDGE_FN_MAP[resourceType];
 
-    for (let i = 0; i < topics.length; i++) {
+    for (let i = 0; i < topicsList.length; i++) {
       setProgress(i);
-      setCurrentTopic(topics[i]);
+      setCurrentTopic(topicsList[i]);
       try {
-        const baseBody: Record<string, any> = { gradeLevel, subject, topic: topics[i] };
+        const baseBody: Record<string, any> = {
+          gradeLevel,
+          subject,
+          topic: topicsList[i],
+          includeAnswerKey: true,
+        };
 
         if (resourceType === "Exit Tickets") {
           baseBody.numberOfQuestions = questionsPerResource;
@@ -94,7 +100,6 @@ const BulkGenerator = () => {
           baseBody.mixedTypes = true;
         } else if (resourceType === "Quizzes") {
           baseBody.numberOfQuestions = questionsPerResource;
-          // Let the quiz generator auto-distribute question types
         } else if (resourceType === "Lesson Plans") {
           baseBody.numberOfQuestions = questionsPerResource;
         }
@@ -105,19 +110,23 @@ const BulkGenerator = () => {
         if (error) throw error;
         if (data?.error) throw new Error(data.error);
 
-        // Extract the main content object from the response
         const content = data.exitTicket || data.worksheet || data.quiz || data.lesson || data;
-        results.push({ topic: topics[i], content });
+        results.push({ topic: topicsList[i], content });
       } catch (e: any) {
-        console.error(`Failed to generate for topic: ${topics[i]}`, e);
-        results.push({ topic: topics[i], content: { error: e.message || "Generation failed" } });
+        console.error(`Failed to generate for topic: ${topicsList[i]}`, e);
+        results.push({ topic: topicsList[i], content: { error: e.message || "Generation failed" } });
       }
       setProgress(i + 1);
+
+      // Small delay between requests to avoid rate limiting
+      if (i < topicsList.length - 1) {
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
     }
 
     setGeneratedResources(results);
     setIsGenerating(false);
-    toast({ title: "Bulk generation complete!", description: `Generated ${results.filter(r => !r.content.error).length} of ${topics.length} resources.` });
+    toast({ title: "Bulk generation complete!", description: `Generated ${results.filter(r => !r.content.error).length} of ${topicsList.length} resources.` });
   };
 
   const handleCopyAll = () => {
@@ -357,12 +366,12 @@ const BulkGenerator = () => {
           {isGenerating ? (
             <>
               <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-              Generating {progress + 1} of {totalTopics}...
+              Generating {Math.min(progress + 1, totalTopics)} of {totalTopics}...
             </>
           ) : (
             <>
               <Sparkles className="mr-2 h-5 w-5" />
-              Generate Bulk Pack
+              Generate Bulk Pack ({topics.length} topic{topics.length !== 1 ? "s" : ""})
             </>
           )}
         </Button>
@@ -402,11 +411,11 @@ const BulkGenerator = () => {
                     </div>
                   </div>
                   <p className="text-sm text-muted-foreground mb-2">TeachKit</p>
-                  <h2 className="text-2xl font-bold font-display mb-4">{productName}</h2>
-                  <div className="text-sm text-muted-foreground space-y-1">
-                    <p>{resourceType} • {gradeLevel} Grade • {subject}</p>
-                    <p>{successCount} resources included</p>
-                  </div>
+                   <h2 className="text-2xl font-bold font-display mb-4">{productName}</h2>
+                   <div className="text-sm text-muted-foreground space-y-1">
+                     <p>{resourceType} • {gradeLevel} Grade • {subject}</p>
+                     <p>{successCount} resource{successCount !== 1 ? "s" : ""} included</p>
+                   </div>
                 </div>
               )}
 
@@ -432,7 +441,7 @@ const BulkGenerator = () => {
               )}
 
               {/* Teacher Instructions */}
-              <div className="py-6 border-b border-border" style={{ pageBreakAfter: "always" }}>
+              <div className="py-6 border-b border-border">
                 <h3 className="text-lg font-bold font-display mb-3">Teacher Instructions</h3>
                 <div className="text-sm text-muted-foreground space-y-3">
                   <div>
@@ -476,23 +485,28 @@ const BulkGenerator = () => {
                     // Collect all answers from quiz-style or generic questions
                     const answers: { num: number; section: string; answer: string }[] = [];
 
-                    // Quiz-style sections
-                    c.multipleChoice?.forEach((q: any) => answers.push({ num: q.number, section: "MC", answer: q.correctAnswer }));
-                    c.trueFalse?.forEach((q: any) => answers.push({ num: q.number, section: "T/F", answer: q.correctAnswer }));
-                    c.fillInTheBlank?.forEach((q: any) => answers.push({ num: q.number, section: "FITB", answer: q.correctAnswer }));
-                    c.shortAnswer?.forEach((q: any) => answers.push({ num: q.number, section: "SA", answer: q.sampleAnswer || q.correctAnswer }));
-                    c.showYourWork?.forEach((q: any) => answers.push({ num: q.number, section: "SYW", answer: q.sampleAnswer || q.correctAnswer || "See rubric" }));
-
-                    // Generic questions array
-                    if (answers.length === 0 && c.questions && Array.isArray(c.questions)) {
-                      c.questions.forEach((q: any, j: number) => {
-                        answers.push({ num: q.number || j + 1, section: "", answer: q.answer || q.correctAnswer || q.correct_answer || "See teacher guide" });
+                    // First try the answerKey array (most reliable, explicitly requested from AI)
+                    if (c.answerKey && Array.isArray(c.answerKey) && c.answerKey.length > 0) {
+                      c.answerKey.forEach((a: any) => {
+                        const sectionLabel = a.section ? a.section.replace(/_/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase()) : "";
+                        answers.push({ num: a.number, section: sectionLabel, answer: a.answer || a.correctAnswer || a.sampleAnswer || "" });
                       });
                     }
-                    // answerKey array
-                    if (answers.length === 0 && c.answerKey && Array.isArray(c.answerKey)) {
-                      c.answerKey.forEach((a: any) => {
-                        answers.push({ num: a.number, section: a.section || "", answer: a.answer });
+
+                    // Fallback: extract from quiz-style sections
+                    if (answers.length === 0) {
+                      c.multipleChoice?.forEach((q: any) => answers.push({ num: q.number, section: "MC", answer: q.correctAnswer }));
+                      c.trueFalse?.forEach((q: any) => answers.push({ num: q.number, section: "T/F", answer: q.correctAnswer }));
+                      c.fillInTheBlank?.forEach((q: any) => answers.push({ num: q.number, section: "FITB", answer: q.correctAnswer }));
+                      c.shortAnswer?.forEach((q: any) => answers.push({ num: q.number, section: "SA", answer: q.sampleAnswer || q.correctAnswer }));
+                      c.showYourWork?.forEach((q: any) => answers.push({ num: q.number, section: "SYW", answer: q.sampleAnswer || q.correctAnswer || "See rubric" }));
+                    }
+
+                    // Fallback: generic questions array with answer fields
+                    if (answers.length === 0 && c.questions && Array.isArray(c.questions)) {
+                      c.questions.forEach((q: any, j: number) => {
+                        const ans = q.answer || q.correctAnswer || q.correct_answer || q.sampleAnswer || q.sample_answer || "";
+                        if (ans) answers.push({ num: q.number || j + 1, section: "", answer: ans });
                       });
                     }
 
