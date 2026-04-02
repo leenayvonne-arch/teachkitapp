@@ -122,7 +122,7 @@ Requirements:
 - Include exactly ${tfCount} true/false questions. Each true/false question must have a correctAnswer of either "True" or "False".
 - Include exactly ${fitbCount} fill in the blank questions. Each question must contain _____ where the blank is. Provide the correct word or phrase as correctAnswer.
 - Include exactly ${saCount} short answer questions.
-- Number multiple choice questions 1–${mcCount}, true/false questions 1–${tfCount}, fill in the blank questions 1–${fitbCount}, and short answer questions 1–${saCount}.
+${sywCount > 0 ? `- Include exactly ${sywCount} show-your-work problems. These require students to show their reasoning, steps, or diagrams. Provide a sampleAnswer.\n` : ""}- Number multiple choice questions 1–${mcCount}, true/false questions 1–${tfCount}, fill in the blank questions 1–${fitbCount}, short answer questions 1–${saCount}${sywCount > 0 ? `, and show-your-work questions 1–${sywCount}` : ""}.
 - Questions should be rigorous, engaging, and grade-appropriate.
 - Provide a complete answer key covering all questions.
 ${subject === "Social Studies" ? "- SUBJECT CONTEXT: Social Studies — Focus on general topics such as communities, geography, civics, and basic history concepts appropriate for elementary-level understanding.\n" : ""}${subject === "History" ? "- SUBJECT CONTEXT: History — Focus on specific historical topics such as events, timelines, historical figures, cause/effect relationships, and primary source analysis appropriate for middle and high school level.\n" : ""}
