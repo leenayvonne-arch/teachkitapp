@@ -112,7 +112,7 @@ const BulkGenerator = () => {
   const handleDownloadPDF = async () => {
     if (!previewRef.current) return;
     const html2pdf = (await import("html2pdf.js")).default;
-    html2pdf().set({
+    (html2pdf() as any).set({
       margin: [0.5, 0.5, 0.5, 0.5],
       filename: `${productName || "bulk-resources"}.pdf`,
       image: { type: "jpeg", quality: 0.98 },
