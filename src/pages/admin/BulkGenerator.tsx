@@ -469,8 +469,8 @@ const BulkGenerator = () => {
                     <span className="text-xs text-muted-foreground">{resourceType}</span>
                   </div>
                   <div className="flex gap-8 mb-4 text-sm">
-                    <div className="flex-1 border-b border-border pb-1">Name: ___________________</div>
-                    <div className="border-b border-border pb-1">Date: ___________</div>
+                    <div style={{ flex: "0 0 66%" }} className="border-b border-foreground/40 pb-1">Name:</div>
+                    <div className="border-b border-foreground/40 pb-1" style={{ minWidth: 120 }}>Date:</div>
                   </div>
                   {renderResourceContent(resource)}
                 </div>
