@@ -142,6 +142,73 @@ const BulkGenerator = () => {
     const c = resource.content;
     if (c.error) return <p className="text-destructive italic">Error: {c.error}</p>;
 
+    // Quiz-style content with separate sections
+    if (c.multipleChoice || c.trueFalse || c.shortAnswer || c.fillInTheBlank) {
+      return (
+        <div className="space-y-4">
+          {c.multipleChoice?.length > 0 && (
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Multiple Choice</p>
+              {c.multipleChoice.map((q: any, i: number) => (
+                <div key={i} className="mb-2">
+                  <p className="font-medium text-sm">{q.number}. {q.question}</p>
+                  <div className="ml-4 mt-1 grid gap-1 sm:grid-cols-2 text-sm text-muted-foreground">
+                    {(["A", "B", "C", "D"] as const).map(l => q.options?.[l] && <p key={l}>{l}. {q.options[l]}</p>)}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          {c.trueFalse?.length > 0 && (
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">True / False</p>
+              {c.trueFalse.map((q: any, i: number) => (
+                <div key={i} className="mb-2">
+                  <p className="font-medium text-sm">{q.number}. {q.question}</p>
+                </div>
+              ))}
+            </div>
+          )}
+          {c.shortAnswer?.length > 0 && (
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Short Answer</p>
+              {c.shortAnswer.map((q: any, i: number) => (
+                <div key={i} className="mb-2">
+                  <p className="font-medium text-sm">{q.number}. {q.question}</p>
+                  <div className="ml-4 mt-1 space-y-2">
+                    {Array.from({ length: 3 }).map((_, j) => <div key={j} className="border-b border-muted-foreground/25 h-4" />)}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          {c.showYourWork?.length > 0 && (
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Show Your Work</p>
+              {c.showYourWork.map((q: any, i: number) => (
+                <div key={i} className="mb-3">
+                  <p className="font-medium text-sm">{q.number}. {q.question}</p>
+                  <div className="ml-4 mt-2 border border-dashed border-muted-foreground/30 rounded-md h-24 flex items-center justify-center">
+                    <span className="text-xs text-muted-foreground/50 italic">Work space</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          {c.fillInTheBlank?.length > 0 && (
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Fill in the Blank</p>
+              {c.fillInTheBlank.map((q: any, i: number) => (
+                <div key={i} className="mb-2">
+                  <p className="font-medium text-sm">{q.number}. {q.question}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    }
+
     // Generic rendering of questions/content
     if (c.questions && Array.isArray(c.questions)) {
       return (
@@ -153,6 +220,11 @@ const BulkGenerator = () => {
                 <ul className="ml-4 mt-1 space-y-0.5 text-sm text-muted-foreground">
                   {q.options.map((opt: string, j: number) => <li key={j}>{String.fromCharCode(65 + j)}. {opt}</li>)}
                 </ul>
+              )}
+              {q.type === "show_your_work" && (
+                <div className="ml-4 mt-2 border border-dashed border-muted-foreground/30 rounded-md h-24 flex items-center justify-center">
+                  <span className="text-xs text-muted-foreground/50 italic">Work space</span>
+                </div>
               )}
             </div>
           ))}
