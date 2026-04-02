@@ -84,57 +84,38 @@ const BulkGenerator = () => {
     for (let i = 0; i < topicsList.length; i++) {
       setProgress(i);
       setCurrentTopic(topicsList[i]);
+      try {
+        const baseBody: Record<string, any> = {
+          gradeLevel,
+          subject,
+          topic: topicsList[i],
+          includeAnswerKey: true,
+        };
 
-      let success = false;
-      let lastError: any = null;
-
-      for (let attempt = 0; attempt < 3; attempt++) {
-        try {
-          if (attempt > 0) {
-            setCurrentTopic(`${topicsList[i]} (retry ${attempt}/2)`);
-            await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
-          }
-
-          const baseBody: Record<string, any> = {
-            gradeLevel,
-            subject,
-            topic: topicsList[i],
-            includeAnswerKey: true,
-          };
-
-          if (resourceType === "Exit Tickets") {
-            baseBody.numberOfQuestions = questionsPerResource;
-            baseBody.mixedTypes = true;
-          } else if (resourceType === "Worksheets") {
-            baseBody.numberOfQuestions = questionsPerResource;
-            baseBody.mixedTypes = true;
-          } else if (resourceType === "Quizzes") {
-            baseBody.numberOfQuestions = questionsPerResource;
-          } else if (resourceType === "Lesson Plans") {
-            baseBody.numberOfQuestions = questionsPerResource;
-          }
-
-          const { data, error } = await supabase.functions.invoke(edgeFn, {
-            body: baseBody,
-          });
-          if (error) throw error;
-          if (data?.error) throw new Error(data.error);
-
-          const content = data.exitTicket || data.worksheet || data.quiz || data.lesson || data;
-          results.push({ topic: topicsList[i], content });
-          success = true;
-          break;
-        } catch (e: any) {
-          lastError = e;
-          console.warn(`Attempt ${attempt + 1}/3 failed for topic: ${topicsList[i]}`, e);
+        if (resourceType === "Exit Tickets") {
+          baseBody.numberOfQuestions = questionsPerResource;
+          baseBody.mixedTypes = true;
+        } else if (resourceType === "Worksheets") {
+          baseBody.numberOfQuestions = questionsPerResource;
+          baseBody.mixedTypes = true;
+        } else if (resourceType === "Quizzes") {
+          baseBody.numberOfQuestions = questionsPerResource;
+        } else if (resourceType === "Lesson Plans") {
+          baseBody.numberOfQuestions = questionsPerResource;
         }
-      }
 
-      if (!success) {
-        console.error(`All 3 attempts failed for topic: ${topicsList[i]}`, lastError);
-        results.push({ topic: topicsList[i], content: { error: lastError?.message || "Generation failed after 3 attempts" } });
-      }
+        const { data, error } = await supabase.functions.invoke(edgeFn, {
+          body: baseBody,
+        });
+        if (error) throw error;
+        if (data?.error) throw new Error(data.error);
 
+        const content = data.exitTicket || data.worksheet || data.quiz || data.lesson || data;
+        results.push({ topic: topicsList[i], content });
+      } catch (e: any) {
+        console.error(`Failed to generate for topic: ${topicsList[i]}`, e);
+        results.push({ topic: topicsList[i], content: { error: e.message || "Generation failed" } });
+      }
       setProgress(i + 1);
 
       // Small delay between requests to avoid rate limiting
@@ -418,34 +399,6 @@ const BulkGenerator = () => {
               Generating {progress + 1} of {totalTopics}: <span className="font-medium text-foreground">{currentTopic}</span>
             </p>
           </div>
-        )}
-
-        {/* Generation Summary */}
-        {generatedResources.length > 0 && !isGenerating && (
-          (() => {
-            const succeeded = generatedResources.filter(r => !r.content?.error);
-            const failed = generatedResources.filter(r => r.content?.error);
-            return failed.length > 0 ? (
-              <Card className="border-destructive/50 bg-destructive/5">
-                <CardContent className="pt-4 pb-4 space-y-2">
-                  <p className="font-semibold text-sm">
-                    Generation complete: <span className="text-primary">{succeeded.length} succeeded</span>, <span className="text-destructive">{failed.length} failed</span> out of {generatedResources.length} topics.
-                  </p>
-                  <ul className="text-sm text-muted-foreground list-disc pl-5 space-y-0.5">
-                    {failed.map((r, i) => (
-                      <li key={i}><span className="font-medium text-destructive">{r.topic}</span> — {r.content.error}</li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            ) : (
-              <Card className="border-primary/30 bg-primary/5">
-                <CardContent className="pt-4 pb-4">
-                  <p className="font-semibold text-sm text-primary">✓ All {succeeded.length} topics generated successfully.</p>
-                </CardContent>
-              </Card>
-            );
-          })()
         )}
 
         {/* Preview & Export */}
