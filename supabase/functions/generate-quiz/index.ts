@@ -11,7 +11,7 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
 
   try {
-    const { gradeLevel, subject, topic, numberOfQuestions, regenerateAction, mcPercent, tfPercent, fitbPercent, difficulty, differentiationLevel } = await req.json();
+    const { gradeLevel, subject, topic, numberOfQuestions, regenerateAction, mcPercent, tfPercent, fitbPercent, sywPercent, difficulty, differentiationLevel } = await req.json();
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
@@ -26,11 +26,14 @@ serve(async (req) => {
     if (mcPercent !== undefined && mcPercent !== null) {
       const tf = tfPercent ?? 0;
       const fitb = fitbPercent ?? 0;
+      const syw = sywPercent ?? 0;
       mcCount = Math.round(total * mcPercent / 100);
       tfCount = Math.round(total * tf / 100);
       fitbCount = Math.round(total * fitb / 100);
-      saCount = total - mcCount - tfCount - fitbCount;
-      if (saCount < 0) { saCount = 0; fitbCount = total - mcCount - tfCount; }
+      sywCount = Math.round(total * syw / 100);
+      saCount = total - mcCount - tfCount - fitbCount - sywCount;
+      if (saCount < 0) { saCount = 0; sywCount = total - mcCount - tfCount - fitbCount; }
+      if (sywCount < 0) { sywCount = 0; fitbCount = total - mcCount - tfCount; }
       if (fitbCount < 0) { fitbCount = 0; tfCount = total - mcCount; }
     } else if (total <= 5) {
       // Small quizzes: 2 MC, 1 SA, 1 T/F, 1 show-your-work
