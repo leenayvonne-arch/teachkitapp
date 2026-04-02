@@ -468,14 +468,37 @@ const BulkGenerator = () => {
                 <div className="py-6" style={{ pageBreakBefore: "always" }}>
                   <h3 className="text-lg font-bold font-display mb-4">Answer Key</h3>
                   {generatedResources.filter(r => !r.content.error).map((resource, i) => {
-                    const questions = resource.content.questions;
-                    if (!questions || !Array.isArray(questions)) return null;
+                    const c = resource.content;
+                    // Collect all answers from quiz-style or generic questions
+                    const answers: { num: number; section: string; answer: string }[] = [];
+
+                    // Quiz-style sections
+                    c.multipleChoice?.forEach((q: any) => answers.push({ num: q.number, section: "MC", answer: q.correctAnswer }));
+                    c.trueFalse?.forEach((q: any) => answers.push({ num: q.number, section: "T/F", answer: q.correctAnswer }));
+                    c.fillInTheBlank?.forEach((q: any) => answers.push({ num: q.number, section: "FITB", answer: q.correctAnswer }));
+                    c.shortAnswer?.forEach((q: any) => answers.push({ num: q.number, section: "SA", answer: q.sampleAnswer || q.correctAnswer }));
+                    c.showYourWork?.forEach((q: any) => answers.push({ num: q.number, section: "SYW", answer: q.sampleAnswer || q.correctAnswer || "See rubric" }));
+
+                    // Generic questions array
+                    if (answers.length === 0 && c.questions && Array.isArray(c.questions)) {
+                      c.questions.forEach((q: any, j: number) => {
+                        answers.push({ num: q.number || j + 1, section: "", answer: q.answer || q.correctAnswer || q.correct_answer || "See teacher guide" });
+                      });
+                    }
+                    // answerKey array
+                    if (answers.length === 0 && c.answerKey && Array.isArray(c.answerKey)) {
+                      c.answerKey.forEach((a: any) => {
+                        answers.push({ num: a.number, section: a.section || "", answer: a.answer });
+                      });
+                    }
+
+                    if (answers.length === 0) return null;
                     return (
                       <div key={i} className="mb-4">
                         <p className="font-medium text-sm mb-1">{resource.topic}</p>
                         <div className="text-sm text-muted-foreground space-y-0.5">
-                          {questions.map((q: any, j: number) => (
-                            <p key={j}>{q.number || j + 1}. {q.answer || q.correctAnswer || q.correct_answer || "See teacher guide"}</p>
+                          {answers.map((a, j) => (
+                            <p key={j}>{a.section ? `[${a.section}] ` : ""}{a.num}. {a.answer}</p>
                           ))}
                         </div>
                       </div>
