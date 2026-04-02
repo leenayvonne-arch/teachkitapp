@@ -149,6 +149,23 @@ const BulkGenerator = () => {
     }).from(previewRef.current).save();
   };
 
+  // Replace single-quoted words with italic formatting
+  const formatText = (text: string) => {
+    const parts = text.split(/'([^']+)'/g);
+    if (parts.length === 1) return <>{text}</>;
+    return <>{parts.map((part, i) => i % 2 === 1 ? <em key={i}>{part}</em> : part)}</>;
+  };
+
+  const isScaleQuestion = (text: string) => /on a scale of 1[–\-—]5/i.test(text);
+
+  const answerLines = (count: number) => (
+    <div className="mt-2 space-y-0">
+      {Array.from({ length: count }).map((_, i) => (
+        <div key={i} className="border-b border-muted-foreground/30" style={{ height: 28 }} />
+      ))}
+    </div>
+  );
+
   const renderResourceContent = (resource: GeneratedResource) => {
     const c = resource.content;
     if (c.error) return <p className="text-destructive italic">Error: {c.error}</p>;
@@ -162,9 +179,9 @@ const BulkGenerator = () => {
               <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Multiple Choice</p>
               {c.multipleChoice.map((q: any, i: number) => (
                 <div key={i} className="mb-2">
-                  <p className="font-medium text-sm">{q.number}. {q.question}</p>
+                  <p className="font-medium text-sm">{q.number}. {formatText(q.question)}</p>
                   <div className="ml-4 mt-1 grid gap-1 sm:grid-cols-2 text-sm text-muted-foreground">
-                    {(["A", "B", "C", "D"] as const).map(l => q.options?.[l] && <p key={l}>{l}. {q.options[l]}</p>)}
+                    {(["A", "B", "C", "D"] as const).map(l => q.options?.[l] && <p key={l}>{l}. {formatText(q.options[l])}</p>)}
                   </div>
                 </div>
               ))}
@@ -175,7 +192,7 @@ const BulkGenerator = () => {
               <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">True / False</p>
               {c.trueFalse.map((q: any, i: number) => (
                 <div key={i} className="mb-2">
-                  <p className="font-medium text-sm">{q.number}. {q.question}</p>
+                  <p className="font-medium text-sm">{q.number}. {formatText(q.question)}</p>
                 </div>
               ))}
             </div>
@@ -185,10 +202,8 @@ const BulkGenerator = () => {
               <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Short Answer</p>
               {c.shortAnswer.map((q: any, i: number) => (
                 <div key={i} className="mb-2">
-                  <p className="font-medium text-sm">{q.number}. {q.question}</p>
-                  <div className="ml-4 mt-1 space-y-2">
-                    {Array.from({ length: 3 }).map((_, j) => <div key={j} className="border-b border-muted-foreground/25 h-4" />)}
-                  </div>
+                  <p className="font-medium text-sm">{q.number}. {formatText(q.question)}</p>
+                  {!isScaleQuestion(q.question) && answerLines(4)}
                 </div>
               ))}
             </div>
@@ -198,7 +213,7 @@ const BulkGenerator = () => {
               <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Show Your Work</p>
               {c.showYourWork.map((q: any, i: number) => (
                 <div key={i} className="mb-3">
-                  <p className="font-medium text-sm">{q.number}. {q.question}</p>
+                  <p className="font-medium text-sm">{q.number}. {formatText(q.question)}</p>
                   <div className="ml-4 mt-2 border border-dashed border-muted-foreground/30 rounded-md h-24 flex items-center justify-center">
                     <span className="text-xs text-muted-foreground/50 italic">Work space</span>
                   </div>
@@ -211,7 +226,7 @@ const BulkGenerator = () => {
               <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Fill in the Blank</p>
               {c.fillInTheBlank.map((q: any, i: number) => (
                 <div key={i} className="mb-2">
-                  <p className="font-medium text-sm">{q.number}. {q.question}</p>
+                  <p className="font-medium text-sm">{q.number}. {formatText(q.question)}</p>
                 </div>
               ))}
             </div>
@@ -226,17 +241,17 @@ const BulkGenerator = () => {
         <div className="space-y-3">
           {c.questions.map((q: any, i: number) => (
             <div key={i} className="border-b border-border pb-2">
-              <p className="font-medium">{q.number || i + 1}. {q.question || q.text || q.prompt || JSON.stringify(q)}</p>
+              <p className="font-medium">{q.number || i + 1}. {formatText(q.question || q.text || q.prompt || JSON.stringify(q))}</p>
               {q.options && Array.isArray(q.options) && (
                 <ul className="ml-4 mt-1 space-y-0.5 text-sm text-muted-foreground">
-                  {q.options.map((opt: string, j: number) => <li key={j}>{String.fromCharCode(65 + j)}. {opt}</li>)}
+                  {q.options.map((opt: string, j: number) => <li key={j}>{String.fromCharCode(65 + j)}. {formatText(opt)}</li>)}
                 </ul>
               )}
-              {q.type === "show_your_work" && (
+              {q.type === "show_your_work" ? (
                 <div className="ml-4 mt-2 border border-dashed border-muted-foreground/30 rounded-md h-24 flex items-center justify-center">
                   <span className="text-xs text-muted-foreground/50 italic">Work space</span>
                 </div>
-              )}
+              ) : !isScaleQuestion(q.question || "") && !q.options && answerLines(4)}
             </div>
           ))}
         </div>
@@ -414,7 +429,7 @@ const BulkGenerator = () => {
                    <h2 className="text-2xl font-bold font-display mb-4">{productName}</h2>
                    <div className="text-sm text-muted-foreground space-y-1">
                      <p>{resourceType} • {gradeLevel} Grade • {subject}</p>
-                     <p>{successCount} resource{successCount !== 1 ? "s" : ""} included</p>
+                     <p>{successCount} exit ticket{successCount !== 1 ? "s" : ""} included</p>
                    </div>
                 </div>
               )}
@@ -463,14 +478,14 @@ const BulkGenerator = () => {
 
               {/* Resources */}
               {generatedResources.filter(r => !r.content.error).map((resource, i) => (
-                <div key={i} className="py-6 border-b border-border" style={{ pageBreakBefore: "always" }}>
+                <div key={i} className="py-6 border-b border-border" style={i > 0 ? { pageBreakBefore: "always" } : undefined}>
                   <div className="flex justify-between items-start mb-4">
                     <h3 className="font-bold font-display">{resource.topic}</h3>
                     <span className="text-xs text-muted-foreground">{resourceType}</span>
                   </div>
                   <div className="flex gap-8 mb-4 text-sm">
-                    <div className="flex-1 border-b border-border pb-1">Name: ___________________</div>
-                    <div className="border-b border-border pb-1">Date: ___________</div>
+                    <div style={{ flex: "0 0 66%" }} className="border-b border-foreground/40 pb-1">Name:</div>
+                    <div className="border-b border-foreground/40 pb-1" style={{ minWidth: 120 }}>Date:</div>
                   </div>
                   {renderResourceContent(resource)}
                 </div>
