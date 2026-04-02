@@ -485,23 +485,28 @@ const BulkGenerator = () => {
                     // Collect all answers from quiz-style or generic questions
                     const answers: { num: number; section: string; answer: string }[] = [];
 
-                    // Quiz-style sections
-                    c.multipleChoice?.forEach((q: any) => answers.push({ num: q.number, section: "MC", answer: q.correctAnswer }));
-                    c.trueFalse?.forEach((q: any) => answers.push({ num: q.number, section: "T/F", answer: q.correctAnswer }));
-                    c.fillInTheBlank?.forEach((q: any) => answers.push({ num: q.number, section: "FITB", answer: q.correctAnswer }));
-                    c.shortAnswer?.forEach((q: any) => answers.push({ num: q.number, section: "SA", answer: q.sampleAnswer || q.correctAnswer }));
-                    c.showYourWork?.forEach((q: any) => answers.push({ num: q.number, section: "SYW", answer: q.sampleAnswer || q.correctAnswer || "See rubric" }));
-
-                    // Generic questions array
-                    if (answers.length === 0 && c.questions && Array.isArray(c.questions)) {
-                      c.questions.forEach((q: any, j: number) => {
-                        answers.push({ num: q.number || j + 1, section: "", answer: q.answer || q.correctAnswer || q.correct_answer || "See teacher guide" });
+                    // First try the answerKey array (most reliable, explicitly requested from AI)
+                    if (c.answerKey && Array.isArray(c.answerKey) && c.answerKey.length > 0) {
+                      c.answerKey.forEach((a: any) => {
+                        const sectionLabel = a.section ? a.section.replace(/_/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase()) : "";
+                        answers.push({ num: a.number, section: sectionLabel, answer: a.answer || a.correctAnswer || a.sampleAnswer || "" });
                       });
                     }
-                    // answerKey array
-                    if (answers.length === 0 && c.answerKey && Array.isArray(c.answerKey)) {
-                      c.answerKey.forEach((a: any) => {
-                        answers.push({ num: a.number, section: a.section || "", answer: a.answer });
+
+                    // Fallback: extract from quiz-style sections
+                    if (answers.length === 0) {
+                      c.multipleChoice?.forEach((q: any) => answers.push({ num: q.number, section: "MC", answer: q.correctAnswer }));
+                      c.trueFalse?.forEach((q: any) => answers.push({ num: q.number, section: "T/F", answer: q.correctAnswer }));
+                      c.fillInTheBlank?.forEach((q: any) => answers.push({ num: q.number, section: "FITB", answer: q.correctAnswer }));
+                      c.shortAnswer?.forEach((q: any) => answers.push({ num: q.number, section: "SA", answer: q.sampleAnswer || q.correctAnswer }));
+                      c.showYourWork?.forEach((q: any) => answers.push({ num: q.number, section: "SYW", answer: q.sampleAnswer || q.correctAnswer || "See rubric" }));
+                    }
+
+                    // Fallback: generic questions array with answer fields
+                    if (answers.length === 0 && c.questions && Array.isArray(c.questions)) {
+                      c.questions.forEach((q: any, j: number) => {
+                        const ans = q.answer || q.correctAnswer || q.correct_answer || q.sampleAnswer || q.sample_answer || "";
+                        if (ans) answers.push({ num: q.number || j + 1, section: "", answer: ans });
                       });
                     }
 
