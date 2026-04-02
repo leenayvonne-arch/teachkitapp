@@ -366,12 +366,12 @@ const BulkGenerator = () => {
           {isGenerating ? (
             <>
               <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-              Generating {progress + 1} of {totalTopics}...
+              Generating {Math.min(progress + 1, totalTopics)} of {totalTopics}...
             </>
           ) : (
             <>
               <Sparkles className="mr-2 h-5 w-5" />
-              Generate Bulk Pack
+              Generate Bulk Pack ({topics.length} topic{topics.length !== 1 ? "s" : ""})
             </>
           )}
         </Button>
