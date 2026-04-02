@@ -83,7 +83,7 @@ const BulkGenerator = () => {
     for (let i = 0; i < topics.length; i++) {
       setProgress(i);
       setCurrentTopic(topics[i]);
-        // Build the correct payload for each edge function type
+      try {
         const baseBody: Record<string, any> = { gradeLevel, subject, topic: topics[i] };
 
         if (resourceType === "Exit Tickets") {
