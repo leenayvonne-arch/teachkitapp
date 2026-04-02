@@ -174,6 +174,7 @@ ${regenerateAction === "simplify" ? "- IMPORTANT: Make questions easier — use 
       quiz = JSON.parse(cleaned);
       if (!quiz.trueFalse) quiz.trueFalse = [];
       if (!quiz.fillInTheBlank) quiz.fillInTheBlank = [];
+      if (!quiz.showYourWork) quiz.showYourWork = [];
     } catch {
       console.error("Failed to parse AI response:", content);
       throw new Error("Failed to parse quiz");
