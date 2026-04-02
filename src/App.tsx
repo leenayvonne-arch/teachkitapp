@@ -88,6 +88,14 @@ const App = () => (
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/admin/bulk-generator"
+            element={
+              <ProtectedRoute>
+                <BulkGenerator />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/unsubscribe" element={<UnsubscribePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

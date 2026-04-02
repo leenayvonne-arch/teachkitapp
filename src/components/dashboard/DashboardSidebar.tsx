@@ -31,6 +31,7 @@ const adminItems = [
   { title: "Feedback Review", url: "/dashboard/admin/feedback", icon: MessageSquare },
   { title: "Contact Submissions", url: "/dashboard/admin/contact", icon: Mail },
   { title: "Purchases", url: "/dashboard/admin/purchases", icon: CreditCard },
+  { title: "Bulk Generator", url: "/admin/bulk-generator", icon: Layers },
 ];
 
 const DashboardSidebar = () => {
