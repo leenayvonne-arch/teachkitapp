@@ -46,6 +46,7 @@ const BulkGenerator = () => {
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [currentTopic, setCurrentTopic] = useState("");
   const [totalTopics, setTotalTopics] = useState(0);
   const [generatedResources, setGeneratedResources] = useState<GeneratedResource[]>([]);
   const previewRef = useRef<HTMLDivElement>(null);
