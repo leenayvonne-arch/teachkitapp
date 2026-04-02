@@ -50,7 +50,12 @@ const DashboardSidebar = () => {
         <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
           <Sparkles className="h-4 w-4" />
         </div>
-        {!collapsed && <span className="text-lg font-bold font-display text-foreground">TeachKit</span>}
+        {!collapsed && (
+          <div className="flex items-center gap-2">
+            <span className="text-lg font-bold font-display text-foreground">TeachKit</span>
+            {isAdmin && <span className="rounded-md bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-primary">Admin</span>}
+          </div>
+        )}
       </div>
       <SidebarContent>
         <SidebarGroup>
