@@ -82,10 +82,17 @@ Always respond with a valid JSON object matching this exact structure (no markdo
       "sampleAnswer": "string"
     }
   ],
+  "showYourWork": [
+    {
+      "number": 1,
+      "question": "string — a problem requiring students to show their reasoning/steps",
+      "sampleAnswer": "string"
+    }
+  ],
   "answerKey": [
     {
       "number": 1,
-      "section": "multiple_choice" | "true_false" | "fill_in_the_blank" | "short_answer",
+      "section": "multiple_choice" | "true_false" | "fill_in_the_blank" | "short_answer" | "show_your_work",
       "answer": "string"
     }
   ]
