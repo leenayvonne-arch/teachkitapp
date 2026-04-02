@@ -43,13 +43,20 @@ export interface FITBQuestion {
   correctAnswer: string;
 }
 
+export interface SYWQuestion {
+  number: number;
+  question: string;
+  sampleAnswer: string;
+}
+
 export interface Quiz {
   title: string;
   multipleChoice: MCQuestion[];
   trueFalse: TFQuestion[];
   fillInTheBlank: FITBQuestion[];
   shortAnswer: SAQuestion[];
-  answerKey: { number: number; section: "multiple_choice" | "true_false" | "fill_in_the_blank" | "short_answer"; answer: string }[];
+  showYourWork?: SYWQuestion[];
+  answerKey: { number: number; section: "multiple_choice" | "true_false" | "fill_in_the_blank" | "short_answer" | "show_your_work"; answer: string }[];
 }
 
 const GRADES = ["K", "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th"];
