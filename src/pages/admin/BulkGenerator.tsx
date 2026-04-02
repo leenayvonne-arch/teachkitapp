@@ -357,7 +357,7 @@ const BulkGenerator = () => {
           {isGenerating ? (
             <>
               <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-              Generating {progress} of {totalTopics}...
+              Generating {progress + 1} of {totalTopics}...
             </>
           ) : (
             <>
