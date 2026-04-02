@@ -46,6 +46,7 @@ const BulkGenerator = () => {
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [currentTopic, setCurrentTopic] = useState("");
   const [totalTopics, setTotalTopics] = useState(0);
   const [generatedResources, setGeneratedResources] = useState<GeneratedResource[]>([]);
   const previewRef = useRef<HTMLDivElement>(null);
@@ -80,9 +81,9 @@ const BulkGenerator = () => {
     const edgeFn = EDGE_FN_MAP[resourceType];
 
     for (let i = 0; i < topics.length; i++) {
-      setProgress(i + 1);
+      setProgress(i);
+      setCurrentTopic(topics[i]);
       try {
-        // Build the correct payload for each edge function type
         const baseBody: Record<string, any> = { gradeLevel, subject, topic: topics[i] };
 
         if (resourceType === "Exit Tickets") {
@@ -111,6 +112,7 @@ const BulkGenerator = () => {
         console.error(`Failed to generate for topic: ${topics[i]}`, e);
         results.push({ topic: topics[i], content: { error: e.message || "Generation failed" } });
       }
+      setProgress(i + 1);
     }
 
     setGeneratedResources(results);
@@ -355,7 +357,7 @@ const BulkGenerator = () => {
           {isGenerating ? (
             <>
               <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-              Generating {progress} of {totalTopics}...
+              Generating {progress + 1} of {totalTopics}...
             </>
           ) : (
             <>
@@ -369,7 +371,9 @@ const BulkGenerator = () => {
         {isGenerating && (
           <div className="space-y-2">
             <Progress value={(progress / totalTopics) * 100} className="h-3 rounded-full" />
-            <p className="text-center text-sm text-muted-foreground">Generating {progress} of {totalTopics}...</p>
+            <p className="text-center text-sm text-muted-foreground">
+              Generating {progress + 1} of {totalTopics}: <span className="font-medium text-foreground">{currentTopic}</span>
+            </p>
           </div>
         )}
 
