@@ -78,7 +78,7 @@ serve(async (req) => {
     // Generate a signed URL (valid for 60 minutes)
     const { data: signedUrl, error: signError } = await supabaseAdmin.storage
       .from("product-files")
-      .createSignedUrl(product.file_path, 3600);
+      .createSignedUrl(fileRow.file_path, 3600);
 
     if (signError || !signedUrl) {
       throw new Error("Failed to generate download link");
