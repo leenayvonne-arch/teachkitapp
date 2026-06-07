@@ -158,6 +158,35 @@ export type Database = {
         }
         Relationships: []
       }
+      product_files: {
+        Row: {
+          created_at: string
+          file_path: string
+          product_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          file_path: string
+          product_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          file_path?: string
+          product_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_files_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: true
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           active: boolean
@@ -165,7 +194,6 @@ export type Database = {
           created_at: string
           description: string
           faqs: Json
-          file_path: string | null
           full_description: string
           grade_level: string
           id: string
@@ -188,7 +216,6 @@ export type Database = {
           created_at?: string
           description?: string
           faqs?: Json
-          file_path?: string | null
           full_description?: string
           grade_level?: string
           id?: string
@@ -211,7 +238,6 @@ export type Database = {
           created_at?: string
           description?: string
           faqs?: Json
-          file_path?: string | null
           full_description?: string
           grade_level?: string
           id?: string
