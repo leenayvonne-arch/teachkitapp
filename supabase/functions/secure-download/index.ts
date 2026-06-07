@@ -48,14 +48,27 @@ serve(async (req) => {
       });
     }
 
-    // Get file_path from product
+    // Look up product + admin-only file_path from the restricted product_files table
     const { data: product } = await supabaseAdmin
       .from("products")
-      .select("file_path, title")
+      .select("id, title")
       .eq("slug", productSlug)
       .maybeSingle();
 
-    if (!product?.file_path) {
+    if (!product) {
+      return new Response(JSON.stringify({ error: "Product not found" }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 404,
+      });
+    }
+
+    const { data: fileRow } = await supabaseAdmin
+      .from("product_files")
+      .select("file_path")
+      .eq("product_id", product.id)
+      .maybeSingle();
+
+    if (!fileRow?.file_path) {
       return new Response(JSON.stringify({ error: "No file available for this product" }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 404,
