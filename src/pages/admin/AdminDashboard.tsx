@@ -2,12 +2,13 @@ import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAdminRole } from "@/hooks/useAdminRole";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Package, CreditCard, MessageSquare, BarChart3, Mail, Sparkles } from "lucide-react";
+import { ArrowLeft, Package, CreditCard, MessageSquare, BarChart3, Mail, Sparkles, ShieldCheck } from "lucide-react";
 import AdminProductsTab from "./tabs/AdminProductsTab";
 import AdminOrdersTab from "./tabs/AdminOrdersTab";
 import AdminFeedbackTab from "./tabs/AdminFeedbackTab";
 import AdminAnalyticsTab from "./tabs/AdminAnalyticsTab";
 import AdminEmailsTab from "./tabs/AdminEmailsTab";
+import AdminAdminsTab from "./tabs/AdminAdminsTab";
 
 const AdminDashboard = () => {
   const { isAdmin, loading } = useAdminRole();
@@ -67,6 +68,9 @@ const AdminDashboard = () => {
             <TabsTrigger value="emails" className="gap-1.5">
               <Mail className="h-4 w-4" /> Emails
             </TabsTrigger>
+            <TabsTrigger value="admins" className="gap-1.5">
+              <ShieldCheck className="h-4 w-4" /> Admins
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="products"><AdminProductsTab /></TabsContent>
@@ -74,6 +78,7 @@ const AdminDashboard = () => {
           <TabsContent value="feedback"><AdminFeedbackTab /></TabsContent>
           <TabsContent value="analytics"><AdminAnalyticsTab /></TabsContent>
           <TabsContent value="emails"><AdminEmailsTab /></TabsContent>
+          <TabsContent value="admins"><AdminAdminsTab /></TabsContent>
         </Tabs>
       </div>
     </div>
