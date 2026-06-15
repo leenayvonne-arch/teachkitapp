@@ -9,7 +9,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Search, ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
-import TeacherTestimonials from "@/components/TeacherTestimonials";
 import FeedbackForm from "@/components/FeedbackForm";
 import { useProducts, Product } from "@/hooks/useProducts";
 import { supabase } from "@/integrations/supabase/client";
@@ -198,7 +197,6 @@ const ResourceShop = () => {
           })}
         </div>
       )}
-      <TeacherTestimonials />
       {!isPublicRoute && <div className="mt-4"><FeedbackForm /></div>}
       {isPublicRoute && (
         <div className="mt-8 text-center text-sm text-muted-foreground">
