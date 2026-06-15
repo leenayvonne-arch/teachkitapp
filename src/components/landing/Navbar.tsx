@@ -12,9 +12,13 @@ import { useTheme } from "next-themes";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 
 const navLinks = [
+  { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Pricing", href: "/pricing" },
   { label: "Resource Shop", href: "/shop" },
+  { label: "Contact", href: "/contact" },
+  { label: "Terms", href: "/terms" },
+  { label: "Privacy", href: "/privacy" },
 ];
 
 const Navbar = () => {
