@@ -23,11 +23,16 @@ serve(async (req) => {
   );
 
   try {
-    const authHeader = req.headers.get("Authorization")!;
-    const token = authHeader.replace("Bearer ", "");
-    const { data } = await supabaseClient.auth.getUser(token);
+    const authHeader = req.headers.get("Authorization");
+    const token = authHeader?.replace("Bearer ", "") ?? "";
+    const { data } = token ? await supabaseClient.auth.getUser(token) : { data: { user: null } };
     const user = data.user;
-    if (!user) throw new Error("Not authenticated");
+    if (!user) {
+      return new Response(JSON.stringify({ error: "Not authenticated" }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 401,
+      });
+    }
 
     const { productSlug } = await req.json();
     if (!productSlug) throw new Error("Missing productSlug");
