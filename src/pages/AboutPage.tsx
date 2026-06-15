@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Clock, Sparkles, Users, BookOpen, GraduationCap, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const benefits = [
   { icon: Clock, title: "Save Hours Every Week", description: "Generate lesson plans, worksheets, quizzes, and exit tickets in seconds — not hours." },
@@ -20,6 +21,14 @@ const audiences = [
 
 const AboutPage = () => (
   <div className="min-h-screen bg-background">
+    <Helmet>
+      <title>About TeachKit — Why Teachers Love Our AI Teaching Tools</title>
+      <meta name="description" content="See why teachers love TeachKit. Read real testimonials from K–12 educators and explore AI-powered lesson plans, worksheets, quizzes, and exit tickets." />
+      <link rel="canonical" href="https://teachkitapp.com/about" />
+      <meta property="og:title" content="About TeachKit — Why Teachers Love Our AI Teaching Tools" />
+      <meta property="og:description" content="See why teachers love TeachKit. Read real testimonials from K–12 educators and explore AI-powered lesson plans, worksheets, quizzes, and exit tickets." />
+      <meta property="og:url" content="https://teachkitapp.com/about" />
+    </Helmet>
     <Navbar />
     <main>
       {/* Hero */}
