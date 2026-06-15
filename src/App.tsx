@@ -11,6 +11,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminRoute from "./components/AdminRoute";
 import DashboardLayout from "./components/dashboard/DashboardLayout";
 import DashboardHome from "./pages/dashboard/DashboardHome";
 import LessonPlanGenerator from "./pages/dashboard/LessonPlanGenerator";
@@ -76,24 +77,24 @@ const App = () => (
             <Route path="shop" element={<ResourceShop />} />
             <Route path="shop/:slug" element={<ProductDetail />} />
             <Route path="purchase-success" element={<PurchaseSuccess />} />
-            <Route path="admin/feedback" element={<AdminFeedback />} />
-            <Route path="admin/contact" element={<AdminContactSubmissions />} />
-            <Route path="admin/purchases" element={<AdminPurchases />} />
+            <Route path="admin/feedback" element={<AdminRoute><AdminFeedback /></AdminRoute>} />
+            <Route path="admin/contact" element={<AdminRoute><AdminContactSubmissions /></AdminRoute>} />
+            <Route path="admin/purchases" element={<AdminRoute><AdminPurchases /></AdminRoute>} />
           </Route>
           <Route
             path="/admin"
             element={
-              <ProtectedRoute>
+              <AdminRoute>
                 <AdminDashboard />
-              </ProtectedRoute>
+              </AdminRoute>
             }
           />
           <Route
             path="/admin/bulk-generator"
             element={
-              <ProtectedRoute>
+              <AdminRoute>
                 <BulkGenerator />
-              </ProtectedRoute>
+              </AdminRoute>
             }
           />
           <Route path="/unsubscribe" element={<UnsubscribePage />} />

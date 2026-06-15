@@ -1,6 +1,4 @@
-import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useAdminRole } from "@/hooks/useAdminRole";
+import { Link } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Package, CreditCard, MessageSquare, BarChart3, Mail, Sparkles, ShieldCheck } from "lucide-react";
 import AdminProductsTab from "./tabs/AdminProductsTab";
@@ -10,25 +8,10 @@ import AdminAnalyticsTab from "./tabs/AdminAnalyticsTab";
 import AdminEmailsTab from "./tabs/AdminEmailsTab";
 import AdminAdminsTab from "./tabs/AdminAdminsTab";
 
+// Access control lives in <AdminRoute>, which only mounts this component
+// after the server-verified admin role check resolves. No client-side
+// fallback check here — that would risk a flash of admin UI.
 const AdminDashboard = () => {
-  const { isAdmin, loading } = useAdminRole();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!loading && !isAdmin) {
-      navigate("/dashboard");
-    }
-  }, [isAdmin, loading, navigate]);
-
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-      </div>
-    );
-  }
-
-  if (!isAdmin) return null;
 
   return (
     <div className="min-h-screen bg-background">
