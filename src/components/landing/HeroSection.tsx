@@ -31,10 +31,10 @@ const HeroSection = () => {
           </motion.div>
 
           <h1 className="mb-8 text-5xl font-extrabold leading-[1.1] tracking-tight text-foreground md:text-6xl lg:text-7xl">
-            AI Tools & Ready-Made
+            Your complete AI teaching toolkit —
             <br />
             <span className="inline-block bg-clip-text text-transparent" style={{ background: 'var(--gradient-hero)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              Teacher Resources
+              built for K–12.
             </span>
           </h1>
 
@@ -46,7 +46,7 @@ const HeroSection = () => {
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Button asChild variant="gradient" size="lg" className="h-16 rounded-2xl px-10 text-lg font-bold">
               <Link to="/signup">
-                Start Free
+                Generate your first lesson
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
