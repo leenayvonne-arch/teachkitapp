@@ -1,5 +1,6 @@
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
+import TeacherTestimonials from "@/components/TeacherTestimonials";
 import { motion } from "framer-motion";
 import { Clock, Sparkles, Users, BookOpen, GraduationCap, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -64,6 +65,9 @@ const AboutPage = () => (
           </div>
         </div>
       </section>
+
+      {/* Teacher Testimonials */}
+      <TeacherTestimonials />
 
       {/* CTA */}
       <section className="bg-muted/30 py-16">
