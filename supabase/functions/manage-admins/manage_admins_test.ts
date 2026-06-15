@@ -9,6 +9,12 @@ const FN_URL = `${SUPABASE_URL}/functions/v1/manage-admins`;
 const ADMIN_EMAIL = Deno.env.get("TEST_ADMIN_EMAIL") ?? "teachkitadmin@gmail.com";
 const ADMIN_PASSWORD = Deno.env.get("TEST_ADMIN_PASSWORD") ?? "Teach2782$";
 
+function mkClient() {
+  return createClient(SUPABASE_URL, ANON, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+}
+
 async function call(body: unknown, token?: string) {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
@@ -23,63 +29,63 @@ async function call(body: unknown, token?: string) {
 }
 
 async function signIn(email: string, password: string) {
-  const client = createClient(SUPABASE_URL, ANON);
+  const client = mkClient();
   const { data, error } = await client.auth.signInWithPassword({ email, password });
   if (error) throw new Error(`signIn ${email} failed: ${error.message}`);
   return data.session!.access_token;
 }
 
-Deno.test("manage-admins: unauthenticated request is rejected", async () => {
+// Provision a confirmed non-admin user by creating via the admin function
+// (which confirms the email) and then revoking the admin role.
+async function provisionNonAdmin(adminToken: string) {
+  const email = `nonadmin+${crypto.randomUUID().slice(0, 8)}@example.com`;
+  const password = `NonA!${crypto.randomUUID().slice(0, 12)}aA1`;
+  const created = await call({ action: "create", email, password }, adminToken);
+  if (created.status !== 200) throw new Error(`provision create failed: ${created.text}`);
+  const userId = created.json.user_id as string;
+  const revoked = await call({ action: "revoke", user_id: userId }, adminToken);
+  if (revoked.status !== 200) throw new Error(`provision revoke failed: ${revoked.text}`);
+  return { email, password, userId };
+}
+
+Deno.test("unauthenticated request is rejected", async () => {
   const r = await call({ action: "list" });
   assertEquals(r.status, 401);
   assert(r.json?.error, "expected error body");
 });
 
-Deno.test("manage-admins: anon key without user token is rejected", async () => {
-  // apikey header is present (via call helper) but no Bearer token
-  const r = await call({ action: "list" });
-  assertEquals(r.status, 401);
-});
+Deno.test("non-admin user is forbidden from every action", async () => {
+  const adminToken = await signIn(ADMIN_EMAIL, ADMIN_PASSWORD);
+  const { email, password, userId } = await provisionNonAdmin(adminToken);
 
-Deno.test("manage-admins: non-admin user cannot list or mutate", async () => {
-  const email = `nonadmin+${crypto.randomUUID().slice(0, 8)}@example.com`;
-  const password = `Test!${crypto.randomUUID().slice(0, 12)}`;
-  const client = createClient(SUPABASE_URL, ANON);
-  const { data, error } = await client.auth.signUp({ email, password });
-  if (error) throw error;
-  // If email confirmation is required, sign-in may fail — handle both paths.
-  let token = data.session?.access_token;
-  if (!token) {
-    const signed = await client.auth.signInWithPassword({ email, password });
-    token = signed.data.session?.access_token;
-  }
-  assert(token, "expected non-admin session token");
+  const userToken = await signIn(email, password);
 
-  const list = await call({ action: "list" }, token);
-  assertEquals(list.status, 403, `expected 403, got ${list.status}: ${list.text}`);
+  const list = await call({ action: "list" }, userToken);
+  assertEquals(list.status, 403, `list: ${list.text}`);
 
   const create = await call(
     { action: "create", email: `evil+${crypto.randomUUID().slice(0, 6)}@example.com` },
-    token,
+    userToken,
   );
   assertEquals(create.status, 403);
 
-  const revoke = await call({ action: "revoke", user_id: crypto.randomUUID() }, token);
+  const revoke = await call({ action: "revoke", user_id: crypto.randomUUID() }, userToken);
   assertEquals(revoke.status, 403);
 
-  const disable = await call({ action: "disable", user_id: crypto.randomUUID() }, token);
+  const disable = await call({ action: "disable", user_id: userId }, userToken);
   assertEquals(disable.status, 403);
+
+  const reset = await call({ action: "reset_password", email }, userToken);
+  assertEquals(reset.status, 403);
 });
 
-Deno.test("manage-admins: admin can list; disabled admin loses access immediately", async () => {
+Deno.test("admin can list; disabled admin loses access immediately", async () => {
   const adminToken = await signIn(ADMIN_EMAIL, ADMIN_PASSWORD);
 
-  // Sanity: admin can list
   const list = await call({ action: "list" }, adminToken);
   assertEquals(list.status, 200, `admin list failed: ${list.text}`);
   assert(Array.isArray(list.json?.admins));
 
-  // Create a temp admin
   const tempEmail = `tempadmin+${crypto.randomUUID().slice(0, 8)}@example.com`;
   const tempPassword = `Temp!${crypto.randomUUID().slice(0, 12)}aA1`;
   const created = await call(
@@ -88,40 +94,37 @@ Deno.test("manage-admins: admin can list; disabled admin loses access immediatel
   );
   assertEquals(created.status, 200, `create failed: ${created.text}`);
   const tempUserId = created.json.user_id as string;
-  assert(tempUserId);
 
   try {
-    // Temp admin can sign in and call the function
     const tempToken = await signIn(tempEmail, tempPassword);
-    const tempList = await call({ action: "list" }, tempToken);
-    assertEquals(tempList.status, 200, `temp admin should access: ${tempList.text}`);
+    const okList = await call({ action: "list" }, tempToken);
+    assertEquals(okList.status, 200, `temp admin should access: ${okList.text}`);
 
-    // Disable the temp admin
     const disabled = await call({ action: "disable", user_id: tempUserId }, adminToken);
     assertEquals(disabled.status, 200, `disable failed: ${disabled.text}`);
 
-    // Existing token should no longer be valid — getUser returns null for banned users
+    // Existing JWT must be rejected even though it has not yet expired.
     const afterDisable = await call({ action: "list" }, tempToken);
-    assert(
-      afterDisable.status === 401 || afterDisable.status === 403,
-      `expected 401/403 after disable, got ${afterDisable.status}: ${afterDisable.text}`,
+    assertEquals(
+      afterDisable.status,
+      401,
+      `expected 401 after disable, got ${afterDisable.status}: ${afterDisable.text}`,
     );
 
-    // And they cannot sign in again
-    const client = createClient(SUPABASE_URL, ANON);
+    // And they cannot sign in again.
+    const client = mkClient();
     const reSignIn = await client.auth.signInWithPassword({
       email: tempEmail,
       password: tempPassword,
     });
     assert(reSignIn.error, "disabled admin should not be able to sign in");
   } finally {
-    // Cleanup: re-enable then revoke admin role so the orphan account is harmless
     await call({ action: "enable", user_id: tempUserId }, adminToken);
     await call({ action: "revoke", user_id: tempUserId }, adminToken);
   }
 });
 
-Deno.test("manage-admins: primary admin cannot be revoked or disabled", async () => {
+Deno.test("primary admin cannot be revoked or disabled", async () => {
   const adminToken = await signIn(ADMIN_EMAIL, ADMIN_PASSWORD);
   const list = await call({ action: "list" }, adminToken);
   const primary = list.json.admins.find(

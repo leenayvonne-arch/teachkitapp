@@ -36,6 +36,14 @@ Deno.serve(async (req) => {
 
     const admin = createClient(SUPABASE_URL, SERVICE_ROLE);
 
+    // Re-check the caller against the auth admin API so disabled (banned) users
+    // are rejected even if their JWT is still within its expiry window.
+    const { data: fresh } = await admin.auth.admin.getUserById(caller.id);
+    const bannedUntil = (fresh?.user as { banned_until?: string | null } | undefined)?.banned_until;
+    if (!fresh?.user || (bannedUntil && new Date(bannedUntil) > new Date())) {
+      return json({ error: "Not authenticated" }, 401);
+    }
+
     // Verify caller is admin
     const { data: roleRow } = await admin
       .from("user_roles")
