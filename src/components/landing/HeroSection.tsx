@@ -31,12 +31,12 @@ const HeroSection = () => {
           </motion.div>
 
           <h1 className="mb-8 text-5xl font-extrabold leading-[1.1] tracking-tight text-foreground md:text-6xl lg:text-7xl">
-            Your complete AI&nbsp;
+            Your Complete AI&nbsp;
             <br />
-            teaching toolkit
+            Teaching Toolkit
             <br />
             <span className="inline-block bg-clip-text text-transparent" style={{ background: 'var(--gradient-hero)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              built for K–12.
+              Built for K–12.
             </span>
           </h1>
 
