@@ -42,7 +42,7 @@ const HeroSection = () => {
 
           <p className="mx-auto mb-12 max-w-2xl text-lg text-muted-foreground md:text-xl leading-relaxed">
             Generate standards-aligned lesson plans, worksheets, quizzes, and exit tickets
-            in seconds — or browse our teacher-made resource shop.
+            in seconds or browse our teacher-made resource shop.
           </p>
 
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
